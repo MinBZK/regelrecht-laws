@@ -34,6 +34,7 @@ properties:
       service_reference:
         service: "BRP"
         field: "age"
+        law: "wet_brp"
       type_spec:
         unit: "years"
         precision: 0
@@ -48,6 +49,7 @@ properties:
       service_reference:
         service: "BRP"
         field: "has_partner"
+        law: "wet_brp"
       temporal:
         type: "point_in_time"
         reference: "$current_year-01-01"
@@ -58,6 +60,7 @@ properties:
       service_reference:
         service: "RVZ"
         field: "has_insurance"
+        law: "zvw"
       temporal:
         type: "period"
         period_type: "month"
@@ -68,6 +71,7 @@ properties:
       service_reference:
         service: "RVZ"
         field: "has_act_insurance"
+        law: "zvw"
       temporal:
         type: "period"
         period_type: "month"
@@ -78,6 +82,7 @@ properties:
       service_reference:
         service: "DJI"
         field: "is_incarcerated"
+        law: "penitentiaire_beginselenwet"
       temporal:
         type: "point_in_time"
         reference: "$current_year-01-01"
@@ -88,6 +93,7 @@ properties:
       service_reference:
         service: "DJI"
         field: "is_forensic"
+        law: "wet_forensische_zorg"
       temporal:
         type: "point_in_time"
         reference: "$current_year-01-01"
@@ -98,6 +104,7 @@ properties:
       service_reference:
         service: "UWV"
         field: "income"
+        law: "wet_inkomstenbelasting"
       type_spec:
         unit: "eurocent"
         precision: 0
@@ -113,6 +120,7 @@ properties:
       service_reference:
         service: "BELASTINGDIENST"
         field: "net_worth"
+        law: "wet_inkomstenbelasting"
       type_spec:
         unit: "eurocent"
         precision: 0
@@ -127,6 +135,7 @@ properties:
       service_reference:
         service: "BELASTINGDIENST"
         field: "combined_net_worth"
+        law: "wet_inkomstenbelasting"
       type_spec:
         unit: "eurocent"
         precision: 0
@@ -141,6 +150,7 @@ properties:
       service_reference:
         service: "UWV"
         field: "partner_income"
+        law: "wet_inkomstenbelasting"
       type_spec:
         unit: "eurocent"
         precision: 0
