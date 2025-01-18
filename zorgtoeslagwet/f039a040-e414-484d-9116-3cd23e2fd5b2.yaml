@@ -12,10 +12,9 @@ properties:
     - name: "is_verzekerde_zorgtoeslag"
       description: "Geeft aan of iemand recht heeft op zorgtoeslag"
       type: "boolean"
-      reference: "requirements[0].all"
       temporal:
         type: "period"
-        period_type: "month"
+        period_type: "year"
 
     - name: "hoogte_toeslag"
       description: "De hoogte van de zorgtoeslag"
@@ -24,10 +23,9 @@ properties:
         unit: "eurocent"
         precision: 0
         min: 0
-      reference: "actions[1]"
       temporal:
         type: "period"
-        period_type: "month"
+        period_type: "year"
 
   input:
     - name: "AGE"
