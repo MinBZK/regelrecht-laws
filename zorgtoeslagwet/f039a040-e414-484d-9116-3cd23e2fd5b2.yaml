@@ -4,7 +4,7 @@ law: zorgtoeslagwet
 valid_from: 2024-01-01
 service: "TOESLAGEN"
 description: >
-  Berekeningsregels voor het bepalen van het recht op en de hoogte van de zorgtoeslag volgens artikel 2 
+  Berekeningsregels voor het bepalen van het recht op en de hoogte van de zorgtoeslag volgens artikel 2
   van de Wet op de zorgtoeslag, geldend voor het jaar 2024.
 
 properties:
