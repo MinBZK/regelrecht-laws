@@ -1,0 +1,81 @@
+uuid: 8f7e6d5c-4321-4f0f-bbbb-987654321abc
+name: Bepalen persoonsgegevens BRP 2024
+law: wet_brp
+valid_from: 2024-01-01
+service: "BRP"
+description: >
+  Regels voor het bepalen van persoonsgegevens volgens de Wet Basisregistratie
+  Personen (BRP), artikel 1.6 en 1.7.
+
+references:
+  - law: "Wet BRP"
+    article: "1.6"
+    url: "https://wetten.overheid.nl/BWBR0033715/2024-01-01#Hoofdstuk1_Paragraaf1.2_Artikel1.6"
+  - law: "Wet BRP"
+    article: "1.7"
+    url: "https://wetten.overheid.nl/BWBR0033715/2024-01-01#Hoofdstuk1_Paragraaf1.2_Artikel1.7"
+
+properties:
+  sources:
+    - name: "BIRTH_DATE"
+      description: "Geboortedatum van de persoon"
+      type: "date"
+      temporal:
+        type: "point_in_time"
+        reference_date: "birth"
+      source_reference:
+        table: "personen"
+        field: "geboortedatum"
+        select_on:
+          - name: "BSN"
+            description: "Burgerservicenummer van de persoon"
+            type: "string"
+
+    - name: "PARTNER_TYPE"
+      description: "Type partnerschap registratie"
+      type: "object"
+      temporal:
+        type: "period"
+        period_type: "continuous"
+      source_reference:
+        table: "relaties"
+        field: "partnerschap_type"
+        select_on:
+          - name: "BSN"
+            description: "Burgerservicenummer van de persoon"
+            type: "string"
+
+  output:
+    - name: "age"
+      description: "Leeftijd van de persoon in jaren"
+      type: "number"
+      type_spec:
+        unit: "years"
+        precision: 0
+        min: 0
+      temporal:
+        type: "point_in_time"
+        reference_date: "calculation_date"
+
+    - name: "has_partner"
+      description: "Heeft de persoon een partner volgens BRP"
+      type: "boolean"
+      temporal:
+        type: "point_in_time"
+        reference_date: "calculation_date"
+
+actions:
+  - output: "age"
+    operation: CALCULATE_YEARS_BETWEEN
+    values:
+      - "$BIRTH_DATE"
+      - "$calculation_date"
+    reference: "Wet BRP Art. 1.6"
+
+  - output: "has_partner"
+    subject: "$PARTNER_TYPE"
+    operation: IN
+    values:
+      - "HUWELIJK"
+      - "GEREGISTREERD_PARTNERSCHAP"
+    reference: "Wet BRP Art. 1.7"
