@@ -1,0 +1,347 @@
+uuid: 9f8e7d6c-5432-4f0f-hhhh-890123456789
+name: Bepalen inkomens- en vermogensgegevens 2024
+law: wet_inkomstenbelasting
+valid_from: 2024-01-01
+service: "BELASTINGDIENST"
+description: >
+  Regels voor het bepalen van inkomen en vermogen volgens de Wet inkomstenbelasting 2001.
+  Dit omvat inkomen uit werk en woning (box 1), aanmerkelijk belang (box 2),
+  sparen en beleggen (box 3) en buitenlands inkomen, evenals vermogensgegevens.
+
+references:
+  - law: "Wet inkomstenbelasting 2001"
+    article: "2.3"
+    url: "https://wetten.overheid.nl/BWBR0011353/2024-01-01#Hoofdstuk2_Afdeling2.1_Artikel2.3"
+  - law: "Wet inkomstenbelasting 2001"
+    article: "2.14"
+    url: "https://wetten.overheid.nl/BWBR0011353/2024-01-01#Hoofdstuk2_Afdeling2.4_Artikel2.14"
+  - law: "Wet inkomstenbelasting 2001"
+    article: "3.1"
+    url: "https://wetten.overheid.nl/BWBR0011353/2024-01-01#Hoofdstuk3_Afdeling3.1_Artikel3.1"
+
+properties:
+  sources:
+    - name: "BOX1_INCOME"
+      description: "Inkomen uit werk en woning"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+      temporal:
+        type: "period"
+        period_type: "year"
+      source_reference:
+        table: "inkomen"
+        field: "box1"
+        select_on:
+          - name: "BSN"
+            description: "Burgerservicenummer van de persoon"
+            type: "string"
+
+    - name: "BOX2_INCOME"
+      description: "Inkomen uit aanmerkelijk belang"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+      temporal:
+        type: "period"
+        period_type: "year"
+      source_reference:
+        table: "inkomen"
+        field: "box2"
+        select_on:
+          - name: "BSN"
+            description: "Burgerservicenummer van de persoon"
+            type: "string"
+
+    - name: "BOX3_INCOME"
+      description: "Inkomen uit sparen en beleggen"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+      temporal:
+        type: "period"
+        period_type: "year"
+      source_reference:
+        table: "inkomen"
+        field: "box3"
+        select_on:
+          - name: "BSN"
+            description: "Burgerservicenummer van de persoon"
+            type: "string"
+
+    - name: "FOREIGN_INCOME"
+      description: "Niet in Nederland belastbaar inkomen"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+      temporal:
+        type: "period"
+        period_type: "year"
+      source_reference:
+        table: "inkomen"
+        field: "buitenlands"
+        select_on:
+          - name: "BSN"
+            description: "Burgerservicenummer van de persoon"
+            type: "string"
+
+    - name: "ASSETS"
+      description: "Bezittingen"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+      temporal:
+        type: "point_in_time"
+        reference_date: "january_first"
+      source_reference:
+        table: "vermogen"
+        field: "bezittingen"
+        select_on:
+          - name: "BSN"
+            description: "Burgerservicenummer van de persoon"
+            type: "string"
+
+    - name: "DEBTS"
+      description: "Schulden"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+      temporal:
+        type: "point_in_time"
+        reference_date: "january_first"
+      source_reference:
+        table: "vermogen"
+        field: "schulden"
+        select_on:
+          - name: "BSN"
+            description: "Burgerservicenummer van de persoon"
+            type: "string"
+
+  output:
+    - name: "box1_income"
+      description: "Inkomen uit werk en woning"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+      temporal:
+        type: "period"
+        period_type: "year"
+
+    - name: "box2_income"
+      description: "Inkomen uit aanmerkelijk belang"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+      temporal:
+        type: "period"
+        period_type: "year"
+
+    - name: "box3_income"
+      description: "Inkomen uit sparen en beleggen"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+      temporal:
+        type: "period"
+        period_type: "year"
+
+    - name: "foreign_income"
+      description: "Niet in Nederland belastbaar inkomen"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+      temporal:
+        type: "period"
+        period_type: "year"
+
+    - name: "income"
+      description: "Totaal inkomen"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+      temporal:
+        type: "period"
+        period_type: "year"
+
+    - name: "partner_box1_income"
+      description: "Partner inkomen uit werk en woning"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+      temporal:
+        type: "period"
+        period_type: "year"
+
+    - name: "partner_box2_income"
+      description: "Partner inkomen uit aanmerkelijk belang"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+      temporal:
+        type: "period"
+        period_type: "year"
+
+    - name: "partner_box3_income"
+      description: "Partner inkomen uit sparen en beleggen"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+      temporal:
+        type: "period"
+        period_type: "year"
+
+    - name: "partner_foreign_income"
+      description: "Partner niet in Nederland belastbaar inkomen"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+      temporal:
+        type: "period"
+        period_type: "year"
+
+    - name: "partner_income"
+      description: "Totaal inkomen partner"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+      temporal:
+        type: "period"
+        period_type: "year"
+
+    - name: "net_worth"
+      description: "Vermogen"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+      temporal:
+        type: "point_in_time"
+        reference_date: "january_first"
+
+    - name: "combined_net_worth"
+      description: "Gezamenlijk vermogen met partner"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+      temporal:
+        type: "point_in_time"
+        reference_date: "january_first"
+
+  input:
+    - name: "HAS_PARTNER"
+      description: "Heeft de persoon een fiscaal partner"
+      type: "boolean"
+      service_reference:
+        service: "BRP"
+        field: "has_partner"
+        law: "wet_brp"
+      temporal:
+        type: "point_in_time"
+        reference_date: "calculation_date"
+
+  definitions:
+    DREMPEL_BOX3: 5000000  # Heffingsvrij vermogen box 3
+
+actions:
+  - output: "box1_income"
+    operation: COPY
+    values:
+      - "$BOX1_INCOME"
+
+  - output: "box2_income"
+    operation: COPY
+    values:
+      - "$BOX2_INCOME"
+
+  - output: "box3_income"
+    operation: COPY
+    values:
+      - "$BOX3_INCOME"
+
+  - output: "foreign_income"
+    operation: COPY
+    values:
+      - "$FOREIGN_INCOME"
+
+  - output: "income"
+    operation: ADD
+    values:
+      - "$BOX1_INCOME"
+      - "$BOX2_INCOME"
+      - "$BOX3_INCOME"
+      - "$FOREIGN_INCOME"
+
+  - output: "partner_box1_income"
+    operation: COPY
+    values:
+      - "$PARTNER.BOX1_INCOME"
+
+  - output: "partner_box2_income"
+    operation: COPY
+    values:
+      - "$PARTNER.BOX2_INCOME"
+
+  - output: "partner_box3_income"
+    operation: COPY
+    values:
+      - "$PARTNER.BOX3_INCOME"
+
+  - output: "partner_foreign_income"
+    operation: COPY
+    values:
+      - "$PARTNER.FOREIGN_INCOME"
+
+  - output: "partner_income"
+    operation: ADD
+    values:
+      - "$PARTNER.BOX1_INCOME"
+      - "$PARTNER.BOX2_INCOME"
+      - "$PARTNER.BOX3_INCOME"
+      - "$PARTNER.FOREIGN_INCOME"
+
+  - output: "net_worth"
+    operation: SUBTRACT
+    values:
+      - "$ASSETS"
+      - "$DEBTS"
+
+  - output: "combined_net_worth"
+    operation: IF
+    conditions:
+      - test:
+          subject: "$HAS_PARTNER"
+          operator: EQUALS
+          value: true
+        then:
+          operation: ADD
+          values:
+            - operation: SUBTRACT
+              values:
+                - "$ASSETS"
+                - "$DEBTS"
+            - operation: SUBTRACT
+              values:
+                - "$PARTNER.ASSETS"
+                - "$PARTNER.DEBTS"
+        else:
+          operation: SUBTRACT
+          values:
+            - "$ASSETS"
+            - "$DEBTS"

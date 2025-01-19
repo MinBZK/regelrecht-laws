@@ -1,0 +1,106 @@
+uuid: 8e7f6d5c-4321-4f0f-iiii-901234567890
+name: Bepalen verzekeringsstatus 2024
+law: zvw
+valid_from: 2024-01-01
+service: "RVZ"
+description: >
+  Regels voor het bepalen van de verzekeringsstatus volgens de Zorgverzekeringswet (Zvw),
+  artikel 2 (verzekeringsplicht) en artikel 9 (verdragsverzekering).
+
+references:
+  - law: "Zorgverzekeringswet"
+    article: "2"
+    url: "https://wetten.overheid.nl/BWBR0018450/2024-01-01#Hoofdstuk2_Paragraaf2.1_Artikel2"
+  - law: "Zorgverzekeringswet"
+    article: "9"
+    url: "https://wetten.overheid.nl/BWBR0018450/2024-01-01#Hoofdstuk2_Paragraaf2.2_Artikel9"
+
+properties:
+  sources:
+    - name: "INSURANCE_POLICY"
+      description: "Actieve zorgverzekeringspolis"
+      type: "object"
+      temporal:
+        type: "period"
+        period_type: "month"
+      source_reference:
+        table: "verzekeringen"
+        field: "polis"
+        select_on:
+          - name: "BSN"
+            description: "Burgerservicenummer van de persoon"
+            type: "string"
+
+    - name: "TREATY_REGISTRATION"
+      description: "Registratie verdragsverzekering"
+      type: "object"
+      temporal:
+        type: "period"
+        period_type: "month"
+      source_reference:
+        table: "verdragsverzekeringen"
+        field: "registratie"
+        select_on:
+          - name: "BSN"
+            description: "Burgerservicenummer van de persoon"
+            type: "string"
+
+  input:
+    - name: "RESIDENCE_COUNTRY"
+      description: "Land van verblijf"
+      type: "string"
+      service_reference:
+        service: "BRP"
+        field: "country_of_residence"
+        law: "wet_brp"
+      temporal:
+        type: "period"
+        period_type: "continuous"
+
+  output:
+    - name: "has_insurance"
+      description: "Heeft de persoon een Nederlandse zorgverzekering"
+      type: "boolean"
+      temporal:
+        type: "period"
+        period_type: "month"
+
+    - name: "has_act_insurance"
+      description: "Heeft de persoon een verdragsverzekering"
+      type: "boolean"
+      temporal:
+        type: "period"
+        period_type: "month"
+
+  definitions:
+    ACTIVE_POLICY_STATUSES:
+      - "ACTIEF"
+      - "GESCHORST_MET_TERUGWERKENDE_KRACHT"
+    VALID_TREATY_COUNTRIES:
+      - "BELGIE"
+      - "DUITSLAND"
+      - "FRANKRIJK"
+      - "VERENIGD_KONINKRIJK"
+      - "ZWITSERLAND"
+
+actions:
+  - output: "has_insurance"
+    operation: AND
+    values:
+      - operation: NOT_NULL
+        subject: "$INSURANCE_POLICY"
+      - operation: IN
+        subject: "$INSURANCE_POLICY.status"
+        values: "$ACTIVE_POLICY_STATUSES"
+
+  - output: "has_act_insurance"
+    operation: AND
+    values:
+      - operation: NOT_NULL
+        subject: "$TREATY_REGISTRATION"
+      - operation: IN
+        subject: "$RESIDENCE_COUNTRY"
+        values: "$VALID_TREATY_COUNTRIES"
+      - operation: EQUALS
+        subject: "$TREATY_REGISTRATION.status"
+        value: "ACTIEF"

@@ -5,7 +5,8 @@ valid_from: 2024-01-01
 service: "BRP"
 description: >
   Regels voor het bepalen van persoonsgegevens volgens de Wet Basisregistratie
-  Personen (BRP), artikel 1.6 en 1.7.
+  Personen (BRP). Dit omvat basisgegevens (artikel 1.6 en 1.7), woonsituatie (artikel 2.4)
+  en verblijfsgegevens (artikel 2.7).
 
 references:
   - law: "Wet BRP"
@@ -14,6 +15,12 @@ references:
   - law: "Wet BRP"
     article: "1.7"
     url: "https://wetten.overheid.nl/BWBR0033715/2024-01-01#Hoofdstuk1_Paragraaf1.2_Artikel1.7"
+  - law: "Wet BRP"
+    article: "2.4"
+    url: "https://wetten.overheid.nl/BWBR0033715/2024-01-01#Hoofdstuk2_Paragraaf2.1_Artikel2.4"
+  - law: "Wet BRP"
+    article: "2.7"
+    url: "https://wetten.overheid.nl/BWBR0033715/2024-01-01#Hoofdstuk2_Paragraaf2.2_Artikel2.7"
 
 properties:
   sources:
@@ -45,6 +52,48 @@ properties:
             description: "Burgerservicenummer van de persoon"
             type: "string"
 
+    - name: "RESIDENCE_ADDRESS"
+      description: "Woonadres van de persoon"
+      type: "object"
+      temporal:
+        type: "period"
+        period_type: "continuous"
+      source_reference:
+        table: "personen"
+        field: "verblijfsadres"
+        select_on:
+          - name: "BSN"
+            description: "Burgerservicenummer van de persoon"
+            type: "string"
+
+    - name: "PARENT_ADDRESSES"
+      description: "Woonadressen van de ouders"
+      type: "array"
+      temporal:
+        type: "period"
+        period_type: "continuous"
+      source_reference:
+        table: "relaties"
+        field: "ouder_adressen"
+        select_on:
+          - name: "BSN"
+            description: "Burgerservicenummer van de persoon"
+            type: "string"
+
+    - name: "COUNTRY_CODE"
+      description: "Land van verblijf"
+      type: "string"
+      temporal:
+        type: "period"
+        period_type: "continuous"
+      source_reference:
+        table: "personen"
+        field: "land_verblijf"
+        select_on:
+          - name: "BSN"
+            description: "Burgerservicenummer van de persoon"
+            type: "string"
+
   output:
     - name: "age"
       description: "Leeftijd van de persoon in jaren"
@@ -64,6 +113,35 @@ properties:
         type: "point_in_time"
         reference_date: "calculation_date"
 
+    - name: "living_situation"
+      description: "Woonsituatie van de persoon (UIT/THUIS)"
+      type: "string"
+      temporal:
+        type: "period"
+        period_type: "month"
+
+    - name: "country_of_residence"
+      description: "Land van verblijf volgens BRP"
+      type: "string"
+      temporal:
+        type: "period"
+        period_type: "continuous"
+
+  definitions:
+    HOME_COUNTRIES:
+      - "NLD"
+    ADDRESS_MATCH_DISTANCE_M: 100
+    VALID_PARTNER_TYPES:
+      - "HUWELIJK"
+      - "GEREGISTREERD_PARTNERSCHAP"
+
+requirements:
+  - all:
+    - subject: "$BIRTH_DATE"
+      operator: NOT_NULL
+    - subject: "$RESIDENCE_ADDRESS"
+      operator: NOT_NULL
+
 actions:
   - output: "age"
     operation: CALCULATE_YEARS_BETWEEN
@@ -75,7 +153,24 @@ actions:
   - output: "has_partner"
     subject: "$PARTNER_TYPE"
     operation: IN
-    values:
-      - "HUWELIJK"
-      - "GEREGISTREERD_PARTNERSCHAP"
+    values: "$VALID_PARTNER_TYPES"
     reference: "Wet BRP Art. 1.7"
+
+  - output: "living_situation"
+    operation: IF
+    conditions:
+      - test:
+          operation: ANY_ADDRESS_MATCH
+          values:
+            - "$RESIDENCE_ADDRESS"
+            - "$PARENT_ADDRESSES"
+            - "$ADDRESS_MATCH_DISTANCE_M"
+        then: "THUIS"
+      - else: "UIT"
+    reference: "Wet BRP Art. 2.4"
+
+  - output: "country_of_residence"
+    operation: COPY
+    values:
+      - "$COUNTRY_CODE"
+    reference: "Wet BRP Art. 2.7"
