@@ -1,0 +1,71 @@
+uuid: 7d6e5f4c-3210-4f0f-dddd-456789012345
+name: Bepalen detentiestatus 2024
+law: penitentiaire_beginselenwet
+valid_from: 2024-01-01
+service: "DJI"
+description: >
+  Regels voor het bepalen van detentiestatus volgens de Penitentiaire beginselenwet,
+  artikel 2 en 3. Een gedetineerde is iemand die rechtens van zijn vrijheid is beroofd
+  en is opgenomen in een penitentiaire inrichting.
+
+references:
+  - law: "Penitentiaire beginselenwet"
+    article: "2"
+    url: "https://wetten.overheid.nl/BWBR0009709/2024-01-01#HoofdstukI_Artikel2"
+  - law: "Penitentiaire beginselenwet"
+    article: "3"
+    url: "https://wetten.overheid.nl/BWBR0009709/2024-01-01#HoofdstukI_Artikel3"
+
+properties:
+  sources:
+    - name: "DETENTION_STATUS"
+      description: "Status van detentie"
+      type: "string"
+      temporal:
+        type: "period"
+        period_type: "continuous"
+      source_reference:
+        table: "detenties"
+        field: "status"
+        select_on:
+          - name: "BSN"
+            description: "Burgerservicenummer van de persoon"
+            type: "string"
+
+    - name: "FACILITY_TYPE"
+      description: "Type inrichting"
+      type: "string"
+      temporal:
+        type: "period"
+        period_type: "continuous"
+      source_reference:
+        table: "detenties"
+        field: "inrichting_type"
+        select_on:
+          - name: "BSN"
+            description: "Burgerservicenummer van de persoon"
+            type: "string"
+
+  output:
+    - name: "is_incarcerated"
+      description: "Is de persoon gedetineerd"
+      type: "boolean"
+      temporal:
+        type: "point_in_time"
+        reference_date: "calculation_date"
+
+actions:
+  - output: "is_incarcerated"
+    operation: AND
+    values:
+      - operation: IN
+        subject: "$FACILITY_TYPE"
+        values:
+          - "PENITENTIAIRE_INRICHTING"
+          - "HUIS_VAN_BEWARING"
+      - operation: IN
+        subject: "$DETENTION_STATUS"
+        values:
+          - "INGESLOTEN"
+          - "TIJDELIJK_AFWEZIG"
+    reference: "Penitentiaire beginselenwet Art. 2 en 3"
