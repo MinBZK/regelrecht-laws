@@ -136,40 +136,40 @@ actions:
         conditions:
           - test:
               subject: "$EDUCATION_TYPE"
-              operator: EQUALS
+              operation: EQUALS
               value: "WO"
             then:
               operation: IF
               conditions:
                 - test:
                     subject: "$LIVING_SITUATION"
-                    operator: EQUALS
+                    operation: EQUALS
                     value: "UIT"
                   then: "$BASISBEURS_WO_UIT"
                 - else: "$BASISBEURS_WO_THUIS"
           - test:
               subject: "$EDUCATION_TYPE"
-              operator: EQUALS
+              operation: EQUALS
               value: "HBO"
             then:
               operation: IF
               conditions:
                 - test:
                     subject: "$LIVING_SITUATION"
-                    operator: EQUALS
+                    operation: EQUALS
                     value: "UIT"
                   then: "$BASISBEURS_HBO_UIT"
                 - else: "$BASISBEURS_HBO_THUIS"
           - test:
               subject: "$EDUCATION_TYPE"
-              operator: EQUALS
+              operation: EQUALS
               value: "MBO"
             then:
               operation: IF
               conditions:
                 - test:
                     subject: "$LIVING_SITUATION"
-                    operator: EQUALS
+                    operation: EQUALS
                     value: "UIT"
                   then: "$BASISBEURS_MBO_UIT"
                 - else: "$BASISBEURS_MBO_THUIS"
@@ -190,17 +190,17 @@ actions:
                   conditions:
                     - test:
                         subject: "$EDUCATION_TYPE"
-                        operator: EQUALS
+                        operation: EQUALS
                         value: "WO"
                       then: "$MAX_AANVULLENDE_BEURS_WO"
                     - test:
                         subject: "$EDUCATION_TYPE"
-                        operator: EQUALS
+                        operation: EQUALS
                         value: "HBO"
                       then: "$MAX_AANVULLENDE_BEURS_HBO"
                     - test:
                         subject: "$EDUCATION_TYPE"
-                        operator: EQUALS
+                        operation: EQUALS
                         value: "MBO"
                       then: "$MAX_AANVULLENDE_BEURS_MBO"
                 - operation: SUBTRACT
@@ -233,40 +233,40 @@ actions:
         conditions:
           - test:
               subject: "$PARTNER.EDUCATION_TYPE"
-              operator: EQUALS
+              operation: EQUALS
               value: "WO"
             then:
               operation: IF
               conditions:
                 - test:
                     subject: "$PARTNER.LIVING_SITUATION"
-                    operator: EQUALS
+                    operation: EQUALS
                     value: "UIT"
                   then: "$BASISBEURS_WO_UIT"
                 - else: "$BASISBEURS_WO_THUIS"
           - test:
               subject: "$PARTNER.EDUCATION_TYPE"
-              operator: EQUALS
+              operation: EQUALS
               value: "HBO"
             then:
               operation: IF
               conditions:
                 - test:
                     subject: "$PARTNER.LIVING_SITUATION"
-                    operator: EQUALS
+                    operation: EQUALS
                     value: "UIT"
                   then: "$BASISBEURS_HBO_UIT"
                 - else: "$BASISBEURS_HBO_THUIS"
           - test:
               subject: "$PARTNER.EDUCATION_TYPE"
-              operator: EQUALS
+              operation: EQUALS
               value: "MBO"
             then:
               operation: IF
               conditions:
                 - test:
                     subject: "$PARTNER.LIVING_SITUATION"
-                    operator: EQUALS
+                    operation: EQUALS
                     value: "UIT"
                   then: "$BASISBEURS_MBO_UIT"
                 - else: "$BASISBEURS_MBO_THUIS"
@@ -287,17 +287,17 @@ actions:
                   conditions:
                     - test:
                         subject: "$PARTNER.EDUCATION_TYPE"
-                        operator: EQUALS
+                        operation: EQUALS
                         value: "WO"
                       then: "$MAX_AANVULLENDE_BEURS_WO"
                     - test:
                         subject: "$PARTNER.EDUCATION_TYPE"
-                        operator: EQUALS
+                        operation: EQUALS
                         value: "HBO"
                       then: "$MAX_AANVULLENDE_BEURS_HBO"
                     - test:
                         subject: "$PARTNER.EDUCATION_TYPE"
-                        operator: EQUALS
+                        operation: EQUALS
                         value: "MBO"
                       then: "$MAX_AANVULLENDE_BEURS_MBO"
                 - operation: SUBTRACT

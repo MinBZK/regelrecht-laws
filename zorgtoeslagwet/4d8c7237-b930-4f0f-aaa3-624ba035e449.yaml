@@ -206,19 +206,19 @@ requirements:
   - all:
       - or:
           - subject: "$HAS_INSURANCE"
-            operator: EQUALS
+            operation: EQUALS
             value: true
           - subject: "$HAS_ACT_INSURANCE"
-            operator: EQUALS
+            operation: EQUALS
             value: true
       - subject: "$AGE"
-        operator: GREATER_OR_EQUAL
+        operation: GREATER_OR_EQUAL
         value: "$MINIMUM_AGE"
       - subject: "$IS_INCARCERATED"
-        operator: EQUALS
+        operation: EQUALS
         value: false
       - subject: "$IS_FORENSIC"
-        operator: EQUALS
+        operation: EQUALS
         value: false
 
 actions:
@@ -231,7 +231,7 @@ actions:
     conditions:
       - test:
           subject: "$HAS_PARTNER"
-          operator: EQUALS
+          operation: EQUALS
           value: false
         then:
           operation: IF
@@ -247,7 +247,7 @@ actions:
               then: 0
             - test:
                 subject: "$NET_WORTH"
-                operator: GREATER_THAN
+                operation: GREATER_THAN
                 value: "$VERMOGENSGRENS_ALLEENSTAANDE"
               then: 0
             - else:
@@ -290,7 +290,7 @@ actions:
                           - else: 0
       - test:
           subject: "$HAS_PARTNER"
-          operator: EQUALS
+          operation: EQUALS
           value: true
         then:
           operation: IF
@@ -308,7 +308,7 @@ actions:
               then: 0
             - test:
                 subject: "$COMBINED_NET_WORTH"
-                operator: GREATER_THAN
+                operation: GREATER_THAN
                 value: "$VERMOGENSGRENS_TOESLAGPARTNER"
               then: 0
             - else:

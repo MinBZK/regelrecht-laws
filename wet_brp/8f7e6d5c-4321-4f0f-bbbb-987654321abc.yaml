@@ -138,16 +138,17 @@ properties:
 requirements:
   - all:
     - subject: "$BIRTH_DATE"
-      operator: NOT_NULL
+      operation: NOT_NULL
     - subject: "$RESIDENCE_ADDRESS"
-      operator: NOT_NULL
+      operation: NOT_NULL
 
 actions:
   - output: "age"
-    operation: CALCULATE_YEARS_BETWEEN
+    operation: SUBTRACT_DATE
+    unit: "years"
     values:
-      - "$BIRTH_DATE"
       - "$calculation_date"
+      - "$BIRTH_DATE"
     reference: "Wet BRP Art. 1.6"
 
   - output: "has_partner"
@@ -160,11 +161,9 @@ actions:
     operation: IF
     conditions:
       - test:
-          operation: ANY_ADDRESS_MATCH
-          values:
-            - "$RESIDENCE_ADDRESS"
-            - "$PARENT_ADDRESSES"
-            - "$ADDRESS_MATCH_DISTANCE_M"
+          subject: "$RESIDENCE_ADDRESS"
+          operation: EQUALS
+          value: "$PARENT_ADDRESSES"
         then: "THUIS"
       - else: "UIT"
     reference: "Wet BRP Art. 2.4"

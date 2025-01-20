@@ -25,7 +25,7 @@ properties:
         period_type: "month"
       source_reference:
         table: "verzekeringen"
-        field: "polis"
+        field: "polis_status"
         select_on:
           - name: "BSN"
             description: "Burgerservicenummer van de persoon"
@@ -90,7 +90,7 @@ actions:
       - operation: NOT_NULL
         subject: "$INSURANCE_POLICY"
       - operation: IN
-        subject: "$INSURANCE_POLICY.status"
+        subject: "$INSURANCE_POLICY"
         values: "$ACTIVE_POLICY_STATUSES"
 
   - output: "has_act_insurance"
@@ -102,5 +102,5 @@ actions:
         subject: "$RESIDENCE_COUNTRY"
         values: "$VALID_TREATY_COUNTRIES"
       - operation: EQUALS
-        subject: "$TREATY_REGISTRATION.status"
+        subject: "$TREATY_REGISTRATION"
         value: "ACTIEF"

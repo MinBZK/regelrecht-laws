@@ -327,7 +327,7 @@ actions:
     conditions:
       - test:
           subject: "$HAS_PARTNER"
-          operator: EQUALS
+          operation: EQUALS
           value: true
         then:
           operation: ADD
