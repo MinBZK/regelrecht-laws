@@ -137,10 +137,10 @@ properties:
 
 requirements:
   - all:
-    - subject: "$BIRTH_DATE"
-      operation: NOT_NULL
-    - subject: "$RESIDENCE_ADDRESS"
-      operation: NOT_NULL
+      - subject: "$BIRTH_DATE"
+        operation: NOT_NULL
+      - subject: "$RESIDENCE_ADDRESS"
+        operation: NOT_NULL
 
 actions:
   - output: "age"
@@ -169,7 +169,5 @@ actions:
     reference: "Wet BRP Art. 2.4"
 
   - output: "country_of_residence"
-    operation: COPY
-    values:
-      - "$COUNTRY_CODE"
+    value: "$COUNTRY_CODE"
     reference: "Wet BRP Art. 2.7"

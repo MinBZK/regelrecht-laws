@@ -261,24 +261,16 @@ properties:
 
 actions:
   - output: "box1_income"
-    operation: COPY
-    values:
-      - "$BOX1_INCOME"
+    value: "$BOX1_INCOME"
 
   - output: "box2_income"
-    operation: COPY
-    values:
-      - "$BOX2_INCOME"
+    value: "$BOX2_INCOME"
 
   - output: "box3_income"
-    operation: COPY
-    values:
-      - "$BOX3_INCOME"
+    value: "$BOX3_INCOME"
 
   - output: "foreign_income"
-    operation: COPY
-    values:
-      - "$FOREIGN_INCOME"
+    value: "$FOREIGN_INCOME"
 
   - output: "income"
     operation: ADD
@@ -289,24 +281,16 @@ actions:
       - "$FOREIGN_INCOME"
 
   - output: "partner_box1_income"
-    operation: COPY
-    values:
-      - "$PARTNER.BOX1_INCOME"
+    value: "$PARTNER.BOX1_INCOME"
 
   - output: "partner_box2_income"
-    operation: COPY
-    values:
-      - "$PARTNER.BOX2_INCOME"
+    value: "$PARTNER.BOX2_INCOME"
 
   - output: "partner_box3_income"
-    operation: COPY
-    values:
-      - "$PARTNER.BOX3_INCOME"
+    value: "$PARTNER.BOX3_INCOME"
 
   - output: "partner_foreign_income"
-    operation: COPY
-    values:
-      - "$PARTNER.FOREIGN_INCOME"
+    value: "$PARTNER.FOREIGN_INCOME"
 
   - output: "partner_income"
     operation: ADD
