@@ -204,7 +204,6 @@ requirements:
 actions:
   - output: "is_verzekerde_zorgtoeslag"
     value: true
-    reference: "requirements[0].all"
 
   - output: "hoogte_toeslag"
     operation: IF
