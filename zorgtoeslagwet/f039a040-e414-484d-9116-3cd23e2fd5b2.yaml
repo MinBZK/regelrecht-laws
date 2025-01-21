@@ -7,6 +7,17 @@ description: >
   Berekeningsregels voor het bepalen van het recht op en de hoogte van de zorgtoeslag volgens artikel 2
   van de Wet op de zorgtoeslag, geldend voor het jaar 2024.
 
+references:
+  - law: "Wet op de zorgtoeslag"
+    article: "2"
+    url: "https://wetten.overheid.nl/BWBR0018451/2024-01-01#Paragraaf2_Artikel2"
+  - law: "Wet op de zorgtoeslag"
+    article: "2a"
+    url: "https://wetten.overheid.nl/BWBR0018451/2024-01-01#Paragraaf2_Artikel2a"
+  - law: "Wet op de zorgtoeslag"
+    article: "3"
+    url: "https://wetten.overheid.nl/BWBR0018451/2024-01-01#Paragraaf2_Artikel3"
+
 properties:
   output:
     - name: "is_verzekerde_zorgtoeslag"

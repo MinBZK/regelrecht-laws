@@ -8,6 +8,17 @@ description: >
   van de Wet op de zorgtoeslag, geldend voor het jaar 2025. Dit jaar wordt de studiefinanciering meegenomen als
   inkomen (studiefinanciering is een gift geworden).
 
+references:
+  - law: "Wet op de zorgtoeslag"
+    article: "2"
+    url: "https://wetten.overheid.nl/BWBR0018451/2024-01-01#Paragraaf2_Artikel2"
+  - law: "Wet op de zorgtoeslag"
+    article: "2a"
+    url: "https://wetten.overheid.nl/BWBR0018451/2024-01-01#Paragraaf2_Artikel2a"
+  - law: "Wet op de zorgtoeslag"
+    article: "3"
+    url: "https://wetten.overheid.nl/BWBR0018451/2024-01-01#Paragraaf2_Artikel3"
+
 properties:
   output:
     - name: "is_verzekerde_zorgtoeslag"
