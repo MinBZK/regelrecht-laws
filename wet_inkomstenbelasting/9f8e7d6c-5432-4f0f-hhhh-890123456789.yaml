@@ -249,7 +249,7 @@ properties:
       description: "Heeft de persoon een fiscaal partner"
       type: "boolean"
       service_reference:
-        service: "BRP"
+        service: "RvIG"
         field: "has_partner"
         law: "wet_brp"
       temporal:

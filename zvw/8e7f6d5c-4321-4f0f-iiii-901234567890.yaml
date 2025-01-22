@@ -50,7 +50,7 @@ properties:
       description: "Land van verblijf"
       type: "string"
       service_reference:
-        service: "BRP"
+        service: "RvIG"
         field: "country_of_residence"
         law: "wet_brp"
       temporal:

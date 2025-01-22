@@ -51,10 +51,10 @@ properties:
 
   input:
     - name: "LIVING_SITUATION"
-      description: "Woonsituatie (uit/thuis) op basis van BRP adres"
+      description: "Woonsituatie (uit/thuis) op basis van RvIG adres"
       type: "string"
       service_reference:
-        service: "BRP"
+        service: "RvIG"
         field: "living_situation"
         law: "wet_brp"
       temporal:

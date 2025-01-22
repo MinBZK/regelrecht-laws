@@ -43,7 +43,7 @@ properties:
       description: "Leeftijd van de aanvrager"
       type: "number"
       service_reference:
-        service: "BRP"
+        service: "RvIG"
         field: "age"
         law: "wet_brp"
       type_spec:
@@ -58,7 +58,7 @@ properties:
       description: "Partnerschap status"
       type: "boolean"
       service_reference:
-        service: "BRP"
+        service: "RvIG"
         field: "has_partner"
         law: "wet_brp"
       temporal:

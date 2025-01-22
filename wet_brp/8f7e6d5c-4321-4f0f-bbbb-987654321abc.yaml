@@ -2,10 +2,10 @@ uuid: 8f7e6d5c-4321-4f0f-bbbb-987654321abc
 name: Bepalen persoonsgegevens BRP 2024
 law: wet_brp
 valid_from: 2024-01-01
-service: "BRP"
+service: "RvIG"
 description: >
   Regels voor het bepalen van persoonsgegevens volgens de Wet Basisregistratie
-  Personen (BRP). Dit omvat basisgegevens (artikel 1.6 en 1.7), woonsituatie (artikel 2.4)
+  Personen (RvIG). Dit omvat basisgegevens (artikel 1.6 en 1.7), woonsituatie (artikel 2.4)
   en verblijfsgegevens (artikel 2.7).
 
 references:
@@ -107,7 +107,7 @@ properties:
         reference_date: "calculation_date"
 
     - name: "has_partner"
-      description: "Heeft de persoon een partner volgens BRP"
+      description: "Heeft de persoon een partner volgens RvIG"
       type: "boolean"
       temporal:
         type: "point_in_time"
@@ -121,11 +121,18 @@ properties:
         period_type: "month"
 
     - name: "country_of_residence"
-      description: "Land van verblijf volgens BRP"
+      description: "Land van verblijf volgens RvIG"
       type: "string"
       temporal:
         type: "period"
         period_type: "continuous"
+
+    - name: "birth_date"
+      description: "Geboortedatum van de persoon"
+      type: "date"
+      temporal:
+        type: "point_in_time"
+        reference_date: "birth"
 
   definitions:
     HOME_COUNTRIES:
@@ -143,6 +150,8 @@ requirements:
         operation: NOT_NULL
 
 actions:
+  - output: "birth_date"
+    value: "$$BIRTH_DATE"
   - output: "age"
     operation: SUBTRACT_DATE
     unit: "years"
