@@ -37,9 +37,10 @@ properties:
         table: "inschrijvingen"
         field: "onderwijstype"
         select_on:
-          - name: "BSN"
+          - name: "bsn"
             description: "Burgerservicenummer van de persoon"
             type: "string"
+            value: "$BSN"
 
     - name: "SIBLINGS_STUDYING"
       description: "Aantal studerende broers/zussen"
@@ -51,9 +52,10 @@ properties:
         table: "studiefinanciering"
         field: "aantal_studerend_gezin"
         select_on:
-          - name: "BSN"
+          - name: "bsn"
             description: "Burgerservicenummer van de persoon"
             type: "string"
+            value: "$BSN"
 
   input:
     - name: "LIVING_SITUATION"

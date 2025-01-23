@@ -42,9 +42,11 @@ properties:
         table: "verzekerde_tijdvakken"
         field: "woonperiodes"
         select_on:
-          - name: "BSN"
+          - name: "bsn"
             description: "Burgerservicenummer van de persoon"
             type: "string"
+            value: "$BSN"
+
 
   input:
     - name: "EMPLOYMENT_INSURED_YEARS"

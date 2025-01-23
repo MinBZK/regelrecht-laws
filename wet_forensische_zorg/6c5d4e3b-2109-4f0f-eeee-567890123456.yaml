@@ -34,9 +34,10 @@ properties:
         table: "forensische_zorg"
         field: "zorgtype"
         select_on:
-          - name: "BSN"
+          - name: "bsn"
             description: "Burgerservicenummer van de persoon"
             type: "string"
+            value: "$BSN"
 
     - name: "LEGAL_BASIS"
       description: "Juridische titel voor zorgverlening"
@@ -48,9 +49,10 @@ properties:
         table: "forensische_zorg"
         field: "juridische_titel"
         select_on:
-          - name: "BSN"
+          - name: "bsn"
             description: "Burgerservicenummer van de persoon"
             type: "string"
+            value: "$BSN"
 
   output:
     - name: "is_forensic"

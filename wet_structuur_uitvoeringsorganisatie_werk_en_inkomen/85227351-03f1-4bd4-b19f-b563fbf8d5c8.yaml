@@ -31,9 +31,10 @@ properties:
         table: "dienstverbanden"
         field: "periodes"
         select_on:
-          - name: "BSN"
+          - name: "bsn"
             description: "Burgerservicenummer van de persoon"
             type: "string"
+            value: "$BSN"
 
     - name: "BENEFIT_PERIODS"
       description: "Periodes van uitkeringen die meetellen voor de AOW"
@@ -45,9 +46,10 @@ properties:
         table: "uitkeringen"
         field: "periodes"
         select_on:
-          - name: "BSN"
+          - name: "bsn"
             description: "Burgerservicenummer van de persoon"
             type: "string"
+            value: "$BSN"
 
   output:
     - name: "insured_years"

@@ -37,6 +37,7 @@ properties:
           - name: "jaar"
             description: "Jaar van de statistiek"
             type: "number"
+            value: "$year"
 
   output:
     - name: "life_expectancy_65"

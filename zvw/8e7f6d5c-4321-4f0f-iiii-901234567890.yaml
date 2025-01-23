@@ -16,6 +16,12 @@ references:
     url: "https://wetten.overheid.nl/BWBR0018450/2024-01-01#Hoofdstuk2_Paragraaf2.2_Artikel9"
 
 properties:
+  parameters:
+    - name: "BSN"
+      description: "BSN van de persoon"
+      type: "string"
+      required: true
+
   sources:
     - name: "INSURANCE_POLICY"
       description: "Actieve zorgverzekeringspolis"
@@ -27,9 +33,10 @@ properties:
         table: "verzekeringen"
         field: "polis_status"
         select_on:
-          - name: "BSN"
+          - name: "bsn"
             description: "Burgerservicenummer van de persoon"
             type: "string"
+            value: "$BSN"
 
     - name: "TREATY_REGISTRATION"
       description: "Registratie verdragsverzekering"
@@ -41,9 +48,10 @@ properties:
         table: "verdragsverzekeringen"
         field: "registratie"
         select_on:
-          - name: "BSN"
+          - name: "bsn"
             description: "Burgerservicenummer van de persoon"
             type: "string"
+            value: "$BSN"
 
   input:
     - name: "RESIDENCE_COUNTRY"

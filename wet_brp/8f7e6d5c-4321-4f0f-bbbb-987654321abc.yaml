@@ -40,7 +40,7 @@ properties:
         table: "personen"
         field: "geboortedatum"
         select_on:
-          - name: "BSN"
+          - name: "bsn"
             description: "Burgerservicenummer van de persoon"
             type: "string"
             value: "$BSN"
@@ -55,7 +55,7 @@ properties:
         table: "relaties"
         field: "partnerschap_type"
         select_on:
-          - name: "BSN"
+          - name: "bsn"
             description: "Burgerservicenummer van de persoon"
             type: "string"
             value: "$BSN"
@@ -86,7 +86,7 @@ properties:
         table: "personen"
         field: "verblijfsadres"
         select_on:
-          - name: "BSN"
+          - name: "bsn"
             description: "Burgerservicenummer van de persoon"
             type: "string"
             value: "$BSN"
@@ -101,7 +101,7 @@ properties:
         table: "relaties"
         field: "ouder_adressen"
         select_on:
-          - name: "BSN"
+          - name: "bsn"
             description: "Burgerservicenummer van de persoon"
             type: "string"
             value: "$BSN"
@@ -116,7 +116,7 @@ properties:
         table: "personen"
         field: "land_verblijf"
         select_on:
-          - name: "BSN"
+          - name: "bsn"
             description: "Burgerservicenummer van de persoon"
             type: "string"
             value: "$BSN"

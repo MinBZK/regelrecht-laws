@@ -40,9 +40,10 @@ properties:
         table: "inkomen"
         field: "box1"
         select_on:
-          - name: "BSN"
+          - name: "bsn"
             description: "Burgerservicenummer van de persoon"
             type: "string"
+            value: "$BSN"
 
     - name: "BOX2_INCOME"
       description: "Inkomen uit aanmerkelijk belang"
@@ -57,9 +58,10 @@ properties:
         table: "inkomen"
         field: "box2"
         select_on:
-          - name: "BSN"
+          - name: "bsn"
             description: "Burgerservicenummer van de persoon"
             type: "string"
+            value: "$BSN"
 
     - name: "BOX3_INCOME"
       description: "Inkomen uit sparen en beleggen"
@@ -74,9 +76,10 @@ properties:
         table: "inkomen"
         field: "box3"
         select_on:
-          - name: "BSN"
+          - name: "bsn"
             description: "Burgerservicenummer van de persoon"
             type: "string"
+            value: "$BSN"
 
     - name: "FOREIGN_INCOME"
       description: "Niet in Nederland belastbaar inkomen"
@@ -91,9 +94,10 @@ properties:
         table: "inkomen"
         field: "buitenlands"
         select_on:
-          - name: "BSN"
+          - name: "bsn"
             description: "Burgerservicenummer van de persoon"
             type: "string"
+            value: "$BSN"
 
     - name: "ASSETS"
       description: "Bezittingen"
@@ -108,9 +112,10 @@ properties:
         table: "vermogen"
         field: "bezittingen"
         select_on:
-          - name: "BSN"
+          - name: "bsn"
             description: "Burgerservicenummer van de persoon"
             type: "string"
+            value: "$BSN"
 
     - name: "DEBTS"
       description: "Schulden"
@@ -125,9 +130,10 @@ properties:
         table: "vermogen"
         field: "schulden"
         select_on:
-          - name: "BSN"
+          - name: "bsn"
             description: "Burgerservicenummer van de persoon"
             type: "string"
+            value: "$BSN"
 
   output:
     - name: "box1_income"
