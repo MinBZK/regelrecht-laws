@@ -1,6 +1,6 @@
 uuid: 17bd2695-7805-49a4-8789-a8fe395022cd
 name: Bepalen AOW-leeftijd 2025
-law: algemene_ouderdomswet_leeftijdsbepaling
+law: algemene_ouderdomswet/leeftijdsbepaling
 valid_from: 2024-01-01
 service: "SVB"
 description: >

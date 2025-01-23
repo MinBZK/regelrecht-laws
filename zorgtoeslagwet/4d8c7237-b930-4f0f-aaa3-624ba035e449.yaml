@@ -20,6 +20,12 @@ references:
     url: "https://wetten.overheid.nl/BWBR0018451/2024-01-01#Paragraaf2_Artikel3"
 
 properties:
+  parameters:
+    - name: "BSN"
+      description: "BSN van de persoon"
+      type: "string"
+      required: true
+
   output:
     - name: "is_verzekerde_zorgtoeslag"
       description: "Geeft aan of iemand recht heeft op zorgtoeslag"

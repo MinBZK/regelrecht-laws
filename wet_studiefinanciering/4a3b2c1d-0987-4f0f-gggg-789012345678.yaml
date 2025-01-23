@@ -20,6 +20,12 @@ references:
     url: "https://wetten.overheid.nl/BWBR0011453/2024-01-01#Hoofdstuk3_Paragraaf3.3_Artikel3.14"
 
 properties:
+  parameters:
+    - name: "BSN"
+      description: "BSN van de persoon"
+      type: "string"
+      required: true
+
   sources:
     - name: "EDUCATION_TYPE"
       description: "Type onderwijs (MBO/HBO/WO)"

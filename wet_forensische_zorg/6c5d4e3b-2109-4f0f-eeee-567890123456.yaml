@@ -17,6 +17,12 @@ references:
     url: "https://wetten.overheid.nl/BWBR0040635/2024-01-01#Hoofdstuk2_Artikel2.1"
 
 properties:
+  parameters:
+    - name: "BSN"
+      description: "BSN van de persoon"
+      type: "string"
+      required: true
+
   sources:
     - name: "CARE_TYPE"
       description: "Type zorg die wordt verleend"

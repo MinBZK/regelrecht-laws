@@ -17,6 +17,12 @@ references:
     url: "https://wetten.overheid.nl/BWBR0009709/2024-01-01#HoofdstukI_Artikel3"
 
 properties:
+  parameters:
+    - name: "BSN"
+      description: "BSN van de persoon"
+      type: "string"
+      required: true
+
   sources:
     - name: "DETENTION_STATUS"
       description: "Status van detentie"

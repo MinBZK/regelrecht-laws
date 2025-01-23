@@ -20,6 +20,12 @@ references:
     url: "https://wetten.overheid.nl/BWBR0011353/2024-01-01#Hoofdstuk3_Afdeling3.1_Artikel3.1"
 
 properties:
+  parameters:
+    - name: "BSN"
+      description: "BSN van de persoon"
+      type: "string"
+      required: true
+
   sources:
     - name: "BOX1_INCOME"
       description: "Inkomen uit werk en woning"

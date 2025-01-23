@@ -23,6 +23,12 @@ references:
     url: "https://wetten.overheid.nl/BWBR0033715/2024-01-01#Hoofdstuk2_Paragraaf2.2_Artikel2.7"
 
 properties:
+  parameters:
+    - name: "BSN"
+      description: "BSN van de persoon"
+      type: "string"
+      required: true
+
   sources:
     - name: "BIRTH_DATE"
       description: "Geboortedatum van de persoon"
@@ -37,6 +43,7 @@ properties:
           - name: "BSN"
             description: "Burgerservicenummer van de persoon"
             type: "string"
+            value: "$BSN"
 
     - name: "PARTNER_TYPE"
       description: "Type partnerschap registratie"
@@ -51,6 +58,23 @@ properties:
           - name: "BSN"
             description: "Burgerservicenummer van de persoon"
             type: "string"
+            value: "$BSN"
+
+
+    - name: "PARTNER_BSN"
+      description: "BSN nummer van de partner"
+      type: "string"
+      temporal:
+        type: "period"
+        period_type: "continuous"
+      source_reference:
+        table: "relaties"
+        field: "partner_bsn"
+        select_on:
+          - name: "bsn"
+            description: "Burgerservicenummer van de persoon"
+            type: "string"
+            value: "$BSN"
 
     - name: "RESIDENCE_ADDRESS"
       description: "Woonadres van de persoon"
@@ -65,6 +89,7 @@ properties:
           - name: "BSN"
             description: "Burgerservicenummer van de persoon"
             type: "string"
+            value: "$BSN"
 
     - name: "PARENT_ADDRESSES"
       description: "Woonadressen van de ouders"
@@ -79,6 +104,7 @@ properties:
           - name: "BSN"
             description: "Burgerservicenummer van de persoon"
             type: "string"
+            value: "$BSN"
 
     - name: "COUNTRY_CODE"
       description: "Land van verblijf"
@@ -93,6 +119,7 @@ properties:
           - name: "BSN"
             description: "Burgerservicenummer van de persoon"
             type: "string"
+            value: "$BSN"
 
   output:
     - name: "age"
@@ -109,6 +136,13 @@ properties:
     - name: "has_partner"
       description: "Heeft de persoon een partner volgens RvIG"
       type: "boolean"
+      temporal:
+        type: "point_in_time"
+        reference_date: "calculation_date"
+
+    - name: "partner_bsn"
+      description: "BSN nummber van de partner"
+      type: "string"
       temporal:
         type: "point_in_time"
         reference_date: "calculation_date"
@@ -151,7 +185,9 @@ requirements:
 
 actions:
   - output: "birth_date"
-    value: "$$BIRTH_DATE"
+    value: "$BIRTH_DATE"
+  - output: "partner_bsn"
+    value: "$PARTNER_BSN"
   - output: "age"
     operation: SUBTRACT_DATE
     unit: "years"

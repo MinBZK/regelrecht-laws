@@ -14,6 +14,12 @@ references:
     url: "https://wetten.overheid.nl/BWBR0013060/2024-01-01#Hoofdstuk4_Paragraaf4.2_Artikel33"
 
 properties:
+  parameters:
+    - name: "BSN"
+      description: "BSN van de persoon"
+      type: "string"
+      required: true
+
   sources:
     - name: "EMPLOYMENT_PERIODS"
       description: "Periodes van werk in Nederland en verzekerde buitenlandse arbeid"

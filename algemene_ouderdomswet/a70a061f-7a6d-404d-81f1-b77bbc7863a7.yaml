@@ -21,6 +21,12 @@ references:
     url: "https://wetten.overheid.nl/BWBR0002221/2024-01-01#HoofdstukIII_Artikel13"
 
 properties:
+  parameters:
+    - name: "BSN"
+      description: "BSN van de persoon"
+      type: "string"
+      required: true
+
   sources:
     - name: "RESIDENCE_INSURED_YEARS"
       description: "Aantal verzekerde jaren voor AOW-opbouw op basis van woonperiodes"
@@ -154,7 +160,7 @@ properties:
       service_reference:
         service: "SVB"
         field: "retirement_age"
-        law: "algemene_ouderdomswet_leeftijdsbepaling"
+        law: "algemene_ouderdomswet/leeftijdsbepaling"
         parameters:
           - name: "BIRTH_DATE"
             reference: "$BIRTH_DATE"
@@ -172,7 +178,7 @@ properties:
       service_reference:
         service: "SVB"
         field: "retirement_age"
-        law: "algemene_ouderdomswet_leeftijdsbepaling"
+        law: "algemene_ouderdomswet/leeftijdsbepaling"
         parameters:
           - name: "BIRTH_DATE"
             reference: "$PARTNER_BIRTH_DATE"

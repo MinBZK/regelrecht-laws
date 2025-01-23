@@ -14,6 +14,12 @@ references:
     url: "https://wetten.overheid.nl/BWBR0016060/2024-01-01#Hoofdstuk3_Artikel3"
 
 properties:
+  parameters:
+    - name: "BSN"
+      description: "BSN van de persoon"
+      type: "string"
+      required: true
+
   sources:
     - name: "LIFE_EXPECTANCY_DATA"
       description: "Levensverwachting op 65-jarige leeftijd"
