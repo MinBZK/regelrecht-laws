@@ -50,6 +50,12 @@ properties:
             description: "Burgerservicenummer van de persoon"
             type: "string"
             value: "$BSN"
+          - name: "type"
+            description: "Uitkerkingen die meetellen"
+            type: "string"
+            value:
+              operation: IN
+              values: "$VALID_BENEFIT_TYPES"
 
   output:
     - name: "insured_years"
