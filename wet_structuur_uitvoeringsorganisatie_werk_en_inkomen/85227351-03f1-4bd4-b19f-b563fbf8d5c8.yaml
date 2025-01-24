@@ -29,7 +29,7 @@ properties:
         period_type: "continuous"
       source_reference:
         table: "dienstverbanden"
-        field: "periodes"
+        fields: ["start_date", "end_date"]
         select_on:
           - name: "bsn"
             description: "Burgerservicenummer van de persoon"
@@ -44,7 +44,7 @@ properties:
         period_type: "continuous"
       source_reference:
         table: "uitkeringen"
-        field: "periodes"
+        fields: ["start_date", "end_date"]
         select_on:
           - name: "bsn"
             description: "Burgerservicenummer van de persoon"
@@ -78,8 +78,24 @@ actions:
     values:
       - operation: ADD
         values:
-          - operation: SUM_DURATION_DAYS
+          # Add up employment periodss
+          - operation: FOREACH
+            combine: ADD
             subject: "$EMPLOYMENT_PERIODS"
-          - operation: SUM_DURATION_DAYS
+            value:
+              - operation: SUBTRACT_DATE
+                unit: "days"
+                values:
+                  - "$end_date"
+                  - "$start_date"
+          # Add up benefit periods
+          - operation: FOREACH
+            combine: ADD
             subject: "$BENEFIT_PERIODS"
-      - "DAYS_PER_YEAR"
+            value:
+              - operation: SUBTRACT_DATE
+                unit: "days"
+                values:
+                  - "$end_date"
+                  - "$start_date"
+      - "$DAYS_PER_YEAR"

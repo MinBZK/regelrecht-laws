@@ -249,7 +249,10 @@ requirements:
         value: "$RETIREMENT_AGE"
       - operation: GREATER_THAN
         values:
-          - "$INSURED_YEARS"
+          - operation: ADD
+            values:
+              - "$RESIDENCE_INSURED_YEARS"
+              - "$EMPLOYMENT_INSURED_YEARS"
           - 0
 
 actions:
