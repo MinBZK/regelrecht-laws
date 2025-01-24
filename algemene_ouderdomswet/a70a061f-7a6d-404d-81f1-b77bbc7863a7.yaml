@@ -274,7 +274,10 @@ actions:
     values:
       - operation: MIN
         values:
-          - "$INSURED_YEARS"
+          - operation: ADD
+            values:
+              - "$RESIDENCE_INSURED_YEARS"
+              - "$EMPLOYMENT_INSURED_YEARS"
           - "$YEARS_FOR_FULL_PENSION"
       - "$YEARS_FOR_FULL_PENSION"
 
