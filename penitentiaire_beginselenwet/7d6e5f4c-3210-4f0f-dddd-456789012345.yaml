@@ -34,9 +34,10 @@ properties:
         table: "detenties"
         field: "status"
         select_on:
-          - name: "BSN"
+          - name: "bsn"
             description: "Burgerservicenummer van de persoon"
             type: "string"
+            value: "$BSN"
 
     - name: "FACILITY_TYPE"
       description: "Type inrichting"
@@ -48,9 +49,10 @@ properties:
         table: "detenties"
         field: "inrichting_type"
         select_on:
-          - name: "BSN"
+          - name: "bsn"
             description: "Burgerservicenummer van de persoon"
             type: "string"
+            value: "$BSN"
 
   output:
     - name: "is_incarcerated"
