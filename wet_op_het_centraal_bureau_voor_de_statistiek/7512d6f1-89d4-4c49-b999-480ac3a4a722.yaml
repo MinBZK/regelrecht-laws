@@ -29,7 +29,7 @@ properties:
         precision: 2
       temporal:
         type: "point_in_time"
-        reference_date: "calculation_date"
+        reference_date: "$calculation_date"
       source_reference:
         table: "levensverwachting"
         field: "verwachting_65"
@@ -49,7 +49,7 @@ properties:
         min: 0
       temporal:
         type: "point_in_time"
-        reference_date: "calculation_date"
+        reference_date: "$calculation_date"
 
 actions:
   - output: "life_expectancy_65"

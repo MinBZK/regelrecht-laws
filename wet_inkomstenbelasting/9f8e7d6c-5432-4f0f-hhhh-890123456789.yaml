@@ -107,7 +107,7 @@ properties:
         precision: 0
       temporal:
         type: "point_in_time"
-        reference_date: "january_first"
+        reference_date: "$january_first"
       source_reference:
         table: "vermogen"
         field: "bezittingen"
@@ -125,7 +125,7 @@ properties:
         precision: 0
       temporal:
         type: "point_in_time"
-        reference_date: "january_first"
+        reference_date: "$january_first"
       source_reference:
         table: "vermogen"
         field: "schulden"
@@ -244,7 +244,7 @@ properties:
         precision: 0
       temporal:
         type: "point_in_time"
-        reference_date: "january_first"
+        reference_date: "$january_first"
 
     - name: "combined_net_worth"
       description: "Gezamenlijk vermogen met partner"
@@ -254,7 +254,7 @@ properties:
         precision: 0
       temporal:
         type: "point_in_time"
-        reference_date: "january_first"
+        reference_date: "$january_first"
 
   input:
     - name: "HAS_PARTNER"
@@ -266,7 +266,7 @@ properties:
         law: "wet_brp"
       temporal:
         type: "point_in_time"
-        reference_date: "calculation_date"
+        reference_date: "$calculation_date"
 
   definitions:
     DREMPEL_BOX3: 5000000  # Heffingsvrij vermogen box 3

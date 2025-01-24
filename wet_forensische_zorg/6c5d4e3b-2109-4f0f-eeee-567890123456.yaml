@@ -60,7 +60,7 @@ properties:
       type: "boolean"
       temporal:
         type: "point_in_time"
-        reference_date: "calculation_date"
+        reference_date: "$calculation_date"
 
   definitions:
     FORENSIC_CARE_TYPES:

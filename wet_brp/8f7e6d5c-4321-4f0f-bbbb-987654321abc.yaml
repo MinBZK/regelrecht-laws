@@ -35,7 +35,7 @@ properties:
       type: "date"
       temporal:
         type: "point_in_time"
-        reference_date: "birth"
+        reference_date: "$calculation_date"
       source_reference:
         table: "personen"
         field: "geboortedatum"
@@ -44,6 +44,21 @@ properties:
             description: "Burgerservicenummer van de persoon"
             type: "string"
             value: "$BSN"
+
+    - name: "PARTNER_BIRTH_DATE"
+      description: "Geboortedatum van de persoon"
+      type: "date"
+      temporal:
+        type: "point_in_time"
+        reference_date: "$calculation_date"
+      source_reference:
+        table: "personen"
+        field: "geboortedatum"
+        select_on:
+          - name: "bsn"
+            description: "Burgerservicenummer van de persoon"
+            type: "string"
+            value: "$PARTNER_BSN"
 
     - name: "PARTNER_TYPE"
       description: "Type partnerschap registratie"
@@ -131,21 +146,21 @@ properties:
         min: 0
       temporal:
         type: "point_in_time"
-        reference_date: "calculation_date"
+        reference_date: "$calculation_date"
 
     - name: "has_partner"
       description: "Heeft de persoon een partner volgens RvIG"
       type: "boolean"
       temporal:
         type: "point_in_time"
-        reference_date: "calculation_date"
+        reference_date: "$calculation_date"
 
     - name: "partner_bsn"
       description: "BSN nummber van de partner"
       type: "string"
       temporal:
         type: "point_in_time"
-        reference_date: "calculation_date"
+        reference_date: "$calculation_date"
 
     - name: "living_situation"
       description: "Woonsituatie van de persoon (UIT/THUIS)"
@@ -166,7 +181,14 @@ properties:
       type: "date"
       temporal:
         type: "point_in_time"
-        reference_date: "birth"
+        reference_date: "$calculation_date"
+
+    - name: "partner_birth_date"
+      description: "Geboortedatum van de persoon"
+      type: "date"
+      temporal:
+        type: "point_in_time"
+        reference_date: "$calculation_date"
 
   definitions:
     HOME_COUNTRIES:
@@ -186,6 +208,8 @@ requirements:
 actions:
   - output: "birth_date"
     value: "$BIRTH_DATE"
+  - output: "partner_birth_date"
+    value: "$PARTNER_BIRTH_DATE"
   - output: "partner_bsn"
     value: "$PARTNER_BSN"
   - output: "age"

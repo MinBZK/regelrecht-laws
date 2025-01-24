@@ -59,7 +59,7 @@ properties:
         min: 0
       temporal:
         type: "point_in_time"
-        reference_date: "january_first"
+        reference_date: "$january_first"
 
     - name: "HAS_PARTNER"
       description: "Partnerschap status"
@@ -70,7 +70,7 @@ properties:
         law: "wet_brp"
       temporal:
         type: "point_in_time"
-        reference_date: "january_first"
+        reference_date: "$january_first"
 
     - name: "HAS_INSURANCE"
       description: "Verzekeringsstatus"
@@ -103,7 +103,7 @@ properties:
         law: "penitentiaire_beginselenwet"
       temporal:
         type: "point_in_time"
-        reference_date: "january_first"
+        reference_date: "$january_first"
 
     - name: "IS_FORENSIC"
       description: "Forensische status"
@@ -114,7 +114,7 @@ properties:
         law: "wet_forensische_zorg"
       temporal:
         type: "point_in_time"
-        reference_date: "january_first"
+        reference_date: "$january_first"
 
     - name: "INCOME"
       description: "Toetsingsinkomen"
@@ -160,7 +160,7 @@ properties:
         min: 0
       temporal:
         type: "point_in_time"
-        reference_date: "january_first"
+        reference_date: "$january_first"
 
     - name: "COMBINED_NET_WORTH"
       description: "Gezamenlijk vermogen"
@@ -175,7 +175,7 @@ properties:
         min: 0
       temporal:
         type: "point_in_time"
-        reference_date: "january_first"
+        reference_date: "$january_first"
 
     - name: "PARTNER_INCOME"
       description: "Partnerinkomen"

@@ -40,7 +40,7 @@ properties:
         field: "life_expectancy_65"
       temporal:
         type: "point_in_time"
-        reference_date: "calculation_date"
+        reference_date: "$calculation_date"
 
   output:
     - name: "retirement_age"
@@ -52,7 +52,7 @@ properties:
         min: 65
       temporal:
         type: "point_in_time"
-        reference_date: "calculation_date"
+        reference_date: "$calculation_date"
 
   definitions:
     BASE_RETIREMENT_AGE: 65
