@@ -1,7 +1,7 @@
 uuid: 7d6e5f4c-3210-4f0f-dddd-456789012345
-name: Bepalen detentiestatus 2024
+name: Bepalen detentiestatus
 law: penitentiaire_beginselenwet
-valid_from: 2024-01-01
+valid_from: 2022-01-01
 service: "DJI"
 description: >
   Regels voor het bepalen van detentiestatus volgens de Penitentiaire beginselenwet,
@@ -60,7 +60,7 @@ properties:
       type: "boolean"
       temporal:
         type: "point_in_time"
-        reference_date: "$calculation_date"
+        reference: "$calculation_date"
 
 actions:
   - output: "is_incarcerated"

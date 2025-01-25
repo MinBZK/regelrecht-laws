@@ -1,7 +1,7 @@
 uuid: 5b4c3d2a-1098-4f0f-ffff-678901234567
-name: Bepalen toetsingsinkomen 2024
+name: Bepalen toetsingsinkomen
 law: wet_inkomstenbelasting
-valid_from: 2024-01-01
+valid_from: 2020-01-01
 service: "UWV"
 description: >
   Regels voor het bepalen van het toetsingsinkomen volgens de Wet inkomstenbelasting 2001,

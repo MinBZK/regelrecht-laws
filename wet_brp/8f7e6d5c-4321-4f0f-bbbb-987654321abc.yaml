@@ -1,7 +1,7 @@
 uuid: 8f7e6d5c-4321-4f0f-bbbb-987654321abc
-name: Bepalen persoonsgegevens BRP 2024
+name: Bepalen persoonsgegevens BRP
 law: wet_brp
-valid_from: 2024-01-01
+valid_from: 2020-01-01
 service: "RvIG"
 description: >
   Regels voor het bepalen van persoonsgegevens volgens de Wet Basisregistratie
@@ -35,7 +35,7 @@ properties:
       type: "date"
       temporal:
         type: "point_in_time"
-        reference_date: "$calculation_date"
+        reference: "$calculation_date"
       source_reference:
         table: "personen"
         field: "geboortedatum"
@@ -50,7 +50,7 @@ properties:
       type: "date"
       temporal:
         type: "point_in_time"
-        reference_date: "$calculation_date"
+        reference: "$calculation_date"
       source_reference:
         table: "personen"
         field: "geboortedatum"
@@ -146,21 +146,21 @@ properties:
         min: 0
       temporal:
         type: "point_in_time"
-        reference_date: "$calculation_date"
+        reference: "$calculation_date"
 
     - name: "has_partner"
       description: "Heeft de persoon een partner volgens RvIG"
       type: "boolean"
       temporal:
         type: "point_in_time"
-        reference_date: "$calculation_date"
+        reference: "$calculation_date"
 
     - name: "partner_bsn"
       description: "BSN nummber van de partner"
       type: "string"
       temporal:
         type: "point_in_time"
-        reference_date: "$calculation_date"
+        reference: "$calculation_date"
 
     - name: "living_situation"
       description: "Woonsituatie van de persoon (UIT/THUIS)"
@@ -181,14 +181,14 @@ properties:
       type: "date"
       temporal:
         type: "point_in_time"
-        reference_date: "$calculation_date"
+        reference: "$calculation_date"
 
     - name: "partner_birth_date"
       description: "Geboortedatum van de persoon"
       type: "date"
       temporal:
         type: "point_in_time"
-        reference_date: "$calculation_date"
+        reference: "$calculation_date"
 
   definitions:
     HOME_COUNTRIES:
