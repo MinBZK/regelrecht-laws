@@ -73,7 +73,7 @@ properties:
         law: "wet_brp"
       temporal:
         type: "point_in_time"
-        reference_date: "$calculation_date"
+        reference: "$calculation_date"
 
     - name: "PARTNER_BIRTH_DATE"
       description: "Geboortedatum van de partner"
@@ -84,7 +84,7 @@ properties:
         law: "wet_brp"
       temporal:
         type: "point_in_time"
-        reference_date: "$calculation_date"
+        reference: "$calculation_date"
 
     - name: "AGE"
       description: "Leeftijd van de aanvrager"
@@ -99,7 +99,7 @@ properties:
         min: 0
       temporal:
         type: "point_in_time"
-        reference_date: "$calculation_date"
+        reference: "$calculation_date"
 
     - name: "HAS_PARTNER"
       description: "Heeft de persoon een partner volgens RvIG"
@@ -110,7 +110,7 @@ properties:
         law: "wet_brp"
       temporal:
         type: "point_in_time"
-        reference_date: "$calculation_date"
+        reference: "$calculation_date"
 
     - name: "PARTNER_AGE"
       description: "Leeftijd van de partner"
@@ -125,7 +125,7 @@ properties:
         min: 0
       temporal:
         type: "point_in_time"
-        reference_date: "$calculation_date"
+        reference: "$calculation_date"
 
     - name: "INCOME"
       description: "Toetsingsinkomen"
@@ -173,7 +173,7 @@ properties:
         min: 65
       temporal:
         type: "point_in_time"
-        reference_date: "$calculation_date"
+        reference: "$calculation_date"
 
     - name: "PARTNER_RETIREMENT_AGE"
       description: "AOW-leeftijd voor de partner"
@@ -191,7 +191,7 @@ properties:
         min: 65
       temporal:
         type: "point_in_time"
-        reference_date: "$calculation_date"
+        reference: "$calculation_date"
 
   output:
     - name: "is_eligible"
@@ -199,7 +199,7 @@ properties:
       type: "boolean"
       temporal:
         type: "point_in_time"
-        reference_date: "$calculation_date"
+        reference: "$calculation_date"
 
     - name: "base_amount"
       description: "Basis AOW-bedrag voor opbouw"
@@ -221,7 +221,7 @@ properties:
         max: 1
       temporal:
         type: "point_in_time"
-        reference_date: "$calculation_date"
+        reference: "$calculation_date"
 
     - name: "pension_amount"
       description: "Uiteindelijke AOW-uitkering"

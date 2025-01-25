@@ -1,7 +1,7 @@
 uuid: 6c5d4e3b-2109-4f0f-eeee-567890123456
-name: Bepalen forensische zorg status 2024
+name: Bepalen forensische zorg status
 law: wet_forensische_zorg
-valid_from: 2024-01-01
+valid_from: 2022-01-01
 service: "DJI"
 description: >
   Regels voor het bepalen van forensische zorg status volgens de Wet forensische zorg (Wfz).
@@ -60,7 +60,7 @@ properties:
       type: "boolean"
       temporal:
         type: "point_in_time"
-        reference_date: "$calculation_date"
+        reference: "$calculation_date"
 
   definitions:
     FORENSIC_CARE_TYPES:
