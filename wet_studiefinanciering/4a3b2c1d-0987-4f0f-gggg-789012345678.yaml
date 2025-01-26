@@ -56,7 +56,35 @@ properties:
             description: "Burgerservicenummer van de persoon"
             type: "string"
             value: "$BSN"
+    - name: "PARTNER_EDUCATION_TYPE"
+      description: "Type onderwijs (MBO/HBO/WO) van partner"
+      type: "string"
+      temporal:
+        type: "period"
+        period_type: "month"
+      source_reference:
+        table: "inschrijvingen"
+        field: "onderwijstype"
+        select_on:
+          - name: "bsn"
+            description: "Burgerservicenummer van partner"
+            type: "string"
+            value: "$PARTNER_BSN"
 
+    - name: "PARTNER_SIBLINGS_STUDYING"
+      description: "Aantal studerende broers/zussen van partner"
+      type: "number"
+      temporal:
+        type: "period"
+        period_type: "year"
+      source_reference:
+        table: "studiefinanciering"
+        field: "aantal_studerend_gezin"
+        select_on:
+          - name: "bsn"
+            description: "Burgerservicenummer van partner"
+            type: "string"
+            value: "$PARTNER_BSN"
   input:
     - name: "LIVING_SITUATION"
       description: "Woonsituatie (uit/thuis) op basis van RvIG adres"
@@ -65,6 +93,9 @@ properties:
         service: "RvIG"
         field: "living_situation"
         law: "wet_brp"
+        parameters:
+          - name: "BSN"
+            reference: "$BSN"
       temporal:
         type: "period"
         period_type: "month"
@@ -80,6 +111,9 @@ properties:
         service: "BELASTINGDIENST"
         field: "income"
         law: "wet_inkomstenbelasting"
+        parameters:
+          - name: "BSN"
+            reference: "$BSN"
       temporal:
         type: "period"
         period_type: "year"
@@ -95,6 +129,70 @@ properties:
         service: "BELASTINGDIENST"
         field: "income"
         law: "wet_inkomstenbelasting"
+        parameters:
+          - name: "BSN"
+            reference: "$BSN"
+      temporal:
+        type: "period"
+        period_type: "year"
+
+    - name: "PARTNER_BSN"
+      description: "Heeft de persoon een fiscaal partner"
+      type: "string"
+      service_reference:
+        service: "RvIG"
+        field: "partner_bsn"
+        law: "wet_brp"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+
+    - name: "PARTNER_LIVING_SITUATION"
+      description: "Woonsituatie (uit/thuis) op basis van RvIG adres"
+      type: "string"
+      service_reference:
+        service: "RvIG"
+        field: "living_situation"
+        law: "wet_brp"
+        parameters:
+          - name: "BSN"
+            reference: "$PARTNER_BSN"
+      temporal:
+        type: "period"
+        period_type: "month"
+
+    - name: "PARTNER_PARENT1_INCOME"
+      description: "Inkomen eerste ouder"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+        min: 0
+      service_reference:
+        service: "BELASTINGDIENST"
+        field: "income"
+        law: "wet_inkomstenbelasting"
+        parameters:
+          - name: "BSN"
+            reference: "$PARTNER_BSN"
+      temporal:
+        type: "period"
+        period_type: "year"
+
+    - name: "PARTNER_PARENT2_INCOME"
+      description: "Inkomen tweede ouder"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+        min: 0
+      service_reference:
+        service: "BELASTINGDIENST"
+        field: "income"
+        law: "wet_inkomstenbelasting"
+        parameters:
+          - name: "BSN"
+            reference: "$PARTNER_BSN"
       temporal:
         type: "period"
         period_type: "year"
@@ -240,40 +338,40 @@ actions:
       - operation: IF
         conditions:
           - test:
-              subject: "$PARTNER.EDUCATION_TYPE"
+              subject: "$PARTNER_EDUCATION_TYPE"
               operation: EQUALS
               value: "WO"
             then:
               operation: IF
               conditions:
                 - test:
-                    subject: "$PARTNER.LIVING_SITUATION"
+                    subject: "$PARTNER_LIVING_SITUATION"
                     operation: EQUALS
                     value: "UIT"
                   then: "$BASISBEURS_WO_UIT"
                 - else: "$BASISBEURS_WO_THUIS"
           - test:
-              subject: "$PARTNER.EDUCATION_TYPE"
+              subject: "$PARTNER_EDUCATION_TYPE"
               operation: EQUALS
               value: "HBO"
             then:
               operation: IF
               conditions:
                 - test:
-                    subject: "$PARTNER.LIVING_SITUATION"
+                    subject: "$PARTNER_LIVING_SITUATION"
                     operation: EQUALS
                     value: "UIT"
                   then: "$BASISBEURS_HBO_UIT"
                 - else: "$BASISBEURS_HBO_THUIS"
           - test:
-              subject: "$PARTNER.EDUCATION_TYPE"
+              subject: "$PARTNER_EDUCATION_TYPE"
               operation: EQUALS
               value: "MBO"
             then:
               operation: IF
               conditions:
                 - test:
-                    subject: "$PARTNER.LIVING_SITUATION"
+                    subject: "$PARTNER_LIVING_SITUATION"
                     operation: EQUALS
                     value: "UIT"
                   then: "$BASISBEURS_MBO_UIT"
@@ -285,8 +383,8 @@ actions:
               values:
                 - operation: ADD
                   values:
-                    - "$PARTNER.PARENT1_INCOME"
-                    - "$PARTNER.PARENT2_INCOME"
+                    - "$PARTNER_PARENT1_INCOME"
+                    - "$PARTNER_PARENT2_INCOME"
                 - "$INKOMEN_GRENS_GEEN_BEURS"
             then:
               operation: MULTIPLY
@@ -294,17 +392,17 @@ actions:
                 - operation: IF
                   conditions:
                     - test:
-                        subject: "$PARTNER.EDUCATION_TYPE"
+                        subject: "$PARTNER_EDUCATION_TYPE"
                         operation: EQUALS
                         value: "WO"
                       then: "$MAX_AANVULLENDE_BEURS_WO"
                     - test:
-                        subject: "$PARTNER.EDUCATION_TYPE"
+                        subject: "$PARTNER_EDUCATION_TYPE"
                         operation: EQUALS
                         value: "HBO"
                       then: "$MAX_AANVULLENDE_BEURS_HBO"
                     - test:
-                        subject: "$PARTNER.EDUCATION_TYPE"
+                        subject: "$PARTNER_EDUCATION_TYPE"
                         operation: EQUALS
                         value: "MBO"
                       then: "$MAX_AANVULLENDE_BEURS_MBO"
@@ -317,12 +415,12 @@ actions:
                           values:
                             - operation: ADD
                               values:
-                                - "$PARTNER.PARENT1_INCOME"
-                                - "$PARTNER.PARENT2_INCOME"
+                                - "$PARTNER_PARENT1_INCOME"
+                                - "$PARTNER_PARENT2_INCOME"
                             - "$INKOMENSDREMPEL_BASIS"
                             - operation: MULTIPLY
                               values:
-                                - "$PARTNER.SIBLINGS_STUDYING"
+                                - "$PARTNER_SIBLINGS_STUDYING"
                                 - "$VERHOGING_DREMPEL_PER_KIND"
                         - operation: SUBTRACT
                           values:

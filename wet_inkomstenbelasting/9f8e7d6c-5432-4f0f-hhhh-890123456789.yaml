@@ -135,6 +135,115 @@ properties:
             type: "string"
             value: "$BSN"
 
+    - name: "PARTNER_BOX1_INCOME"
+      description: "Inkomen uit werk en woning van partner"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+      temporal:
+        type: "period"
+        period_type: "year"
+      source_reference:
+        table: "inkomen"
+        field: "box1"
+        select_on:
+          - name: "bsn"
+            description: "Burgerservicenummer van partner"
+            type: "string"
+            value: "$PARTNER_BSN"
+
+    - name: "PARTNER_BOX2_INCOME"
+      description: "Inkomen uit aanmerkelijk belang van partner"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+      temporal:
+        type: "period"
+        period_type: "year"
+      source_reference:
+        table: "inkomen"
+        field: "box2"
+        select_on:
+          - name: "bsn"
+            description: "Burgerservicenummer van partner"
+            type: "string"
+            value: "$PARTNER_BSN"
+
+    - name: "PARTNER_BOX3_INCOME"
+      description: "Inkomen uit sparen en beleggen van partner"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+      temporal:
+        type: "period"
+        period_type: "year"
+      source_reference:
+        table: "inkomen"
+        field: "box3"
+        select_on:
+          - name: "bsn"
+            description: "Burgerservicenummer van partner"
+            type: "string"
+            value: "$PARTNER_BSN"
+
+    - name: "PARTNER_FOREIGN_INCOME"
+      description: "Niet in Nederland belastbaar inkomen van partner"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+      temporal:
+        type: "period"
+        period_type: "year"
+      source_reference:
+        table: "inkomen"
+        field: "buitenlands"
+        select_on:
+          - name: "bsn"
+            description: "Burgerservicenummer van paertner"
+            type: "string"
+            value: "$PARTNER_BSN"
+
+    - name: "PARTNER_ASSETS"
+      description: "Bezittingen van partner"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+      temporal:
+        type: "point_in_time"
+        reference: "$prev_january_first"
+      source_reference:
+        table: "vermogen"
+        field: "bezittingen"
+        select_on:
+          - name: "bsn"
+            description: "Burgerservicenummer van partner"
+            type: "string"
+            value: "$PARTNER_BSN"
+
+    - name: "PARTNER_DEBTS"
+      description: "Schulden van partner"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+      temporal:
+        type: "point_in_time"
+        reference: "$prev_january_first"
+      source_reference:
+        table: "vermogen"
+        field: "schulden"
+        select_on:
+          - name: "bsn"
+            description: "Burgerservicenummer van partner"
+            type: "string"
+            value: "$PARTNER_BSN"
+
+
   output:
     - name: "box1_income"
       description: "Inkomen uit werk en woning"
@@ -268,6 +377,17 @@ properties:
         type: "point_in_time"
         reference: "$calculation_date"
 
+    - name: "PARTNER_BSN"
+      description: "Heeft de persoon een fiscaal partner"
+      type: "string"
+      service_reference:
+        service: "RvIG"
+        field: "partner_bsn"
+        law: "wet_brp"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+
   definitions:
     DREMPEL_BOX3: 5000000  # Heffingsvrij vermogen box 3
 
@@ -293,24 +413,24 @@ actions:
       - "$FOREIGN_INCOME"
 
   - output: "partner_box1_income"
-    value: "$PARTNER.BOX1_INCOME"
+    value: "$PARTNER_BOX1_INCOME"
 
   - output: "partner_box2_income"
-    value: "$PARTNER.BOX2_INCOME"
+    value: "$PARTNER_BOX2_INCOME"
 
   - output: "partner_box3_income"
-    value: "$PARTNER.BOX3_INCOME"
+    value: "$PARTNER_BOX3_INCOME"
 
   - output: "partner_foreign_income"
-    value: "$PARTNER.FOREIGN_INCOME"
+    value: "$PARTNER_FOREIGN_INCOME"
 
   - output: "partner_income"
     operation: ADD
     values:
-      - "$PARTNER.BOX1_INCOME"
-      - "$PARTNER.BOX2_INCOME"
-      - "$PARTNER.BOX3_INCOME"
-      - "$PARTNER.FOREIGN_INCOME"
+      - "$PARTNER_BOX1_INCOME"
+      - "$PARTNER_BOX2_INCOME"
+      - "$PARTNER_BOX3_INCOME"
+      - "$PARTNER_FOREIGN_INCOME"
 
   - output: "net_worth"
     operation: SUBTRACT
@@ -334,8 +454,8 @@ actions:
                 - "$DEBTS"
             - operation: SUBTRACT
               values:
-                - "$PARTNER.ASSETS"
-                - "$PARTNER.DEBTS"
+                - "$PARTNER_ASSETS"
+                - "$PARTNER_DEBTS"
         else:
           operation: SUBTRACT
           values:
