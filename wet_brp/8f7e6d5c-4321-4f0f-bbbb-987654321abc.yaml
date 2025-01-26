@@ -75,7 +75,6 @@ properties:
             type: "string"
             value: "$BSN"
 
-
     - name: "PARTNER_BSN"
       description: "BSN nummer van de partner"
       type: "string"
