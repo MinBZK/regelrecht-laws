@@ -46,7 +46,7 @@ properties:
             value: "$BSN"
 
     - name: "PARTNER_BIRTH_DATE"
-      description: "Geboortedatum van de persoon"
+      description: "Geboortedatum van de partner"
       type: "date"
       temporal:
         type: "point_in_time"
@@ -56,7 +56,7 @@ properties:
         field: "geboortedatum"
         select_on:
           - name: "bsn"
-            description: "Burgerservicenummer van de persoon"
+            description: "Burgerservicenummer van de partner"
             type: "string"
             value: "$PARTNER_BSN"
 
