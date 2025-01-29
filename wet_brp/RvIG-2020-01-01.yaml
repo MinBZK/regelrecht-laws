@@ -120,7 +120,7 @@ properties:
             type: "string"
             value: "$BSN"
 
-    - name: "COUNTRY_CODE"
+    - name: "COUNTRY_OF_RESIDENCE"
       description: "Land van verblijf"
       type: "string"
       temporal:
@@ -129,6 +129,21 @@ properties:
       source_reference:
         table: "personen"
         field: "land_verblijf"
+        select_on:
+          - name: "bsn"
+            description: "Burgerservicenummer van de persoon"
+            type: "string"
+            value: "$BSN"
+
+    - name: "NATIONALITY"
+      description: "Nationaliteit"
+      type: "string"
+      temporal:
+        type: "period"
+        period_type: "continuous"
+      source_reference:
+        table: "personen"
+        field: "nationaliteit"
         select_on:
           - name: "bsn"
             description: "Burgerservicenummer van de persoon"
@@ -173,7 +188,14 @@ properties:
       type: "string"
       temporal:
         type: "period"
-        period_type: "continuous"
+        reference: "$calculation_date"
+
+    - name: "has_dutch_nationality"
+      description: "Heeft Nederlandse nationaliteit"
+      type: "boolean"
+      temporal:
+        type: "period"
+        reference: "$calculation_date"
 
     - name: "birth_date"
       description: "Geboortedatum van de persoon"
@@ -190,8 +212,8 @@ properties:
         reference: "$calculation_date"
 
   definitions:
-    HOME_COUNTRIES:
-      - "NLD"
+    DUTCH_NATIONALITIES:
+      - "NEDERLANDS"
     ADDRESS_MATCH_DISTANCE_M: 100
     VALID_PARTNER_TYPES:
       - "HUWELIJK"
@@ -237,5 +259,10 @@ actions:
     reference: "Wet BRP Art. 2.4"
 
   - output: "country_of_residence"
-    value: "$COUNTRY_CODE"
+    value: "$COUNTRY_OF_RESIDENCE"
     reference: "Wet BRP Art. 2.7"
+
+  - output: "has_dutch_nationality"
+    subject: "$NATIONALITY"
+    operation: IN
+    values: "$DUTCH_NATIONALITIES"
