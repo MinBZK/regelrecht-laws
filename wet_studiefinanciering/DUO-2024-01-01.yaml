@@ -220,6 +220,21 @@ properties:
         type: "period"
         period_type: "year"
 
+    - name: "is_student"
+      description: "Is ingeschreven als student"
+      type: "boolean"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+
+    - name: "receives_study_grant"
+      description: "Ontvangt studiefinanciering"
+      type: "boolean"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+
+
   definitions:
     BASISBEURS_WO_UIT: 28800
     BASISBEURS_WO_THUIS: 10300
@@ -427,3 +442,13 @@ actions:
                             - "$INKOMEN_GRENS_GEEN_BEURS"
                             - "$INKOMENSDREMPEL_BASIS"
             else: 0
+
+  - output: "is_student"
+    operation: NOT_NULL
+    subject: "$EDUCATION_TYPE"
+
+  - output: "receives_study_grant"
+    operation: GREATER_THAN
+    values:
+      - "$study_grant"
+      - 0

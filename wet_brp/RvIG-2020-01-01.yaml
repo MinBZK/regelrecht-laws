@@ -150,6 +150,40 @@ properties:
             type: "string"
             value: "$BSN"
 
+    - name: "ADDRESS"
+      description: "Adresgegevens"
+      type: "object"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      source_reference:
+        table: "verblijfplaats"
+        fields: [ "straat", "huisnummer", "postcode", "woonplaats", "type" ]
+        select_on:
+          - name: "bsn"
+            description: "Burgerservicenummer van de persoon"
+            type: "string"
+            value: "$BSN"
+
+    - name: "HOUSEHOLD"
+      description: "Huishoudgegevens"
+      type: "array"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      source_reference:
+        table: "bewoners"
+        field: "medebewoners"
+        select_on:
+          - name: "postcode"
+            value: "$ADDRESS.postcode"
+            description: "Postcode van het adres van de persoon"
+            type: "string"
+          - name: "huisnummer"
+            value: "$ADDRESS.huisnummer"
+            description: "Huisnummer van het adres van de persoon"
+            type: "string"
+
   output:
     - name: "age"
       description: "Leeftijd van de persoon in jaren"
@@ -210,6 +244,36 @@ properties:
       temporal:
         type: "point_in_time"
         reference: "$calculation_date"
+    - name: "has_fixed_address"
+      description: "Heeft vast woonadres"
+      type: "boolean"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+
+    - name: "residence_address"
+      description: "Volledig adres"
+      type: "string"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+
+    - name: "postal_address"
+      description: "Volledig post adres"
+      type: "string"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+
+    - name: "household_size"
+      description: "Aantal personen in huishouden"
+      type: "number"
+      type_spec:
+        precision: 0
+        min: 1
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
 
   definitions:
     DUTCH_NATIONALITIES:
@@ -218,6 +282,11 @@ properties:
     VALID_PARTNER_TYPES:
       - "HUWELIJK"
       - "GEREGISTREERD_PARTNERSCHAP"
+    FIXED_ADDRESS_TYPES:
+      - "WOONADRES"
+      - "BRIEFADRES"
+    POSTAL_ADDRESS_TYPES:
+      - "BRIEFADRES"
 
 requirements:
   - all:
@@ -266,3 +335,60 @@ actions:
     subject: "$NATIONALITY"
     operation: IN
     values: "$DUTCH_NATIONALITIES"
+
+  - output: "has_fixed_address"
+    operation: IN
+    subject: "$ADDRESS.type"
+    values: "$FIXED_ADDRESS_TYPES"
+
+  - output: "residence_address"
+    operation: IF
+    conditions:
+      - test:
+          subject: "$ADDRESS"
+          operation: NOT_NULL
+        then:
+          operation: ADD
+          values:
+            - "$ADDRESS.straat"
+            - " "
+            - "$ADDRESS.huisnummer"
+            - ", "
+            - "$ADDRESS.postcode"
+            - " "
+            - "$ADDRESS.woonplaats"
+      - else: null
+
+  - output: "household_size"
+    operation: IF
+    conditions:
+      - test:
+          subject: "$HOUSEHOLD"
+          operation: NOT_NULL
+        then:
+          operation: ADD
+          values:
+            - 1  # De persoon zelf
+            - operation: FOREACH
+              subject: "$HOUSEHOLD"
+              combine: "ADD"
+              value: 1
+      - else: 1
+
+  - output: "postal_address"
+    operation: IF
+    conditions:
+      - test:
+          subject: "$ADDRESS.type"
+          values: "$POSTAL_ADDRESS_TYPES"
+        then:
+          operation: ADD
+          values:
+            - "$ADDRESS.straat"
+            - " "
+            - "$ADDRESS.huisnummer"
+            - ", "
+            - "$ADDRESS.postcode"
+            - " "
+            - "$ADDRESS.woonplaats"
+      - else: null
