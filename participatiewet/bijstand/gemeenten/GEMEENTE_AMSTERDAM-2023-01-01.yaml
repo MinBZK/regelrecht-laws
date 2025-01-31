@@ -174,7 +174,7 @@ properties:
     STARTUP_ASSISTANCE_MAX: 200000  # 2000 euro max bedrijfskapitaal
     RE_INTEGRATION_SUPPLEMENT: 15000  # 150 euro toeslag tijdens re-integratie
     VALID_POSTAL_ADDRESSES: # TODO: dit hoort eigenlijk een BAG adres te zijn
-      - "De Regenboog Groep"
+      - "De Regenboog Groep 1, 1012NX Amsterdam"
       - "HVO-Querido"
       - "Leger des Heils Amsterdam"
     FULL_EXEMPTION_REASONS:

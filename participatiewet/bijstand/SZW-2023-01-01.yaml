@@ -32,6 +32,20 @@ properties:
           - name: "BSN"
             reference: "$BSN"
 
+    - name: "BIRTH_DATE"
+      description: "Geboortedatum van de aanvrager"
+      type: "date"
+      service_reference:
+        service: "RvIG"
+        field: "birth_date"
+        law: "wet_brp"
+        parameters:
+          - name: "BSN"
+            reference: "$BSN"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+
     - name: "RETIREMENT_AGE"
       description: "AOW-leeftijd voor deze persoon"
       type: "number"
@@ -40,8 +54,8 @@ properties:
         field: "retirement_age"
         law: "algemene_ouderdomswet/leeftijdsbepaling"
         parameters:
-          - name: "BSN"
-            reference: "$BSN"
+          - name: "BIRTH_DATE"
+            reference: "$BIRTH_DATE"
 
     - name: "HAS_DUTCH_NATIONALITY"
       description: "Heeft Nederlandse nationaliteit"

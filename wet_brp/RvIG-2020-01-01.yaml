@@ -284,7 +284,6 @@ properties:
       - "GEREGISTREERD_PARTNERSCHAP"
     FIXED_ADDRESS_TYPES:
       - "WOONADRES"
-      - "BRIEFADRES"
     POSTAL_ADDRESS_TYPES:
       - "BRIEFADRES"
 
@@ -348,7 +347,7 @@ actions:
           subject: "$ADDRESS"
           operation: NOT_NULL
         then:
-          operation: ADD
+          operation: CONCAT
           values:
             - "$ADDRESS.straat"
             - " "
@@ -380,9 +379,10 @@ actions:
     conditions:
       - test:
           subject: "$ADDRESS.type"
+          operation: IN
           values: "$POSTAL_ADDRESS_TYPES"
         then:
-          operation: ADD
+          operation: CONCAT
           values:
             - "$ADDRESS.straat"
             - " "

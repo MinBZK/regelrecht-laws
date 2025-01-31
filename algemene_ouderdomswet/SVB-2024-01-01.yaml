@@ -47,7 +47,6 @@ properties:
             type: "string"
             value: "$BSN"
 
-
   input:
     - name: "EMPLOYMENT_INSURED_YEARS"
       description: "Aantal verzekerde jaren voor AOW-opbouw op basis van werk en uitkeringen"
@@ -56,6 +55,9 @@ properties:
         service: "UWV"
         field: "insured_years"
         law: "wet_structuur_uitvoeringsorganisatie_werk_en_inkomen"
+        parameters:
+          - name: "BSN"
+            reference: "$BSN"
       type_spec:
         precision: 2
         min: 0
@@ -71,6 +73,9 @@ properties:
         service: "RvIG"
         field: "birth_date"
         law: "wet_brp"
+        parameters:
+          - name: "BSN"
+            reference: "$BSN"
       temporal:
         type: "point_in_time"
         reference: "$calculation_date"
@@ -82,6 +87,9 @@ properties:
         service: "RvIG"
         field: "partner_birth_date"
         law: "wet_brp"
+        parameters:
+          - name: "BSN"
+            reference: "$BSN"
       temporal:
         type: "point_in_time"
         reference: "$calculation_date"
@@ -93,6 +101,9 @@ properties:
         service: "RvIG"
         field: "age"
         law: "wet_brp"
+        parameters:
+          - name: "BSN"
+            reference: "$BSN"
       type_spec:
         unit: "years"
         precision: 0
@@ -108,9 +119,23 @@ properties:
         service: "RvIG"
         field: "has_partner"
         law: "wet_brp"
+        parameters:
+          - name: "BSN"
+            reference: "$BSN"
       temporal:
         type: "point_in_time"
         reference: "$calculation_date"
+
+    - name: "PARTNER_BSN"
+      description: "BSN van de partner"
+      type: "string"
+      service_reference:
+        service: "RvIG"
+        field: "partner_bsn"
+        law: "wet_brp"
+        parameters:
+          - name: "BSN"
+            reference: "$BSN"
 
     - name: "PARTNER_AGE"
       description: "Leeftijd van de partner"
@@ -119,6 +144,9 @@ properties:
         service: "RvIG"
         field: "age"
         law: "wet_brp"
+        parameters:
+          - name: "BSN"
+            reference: "$PARTNER_BSN"
       type_spec:
         unit: "years"
         precision: 0
@@ -134,6 +162,9 @@ properties:
         service: "BELASTINGDIENST"
         field: "income"
         law: "wet_inkomstenbelasting"
+        parameters:
+          - name: "BSN"
+            reference: "$BSN"
       type_spec:
         unit: "eurocent"
         precision: 0
@@ -149,6 +180,9 @@ properties:
         service: "BELASTINGDIENST"
         field: "partner_income"
         law: "wet_inkomstenbelasting"
+        parameters:
+          - name: "BSN"
+            reference: "$BSN"
       type_spec:
         unit: "eurocent"
         precision: 0
