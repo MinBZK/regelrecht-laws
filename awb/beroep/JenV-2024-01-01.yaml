@@ -48,15 +48,16 @@ properties:
       source_reference:
         source_type: "laws"
         table: "laws"
-        fields: [
-          "decision_type",
-          "name",
-          "valid_from",
-          "legal_character",
-          "voorbereidingsprocedure",
-          "beroepstermijn_weken",
-          "competent_court"
-        ]
+        fields:
+          [
+            "decision_type",
+            "name",
+            "valid_from",
+            "legal_character",
+            "voorbereidingsprocedure",
+            "beroepstermijn_weken",
+            "competent_court",
+          ]
         select_on:
           - name: "uuid"
             description: "UUID van de wet"
@@ -86,11 +87,7 @@ properties:
       source_reference:
         source_type: "reference_data"
         table: "jurisdicties"
-        fields: [
-          "gemeente",
-          "arrondissement",
-          "rechtbank"
-        ]
+        fields: ["gemeente", "arrondissement", "rechtbank"]
         select_on:
           - name: "gemeente"
             description: "Gemeente waar persoon woont"
@@ -106,11 +103,7 @@ properties:
       source_reference:
         source_type: "events"
         table: "events"
-        fields: [
-          "case_id",
-          "event_type",
-          "approved"
-        ]
+        fields: ["case_id", "event_type", "approved"]
         select_on:
           - name: "case_id"
             description: "Zaak identifier"
