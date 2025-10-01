@@ -383,6 +383,20 @@ properties:
         type: "period"
         reference: "$calculation_date"
 
+    - name: "woont_in_nederland"
+      description: "Woont in Nederland"
+      type: "boolean"
+      legal_basis:
+        law: "Wet basisregistratie personen"
+        bwb_id: "BWBR0033715"
+        article: "2.10"
+        url: "https://wetten.overheid.nl/BWBR0033715/2024-01-01#Hoofdstuk2_Paragraaf2.2_Artikel2.10"
+        juriconnect: "jci1.3:c:BWBR0033715&artikel=2.10&z=2024-01-01&g=2024-01-01"
+        explanation: "Artikel 2.10 Wet BRP bepaalt dat verblijfplaats in Nederland wordt geregistreerd"
+      temporal:
+        type: "period"
+        reference: "$calculation_date"
+
     - name: "geboortedatum"
       description: "Geboortedatum van de persoon"
       type: "date"
@@ -655,6 +669,18 @@ actions:
       url: "https://wetten.overheid.nl/BWBR0033715/2024-01-01#Hoofdstuk2_Paragraaf2.2_Artikel2.7"
       juriconnect: "jci1.3:c:BWBR0033715&artikel=2.7&lid=1&z=2024-01-01&g=2024-01-01"
       explanation: "Artikel 2.7 lid 1 Wet BRP bepaalt dat nationaliteit als algemeen gegeven wordt geregistreerd"
+
+  - output: "woont_in_nederland"
+    subject: "$LAND_VAN_VERBLIJF"
+    operation: EQUALS
+    value: "NEDERLAND"
+    legal_basis:
+      law: "Wet basisregistratie personen"
+      bwb_id: "BWBR0033715"
+      article: "2.10"
+      url: "https://wetten.overheid.nl/BWBR0033715/2024-01-01#Hoofdstuk2_Paragraaf2.2_Artikel2.10"
+      juriconnect: "jci1.3:c:BWBR0033715&artikel=2.10&z=2024-01-01&g=2024-01-01"
+      explanation: "Artikel 2.10 Wet BRP bepaalt dat verblijfplaats in Nederland wordt geregistreerd"
 
   - output: "heeft_vast_adres"
     operation: IN
