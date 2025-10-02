@@ -280,7 +280,7 @@ properties:
       temporal:
         type: "period"
         period_type: "year"
-      citizen_relevance: primary
+      citizen_relevance: secondary
       legal_basis:
         law: "Wet op het kindgebonden budget"
         bwb_id: "BWBR0022751"
