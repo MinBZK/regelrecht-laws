@@ -1,6 +1,6 @@
 $id: https://raw.githubusercontent.com/MinBZK/poc-machine-law/refs/heads/main/schema/v0.1.6/schema.json
 uuid: 5d8e4b3a-6f9c-4a2d-8e7b-1c9f2a5b8d3e
-name: Kindgebonden Budget met ALO-kop
+name: Kindgebonden Budget
 law: wet_op_het_kindgebonden_budget
 law_type: "FORMELE_WET"
 legal_character: "BESCHIKKING"
