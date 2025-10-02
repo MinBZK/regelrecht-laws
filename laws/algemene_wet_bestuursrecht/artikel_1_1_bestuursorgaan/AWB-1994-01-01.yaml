@@ -305,7 +305,7 @@ actions:
     operation: STATIC
     value: "A_ORGAAN"
 
-  # Override if B-orgaan and bestuursorgaan  
+  # Override if B-orgaan and bestuursorgaan
   - output: "bestuursorgaan_type"
     condition:
       operation: AND
