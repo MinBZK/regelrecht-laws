@@ -1,7 +1,7 @@
 $id: https://raw.githubusercontent.com/MinBZK/poc-machine-law/refs/heads/main/schema/v0.1.6/schema.json
 uuid: 7f3e9a2b-5c4d-4e8f-9b1a-3d6c8f2e4a5b
 name: Landelijke Aanpak Adreskwaliteit (LAA)
-law: wet_brp
+law: wet_brp/laa
 law_type: "FORMELE_WET"
 legal_character: "BESCHIKKING"
 decision_type: "ANDERE_HANDELING"
@@ -108,7 +108,7 @@ properties:
       type: "boolean"
       service_reference:
         service: "BELASTINGDIENST"
-        law: "wet_brp"
+        law: "wet_brp/terugmelding"
         field: "heeft_gerede_twijfel_adres"
         parameters:
           - name: "BSN"
@@ -128,7 +128,7 @@ properties:
       type: "boolean"
       service_reference:
         service: "TOESLAGEN"
-        law: "wet_brp"
+        law: "wet_brp/terugmelding"
         field: "heeft_gerede_twijfel_adres"
         parameters:
           - name: "BSN"
@@ -148,7 +148,7 @@ properties:
       type: "boolean"
       service_reference:
         service: "CJIB"
-        law: "wet_brp"
+        law: "wet_brp/terugmelding"
         field: "heeft_gerede_twijfel_adres"
         parameters:
           - name: "BSN"

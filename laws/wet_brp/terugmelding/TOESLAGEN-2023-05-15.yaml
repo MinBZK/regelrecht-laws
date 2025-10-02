@@ -1,7 +1,7 @@
 $id: https://raw.githubusercontent.com/MinBZK/poc-machine-law/refs/heads/main/schema/v0.1.6/schema.json
 uuid: 5f9d3e7a-4c8b-4e1f-9a6c-3d7e8f2a5b4c
 name: BRP Terugmeldplicht Dienst Toeslagen
-law: wet_brp
+law: wet_brp/terugmelding
 law_type: "FORMELE_WET"
 legal_character: "BESCHIKKING"
 decision_type: "ANDERE_HANDELING"
@@ -31,9 +31,9 @@ references:
 properties:
   parameters:
     - name: "BSN"
-      description: "BSN van de persoon"
+      description: "BSN van de persoon (optioneel bij adresgerichte controles)"
       type: "string"
-      required: true
+      required: false
       legal_basis:
         law: "Wet basisregistratie personen"
         bwb_id: "BWBR0033715"
@@ -134,8 +134,6 @@ properties:
 
 requirements:
   - all:
-      - subject: "$BSN"
-        operation: NOT_NULL
       - subject: "$ADRES"
         operation: NOT_NULL
 
