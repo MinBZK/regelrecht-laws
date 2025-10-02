@@ -5,6 +5,7 @@ law: wet_brp
 law_type: "FORMELE_WET"
 legal_character: "BESCHIKKING"
 decision_type: "TOEKENNING"
+discoverable: "BUSINESS"
 valid_from: 2020-01-01
 service: "RvIG"
 legal_basis:
