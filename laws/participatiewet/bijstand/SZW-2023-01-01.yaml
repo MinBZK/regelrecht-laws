@@ -607,6 +607,56 @@ requirements:
                 - "$BEZITTINGEN"
                 - "$VERMOGENSGRENS_ALLEENSTAAND"
 
+      # Inkomenstoets - bijstand alleen als inkomen ontoereikend is
+      - operation: IF
+        legal_basis:
+          law: "Participatiewet"
+          bwb_id: "BWBR0015703"
+          article: "19"
+          url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk3_Paragraaf3.1_Artikel19"
+          juriconnect: "jci1.3:c:BWBR0015703&artikel=19&z=2025-01-01&g=2025-01-01"
+          explanation: "Artikel 19 bepaalt dat bijstand wordt verleend voor zover de belanghebbende niet over voldoende middelen beschikt om in de noodzakelijke kosten van het bestaan te voorzien"
+        conditions:
+          - test:
+              subject: "$HEEFT_PARTNER"
+              operation: EQUALS
+              value: true
+            then:
+              # Voor partners: totaal gezinsinkomen < bijstandsnorm voor partners
+              operation: LESS_THAN
+              legal_basis:
+                law: "Participatiewet"
+                bwb_id: "BWBR0015703"
+                article: "31"
+                paragraph: "2"
+                url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk3_Paragraaf3.2_Artikel31"
+                juriconnect: "jci1.3:c:BWBR0015703&artikel=31&lid=2&z=2025-01-01&g=2025-01-01"
+                explanation: "Artikel 31 lid 2 bepaalt dat het inkomen van beide partners in aanmerking wordt genomen"
+              values:
+                - operation: ADD
+                  values:
+                    - "$INKOMEN"
+                    - "$BEDRIJFSINKOMEN"
+                    - "$PARTNER_INKOMEN"
+                - "$BASISBEDRAG_PARTNERS_21_PLUS"
+          - else:
+              # Voor alleenstaanden: totaal inkomen < bijstandsnorm voor alleenstaanden
+              operation: LESS_THAN
+              legal_basis:
+                law: "Participatiewet"
+                bwb_id: "BWBR0015703"
+                article: "31"
+                paragraph: "2"
+                url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk3_Paragraaf3.2_Artikel31"
+                juriconnect: "jci1.3:c:BWBR0015703&artikel=31&lid=2&z=2025-01-01&g=2025-01-01"
+                explanation: "Artikel 31 lid 2 bepaalt welke inkomsten in aanmerking worden genomen voor de bijstandsberekening"
+              values:
+                - operation: ADD
+                  values:
+                    - "$INKOMEN"
+                    - "$BEDRIJFSINKOMEN"
+                - "$BASISBEDRAG_ALLEENSTAAND_21_PLUS"
+
 actions:
   - output: "is_gerechtigd"
     value: true
