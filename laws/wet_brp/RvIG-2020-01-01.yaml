@@ -835,7 +835,7 @@ actions:
     operation: IF
     conditions:
       - test:
-          subject: "$HUISHOUDEN"
+          subject: "$KINDEREN_GEGEVENS"
           operation: NOT_NULL
           legal_basis:
             law: "Wet basisregistratie personen"
@@ -844,36 +844,9 @@ actions:
             url: "https://wetten.overheid.nl/BWBR0033715/2024-01-01#Hoofdstuk2_Paragraaf2.2_Artikel2.9"
             juriconnect: "jci1.3:c:BWBR0033715&artikel=2.9&z=2024-01-01&g=2024-01-01"
             explanation: "Artikel 2.9 Wet BRP bepaalt registratie van gegevens over kinderen"
-        then:
-          operation: FOREACH  # Gebruik FOREACH voor filtering
-          subject: "$HUISHOUDEN"
-          combine: "ADD"      # Combineer resultaten in een array
-          value:
-            operation: IF
-            conditions:
-              - test:
-                  operation: LESS_THAN
-                  values:
-                    - "$leeftijd"
-                    - 18
-                  legal_basis:
-                    law: "Wet basisregistratie personen"
-                    bwb_id: "BWBR0033715"
-                    article: "2.9"
-                    url: "https://wetten.overheid.nl/BWBR0033715/2024-01-01#Hoofdstuk2_Paragraaf2.2_Artikel2.9"
-                    juriconnect: "jci1.3:c:BWBR0033715&artikel=2.9&z=2024-01-01&g=2024-01-01"
-                    explanation: "Artikel 2.9 Wet BRP bepaalt meerderjarigheid op 18 jaar"
-                then: "$item"  # Voeg dit item toe als kind
-              - else: null     # Anders niets toevoegen
-          legal_basis:
-            law: "Wet basisregistratie personen"
-            bwb_id: "BWBR0033715"
-            article: "2.9"
-            url: "https://wetten.overheid.nl/BWBR0033715/2024-01-01#Hoofdstuk2_Paragraaf2.2_Artikel2.9"
-            juriconnect: "jci1.3:c:BWBR0033715&artikel=2.9&z=2024-01-01&g=2024-01-01"
-            explanation: "Artikel 2.9 Wet BRP maakt filtering van minderjarige kinderen mogelijk"
+        then: "$KINDEREN_GEGEVENS"
       - else:
-          value: null  # Leeg resultaat
+          value: null
     legal_basis:
       law: "Wet basisregistratie personen"
       bwb_id: "BWBR0033715"
