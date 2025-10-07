@@ -85,6 +85,97 @@ properties:
         juriconnect: "jci1.3:c:BWBR0002402&artikel=15b&lid=2&z=2024-07-01&g=2024-07-01"
         explanation: "Artikel 15b lid 2 stelt dat vergunning kan worden geweigerd als technologie verouderd is"
 
+    - name: "verwachte_dosis_jaar"
+      description: "Verwachte effectieve stralingsdosis per jaar"
+      type: "number"
+      required: false
+      legal_basis:
+        law: "Kernenergiewet"
+        bwb_id: "BWBR0002402"
+        article: "15b"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0002402/2024-07-01#Hoofdstuk3_Artikel15b"
+        juriconnect: "jci1.3:c:BWBR0002402&artikel=15b&lid=1&z=2024-07-01&g=2024-07-01"
+        explanation: "Voor beoordeling of vergunning geweigerd moet worden"
+
+    - name: "verwachte_dosis_huid"
+      description: "Verwachte equivalente stralingsdosis huid per jaar"
+      type: "number"
+      required: false
+      legal_basis:
+        law: "Kernenergiewet"
+        bwb_id: "BWBR0002402"
+        article: "15b"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0002402/2024-07-01#Hoofdstuk3_Artikel15b"
+        juriconnect: "jci1.3:c:BWBR0002402&artikel=15b&lid=1&z=2024-07-01&g=2024-07-01"
+        explanation: "Voor beoordeling of vergunning geweigerd moet worden"
+
+    - name: "dosis_buiten_locatie"
+      description: "Verwachte dosis buiten locatie per jaar"
+      type: "number"
+      required: false
+      legal_basis:
+        law: "Kernenergiewet"
+        bwb_id: "BWBR0002402"
+        article: "15b"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0002402/2024-07-01#Hoofdstuk3_Artikel15b"
+        juriconnect: "jci1.3:c:BWBR0002402&artikel=15b&lid=1&z=2024-07-01&g=2024-07-01"
+        explanation: "Voor beoordeling of vergunning geweigerd moet worden"
+
+    - name: "heeft_beveiligingsplan"
+      description: "Of er een beveiligingsplan aanwezig is"
+      type: "boolean"
+      required: false
+      legal_basis:
+        law: "Kernenergiewet"
+        bwb_id: "BWBR0002402"
+        article: "15b"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0002402/2024-07-01#Hoofdstuk3_Artikel15b"
+        juriconnect: "jci1.3:c:BWBR0002402&artikel=15b&lid=1&z=2024-07-01&g=2024-07-01"
+        explanation: "Voor beoordeling of vergunning geweigerd moet worden"
+
+    - name: "heeft_noodplan"
+      description: "Of er een noodplan aanwezig is"
+      type: "boolean"
+      required: false
+      legal_basis:
+        law: "Kernenergiewet"
+        bwb_id: "BWBR0002402"
+        article: "15b"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0002402/2024-07-01#Hoofdstuk3_Artikel15b"
+        juriconnect: "jci1.3:c:BWBR0002402&artikel=15b&lid=1&z=2024-07-01&g=2024-07-01"
+        explanation: "Voor beoordeling of vergunning geweigerd moet worden"
+
+    - name: "financiele_zekerheid_bedrag"
+      description: "Bedrag van de gestelde financiële zekerheid"
+      type: "number"
+      required: false
+      legal_basis:
+        law: "Kernenergiewet"
+        bwb_id: "BWBR0002402"
+        article: "15b"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0002402/2024-07-01#Hoofdstuk3_Artikel15b"
+        juriconnect: "jci1.3:c:BWBR0002402&artikel=15b&lid=1&z=2024-07-01&g=2024-07-01"
+        explanation: "Voor beoordeling of vergunning geweigerd moet worden"
+
+    - name: "aantal_deskundigen"
+      description: "Aantal beschikbare deskundigen"
+      type: "number"
+      required: false
+      legal_basis:
+        law: "Kernenergiewet"
+        bwb_id: "BWBR0002402"
+        article: "15b"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0002402/2024-07-01#Hoofdstuk3_Artikel15b"
+        juriconnect: "jci1.3:c:BWBR0002402&artikel=15b&lid=1&z=2024-07-01&g=2024-07-01"
+        explanation: "Voor beoordeling of vergunning geweigerd moet worden"
+
   input:
     - name: "VERWACHTE_STRALINGSDOSIS"
       description: "Verwachte stralingsdosis per jaar in millisievert"
@@ -96,6 +187,13 @@ properties:
         service: "ANVS"
         law: "besluit_basisveiligheidsnormen_stralingsbescherming"
         field: "verwachte_dosis_bevolking"
+        parameters:
+          - name: "verwachte_dosis_jaar"
+            reference: "$verwachte_dosis_jaar"
+          - name: "verwachte_dosis_huid"
+            reference: "$verwachte_dosis_huid"
+          - name: "dosis_buiten_locatie"
+            reference: "$dosis_buiten_locatie"
       legal_basis:
         law: "Kernenergiewet"
         bwb_id: "BWBR0002402"
@@ -112,6 +210,15 @@ properties:
         service: "ANVS"
         law: "besluit_kerninstallaties"
         field: "financiele_zekerheid_gesteld"
+        parameters:
+          - name: "heeft_beveiligingsplan"
+            reference: "$heeft_beveiligingsplan"
+          - name: "heeft_noodplan"
+            reference: "$heeft_noodplan"
+          - name: "financiele_zekerheid_bedrag"
+            reference: "$financiele_zekerheid_bedrag"
+          - name: "aantal_deskundigen"
+            reference: "$aantal_deskundigen"
       legal_basis:
         law: "Kernenergiewet"
         bwb_id: "BWBR0002402"
@@ -178,28 +285,16 @@ properties:
     DOSIS_LIMIET_BEVOLKING: 1.0  # millisievert per jaar
 
 requirements:
-  - any:
-      - subject: "$activiteit_type"
-        operation: EQUALS
-        value: "$ACTIVITEIT_TRANSPORT"
-      - subject: "$activiteit_type"
-        operation: EQUALS
-        value: "$ACTIVITEIT_BEZIT"
-      - subject: "$activiteit_type"
-        operation: EQUALS
-        value: "$ACTIVITEIT_INVOER"
-      - subject: "$activiteit_type"
-        operation: EQUALS
-        value: "$ACTIVITEIT_UITVOER"
-      - subject: "$activiteit_type"
-        operation: EQUALS
-        value: "$ACTIVITEIT_INRICHTING_OPRICHTEN"
-      - subject: "$activiteit_type"
-        operation: EQUALS
-        value: "$ACTIVITEIT_INRICHTING_EXPLOITEREN"
-      - subject: "$activiteit_type"
-        operation: EQUALS
-        value: "$ACTIVITEIT_KERNVOORTSTUWING"
+  - subject: "$activiteit_type"
+    operation: IN
+    values:
+      - "transport"
+      - "bezit"
+      - "invoer"
+      - "uitvoer"
+      - "inrichting_oprichten"
+      - "inrichting_exploiteren"
+      - "kernvoortstuwing"
 
 actions:
   - output: "vergunning_vereist"
@@ -235,7 +330,7 @@ actions:
           juriconnect: "jci1.3:c:BWBR0002402&artikel=15b&lid=1&z=2024-07-01&g=2024-07-01"
           explanation: "Artikel 15b lid 1 bepaalt dat vergunning geweigerd kan worden ter bescherming van mensen"
         then:
-          - "$WEIGERINGSGROND_VEILIGHEID"
+          - "bescherming_mensen_dieren_planten_goederen"
       - test:
           subject: "$HEEFT_FINANCIELE_ZEKERHEID"
           operation: EQUALS
@@ -249,7 +344,7 @@ actions:
           juriconnect: "jci1.3:c:BWBR0002402&artikel=15b&lid=1&z=2024-07-01&g=2024-07-01"
           explanation: "Artikel 15b lid 1 bepaalt dat vergunning geweigerd kan worden voor zekerheid van betaling schadevergoeding"
         then:
-          - "$WEIGERINGSGROND_SCHADEVERGOEDING"
+          - "zekerheid_betaling_schadevergoeding"
       - else: []
 
   - output: "vergunning_toegestaan"
