@@ -99,6 +99,36 @@ properties:
         juriconnect: "jci1.3:c:BWBR0018472&artikel=18&z=2024-01-01&g=2024-01-01"
         explanation: "Artikel 18 Awir bepaalt controle en onderzoek door Dienst Toeslagen"
 
+    - name: "TERUGMELDING_TWIJFEL"
+      description: "Direct opgegeven terugmelding twijfel (voor test data)"
+      type: "boolean"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      source_reference:
+        table: "terugmelding"
+        field: "heeft_gerede_twijfel_adres"
+        select_on:
+          - name: "bsn"
+            description: "BSN van de persoon"
+            type: "string"
+            value: "$BSN"
+          - name: "postcode"
+            description: "Postcode van het adres"
+            type: "string"
+            value: "$ADRES.postcode"
+          - name: "huisnummer"
+            description: "Huisnummer van het adres"
+            type: "string"
+            value: "$ADRES.huisnummer"
+      legal_basis:
+        law: "Wet basisregistratie personen"
+        bwb_id: "BWBR0033715"
+        article: "2.34"
+        url: "https://wetten.overheid.nl/BWBR0033715/2023-05-15#Hoofdstuk2_Paragraaf2.5_Artikel2.34"
+        juriconnect: "jci1.3:c:BWBR0033715&artikel=2.34&z=2023-05-15&g=2023-05-15"
+        explanation: "Artikel 2.34 verplicht melding bij gerede twijfel over adresgegevens"
+
   output:
     - name: "heeft_gerede_twijfel_adres"
       description: "Of er gerede twijfel bestaat over juistheid adresgegevens"
@@ -139,31 +169,44 @@ requirements:
 
 actions:
   - output: "heeft_gerede_twijfel_adres"
-    operation: OR
-    values:
-      # Reden 1: Adres wijkt af van toeslagadres
-      - operation: NOT_EQUALS
-        values:
-          - "$ADRES"
-          - "$TOESLAG_ADRES"
-        legal_basis:
-          law: "Wet basisregistratie personen"
-          bwb_id: "BWBR0033715"
-          article: "2.34"
-          url: "https://wetten.overheid.nl/BWBR0033715/2023-05-15#Hoofdstuk2_Paragraaf2.5_Artikel2.34"
-          juriconnect: "jci1.3:c:BWBR0033715&artikel=2.34&z=2023-05-15&g=2023-05-15"
-          explanation: "Afwijkend adres levert gerede twijfel op"
-      # Reden 2: Onderzoek kon adres niet bevestigen
-      - subject: "$TOESLAGEN_ONDERZOEK.adres_geverifieerd"
-        operation: EQUALS
-        value: false
-        legal_basis:
-          law: "Wet basisregistratie personen"
-          bwb_id: "BWBR0033715"
-          article: "2.34"
-          url: "https://wetten.overheid.nl/BWBR0033715/2023-05-15#Hoofdstuk2_Paragraaf2.5_Artikel2.34"
-          juriconnect: "jci1.3:c:BWBR0033715&artikel=2.34&z=2023-05-15&g=2023-05-15"
-          explanation: "Niet-geverifieerd adres levert gerede twijfel op"
+    operation: IF
+    conditions:
+      # Als test data direct twijfel opgeeft, gebruik die
+      - test:
+          subject: "$TERUGMELDING_TWIJFEL"
+          operation: NOT_NULL
+        then: "$TERUGMELDING_TWIJFEL"
+      # Anders: bereken op basis van adres en onderzoek
+      - else:
+          operation: OR
+          values:
+            # Reden 1: Adres wijkt af van toeslagadres
+            - operation: AND
+              values:
+                - subject: "$TOESLAG_ADRES"
+                  operation: NOT_NULL
+                - operation: NOT_EQUALS
+                  values:
+                    - "$ADRES"
+                    - "$TOESLAG_ADRES"
+              legal_basis:
+                law: "Wet basisregistratie personen"
+                bwb_id: "BWBR0033715"
+                article: "2.34"
+                url: "https://wetten.overheid.nl/BWBR0033715/2023-05-15#Hoofdstuk2_Paragraaf2.5_Artikel2.34"
+                juriconnect: "jci1.3:c:BWBR0033715&artikel=2.34&z=2023-05-15&g=2023-05-15"
+                explanation: "Afwijkend adres levert gerede twijfel op"
+            # Reden 2: Onderzoek kon adres niet bevestigen
+            - subject: "$TOESLAGEN_ONDERZOEK.adres_geverifieerd"
+              operation: EQUALS
+              value: false
+              legal_basis:
+                law: "Wet basisregistratie personen"
+                bwb_id: "BWBR0033715"
+                article: "2.34"
+                url: "https://wetten.overheid.nl/BWBR0033715/2023-05-15#Hoofdstuk2_Paragraaf2.5_Artikel2.34"
+                juriconnect: "jci1.3:c:BWBR0033715&artikel=2.34&z=2023-05-15&g=2023-05-15"
+                explanation: "Niet-geverifieerd adres levert gerede twijfel op"
     legal_basis:
       law: "Wet basisregistratie personen"
       bwb_id: "BWBR0033715"
