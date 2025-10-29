@@ -59,7 +59,7 @@ properties:
         juriconnect: "jci1.3:c:BWBR0015703&artikel=10d&lid=4&z=2025-01-01&g=2025-01-01"
         explanation: "Artikel 10d lid 4 bepaalt dat loonkostensubsidie wordt aangepast naar rato van de overeengekomen arbeidsduur"
 
-  input:
+  sources:
     - name: "ONTVANGT_BIJSTAND"
       description: "Ontvangt algemene bijstand"
       type: "boolean"
@@ -71,13 +71,12 @@ properties:
         url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10a"
         juriconnect: "jci1.3:c:BWBR0015703&artikel=10a&lid=1&z=2025-01-01&g=2025-01-01"
         explanation: "Artikel 10a lid 1 bepaalt dat participatieplaatsen zijn voor bijstandsgerechtigden"
-      service_reference:
-        service: "SZW"
+      source_reference:
+        table: "bijstand"
         field: "is_gerechtigd"
-        law: "participatiewet/bijstand"
-        parameters:
-          - name: "BSN"
-            reference: "$BSN"
+        select_on:
+          - name: "bsn"
+            value: "$BSN"
 
     - name: "KANS_OP_WERK_GERING"
       description: "Heeft geringe kans op inschakeling in arbeidsproces"
@@ -90,13 +89,12 @@ properties:
         url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10a"
         juriconnect: "jci1.3:c:BWBR0015703&artikel=10a&lid=1&z=2025-01-01&g=2025-01-01"
         explanation: "Artikel 10a lid 1 vereist dat de kans op inschakeling in het arbeidsproces gering is"
-      service_reference:
-        service: "SZW"
+      source_reference:
+        table: "reintegratie"
         field: "kans_op_werk_gering"
-        law: "participatiewet/reintegratie"
-        parameters:
-          - name: "BSN"
-            reference: "$BSN"
+        select_on:
+          - name: "bsn"
+            value: "$BSN"
 
     - name: "UITSLUITEND_BESCHUT_WERK_MOGELIJK"
       description: "Kan uitsluitend in beschutte omgeving onder aangepaste omstandigheden werken"
@@ -109,13 +107,12 @@ properties:
         url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10b"
         juriconnect: "jci1.3:c:BWBR0015703&artikel=10b&lid=1&z=2025-01-01&g=2025-01-01"
         explanation: "Artikel 10b lid 1 bepaalt dat beschut werk is voor personen die uitsluitend in beschutte omgeving kunnen werken"
-      service_reference:
-        service: "UWV"
+      source_reference:
+        table: "wia"
         field: "uitsluitend_beschut_werk_mogelijk"
-        law: "wet_wia"
-        parameters:
-          - name: "BSN"
-            reference: "$BSN"
+        select_on:
+          - name: "bsn"
+            value: "$BSN"
 
     - name: "LOONWAARDE"
       description: "Vastgestelde loonwaarde in eurocents per maand"
@@ -132,13 +129,12 @@ properties:
         url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10d"
         juriconnect: "jci1.3:c:BWBR0015703&artikel=10d&lid=4&z=2025-01-01&g=2025-01-01"
         explanation: "Artikel 10d lid 4 gebruikt de loonwaarde voor berekening van de loonkostensubsidie"
-      service_reference:
-        service: "UWV"
+      source_reference:
+        table: "wia"
         field: "loonwaarde_maandelijks"
-        law: "wet_wia"
-        parameters:
-          - name: "BSN"
-            reference: "$BSN"
+        select_on:
+          - name: "bsn"
+            value: "$BSN"
 
     - name: "KAN_GEEN_MINIMUMLOON_VERDIENEN"
       description: "Kan geen wettelijk minimumloon verdienen bij fulltime arbeid"
@@ -152,13 +148,12 @@ properties:
         url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10c"
         juriconnect: "jci1.3:c:BWBR0015703&artikel=10c&lid=1&z=2025-01-01&g=2025-01-01"
         explanation: "Artikel 10c lid 1 onder a bepaalt doelgroep loonkostensubsidie als personen die geen minimumloon kunnen verdienen"
-      service_reference:
-        service: "UWV"
+      source_reference:
+        table: "wia"
         field: "kan_geen_minimumloon_verdienen"
-        law: "wet_wia"
-        parameters:
-          - name: "BSN"
-            reference: "$BSN"
+        select_on:
+          - name: "bsn"
+            value: "$BSN"
 
     - name: "MINIMUMLOON_MAANDELIJKS"
       description: "Wettelijk minimumloon per maand in eurocents"
@@ -175,13 +170,12 @@ properties:
         url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10d"
         juriconnect: "jci1.3:c:BWBR0015703&artikel=10d&lid=4&z=2025-01-01&g=2025-01-01"
         explanation: "Artikel 10d lid 4 gebruikt het wettelijk minimumloon voor berekening van de subsidie"
-      service_reference:
-        service: "SZW"
+      source_reference:
+        table: "minimumloon"
         field: "minimumloon_maandelijks"
-        law: "wet_minimumloon"
-        parameters:
-          - name: "REFERENTIEDATUM"
-            reference: "$calculation_date"
+        select_on:
+          - name: "referentiedatum"
+            value: "$calculation_date"
 
     - name: "VAKANTIETOESLAG_PERCENTAGE"
       description: "Wettelijke vakantietoeslag als percentage (bijv. 0.08 voor 8%)"
@@ -198,13 +192,12 @@ properties:
         url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10d"
         juriconnect: "jci1.3:c:BWBR0015703&artikel=10d&lid=4&z=2025-01-01&g=2025-01-01"
         explanation: "Artikel 10d lid 4 includeert wettelijke vakantietoeslag in de subsidieberekening"
-      service_reference:
-        service: "SZW"
+      source_reference:
+        table: "minimumloon"
         field: "vakantietoeslag_percentage"
-        law: "wet_minimumloon"
-        parameters:
-          - name: "REFERENTIEDATUM"
-            reference: "$calculation_date"
+        select_on:
+          - name: "referentiedatum"
+            value: "$calculation_date"
 
     - name: "WERKGEVERSBIJDRAGE_PERCENTAGE"
       description: "Opslag voor werkgeversbijdrage als percentage"
@@ -221,13 +214,12 @@ properties:
         url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10d"
         juriconnect: "jci1.3:c:BWBR0015703&artikel=10d&lid=4&z=2025-01-01&g=2025-01-01"
         explanation: "Artikel 10d lid 4 includeert opslag voor werkgeversbijdrage in subsidieberekening"
-      service_reference:
-        service: "SZW"
+      source_reference:
+        table: "minimumloon"
         field: "werkgeversbijdrage_percentage"
-        law: "wet_minimumloon"
-        parameters:
-          - name: "REFERENTIEDATUM"
-            reference: "$calculation_date"
+        select_on:
+          - name: "referentiedatum"
+            value: "$calculation_date"
 
   output:
     - name: "is_gerechtigd_participatieplaats"
@@ -400,7 +392,8 @@ actions:
       explanation: "Artikel 10a lid 1 bepaalt wie in aanmerking komt voor participatieplaats"
     conditions:
       - test:
-          all:
+          operation: AND
+          values:
             - subject: "$ONTVANGT_BIJSTAND"
               operation: EQUALS
               value: true
@@ -449,7 +442,8 @@ actions:
       explanation: "Artikel 10b lid 1 bepaalt wie in aanmerking komt voor beschut werk"
     conditions:
       - test:
-          all:
+          operation: AND
+          values:
             - subject: "$ONTVANGT_BIJSTAND"
               operation: EQUALS
               value: true
