@@ -1,0 +1,578 @@
+$id: https://raw.githubusercontent.com/MinBZK/poc-machine-law/refs/heads/main/schema/v0.1.6/schema.json
+uuid: b8e9f3d4-1c56-4a92-be23-9e0f4b8d7c2a
+name: Bepalen recht op participatiebanen en loonkostensubsidie
+law: participatiewet/participatiebanen
+valid_from: 2025-01-01
+service: "SZW"
+legal_basis:
+  law: "Participatiewet"
+  bwb_id: "BWBR0015703"
+  article: "10a"
+  url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10a"
+  juriconnect: "jci1.3:c:BWBR0015703&artikel=10a&z=2025-01-01&g=2025-01-01"
+  explanation: "Deze service implementeert de regels voor participatiebanen, beschut werk en loonkostensubsidie volgens artikelen 10a, 10b en 10d van de Participatiewet"
+description: >
+  Landelijke regels voor participatiebanen en loonkostensubsidie volgens de Participatiewet.
+  Artikel 10a regelt participatieplaatsen voor bijstandsgerechtigden met geringe kans op werk.
+  Artikel 10b regelt beschut werk voor personen die alleen in aangepaste omstandigheden kunnen werken.
+  Artikel 10d regelt loonkostensubsidie voor werkgevers die personen met loonwaarde onder minimumloon in dienst nemen.
+
+references:
+  - law: "Participatiewet"
+    article: "10a"
+    url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10a"
+  - law: "Participatiewet"
+    article: "10b"
+    url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10b"
+  - law: "Participatiewet"
+    article: "10c"
+    url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10c"
+  - law: "Participatiewet"
+    article: "10d"
+    url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10d"
+
+properties:
+  parameters:
+    - name: "BSN"
+      description: "BSN van de persoon"
+      type: "string"
+      required: true
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "10a"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10a"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=10a&lid=1&z=2025-01-01&g=2025-01-01"
+        explanation: "BSN is nodig voor identificatie van de persoon die in aanmerking komt voor participatiebanen"
+
+    - name: "CONTRACTUREN_PER_WEEK"
+      description: "Aantal contracturen per week bij de werkgever"
+      type: "number"
+      required: false
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "10d"
+        paragraph: "4"
+        url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10d"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=10d&lid=4&z=2025-01-01&g=2025-01-01"
+        explanation: "Artikel 10d lid 4 bepaalt dat loonkostensubsidie wordt aangepast naar rato van de overeengekomen arbeidsduur"
+
+  input:
+    - name: "ONTVANGT_BIJSTAND"
+      description: "Ontvangt algemene bijstand"
+      type: "boolean"
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "10a"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10a"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=10a&lid=1&z=2025-01-01&g=2025-01-01"
+        explanation: "Artikel 10a lid 1 bepaalt dat participatieplaatsen zijn voor bijstandsgerechtigden"
+      service_reference:
+        service: "SZW"
+        field: "is_gerechtigd"
+        law: "participatiewet/bijstand"
+        parameters:
+          - name: "BSN"
+            reference: "$BSN"
+
+    - name: "KANS_OP_WERK_GERING"
+      description: "Heeft geringe kans op inschakeling in arbeidsproces"
+      type: "boolean"
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "10a"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10a"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=10a&lid=1&z=2025-01-01&g=2025-01-01"
+        explanation: "Artikel 10a lid 1 vereist dat de kans op inschakeling in het arbeidsproces gering is"
+      service_reference:
+        service: "SZW"
+        field: "kans_op_werk_gering"
+        law: "participatiewet/reintegratie"
+        parameters:
+          - name: "BSN"
+            reference: "$BSN"
+
+    - name: "UITSLUITEND_BESCHUT_WERK_MOGELIJK"
+      description: "Kan uitsluitend in beschutte omgeving onder aangepaste omstandigheden werken"
+      type: "boolean"
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "10b"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10b"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=10b&lid=1&z=2025-01-01&g=2025-01-01"
+        explanation: "Artikel 10b lid 1 bepaalt dat beschut werk is voor personen die uitsluitend in beschutte omgeving kunnen werken"
+      service_reference:
+        service: "UWV"
+        field: "uitsluitend_beschut_werk_mogelijk"
+        law: "wet_wia"
+        parameters:
+          - name: "BSN"
+            reference: "$BSN"
+
+    - name: "LOONWAARDE"
+      description: "Vastgestelde loonwaarde in eurocents per maand"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+        min: 0
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "10d"
+        paragraph: "4"
+        url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10d"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=10d&lid=4&z=2025-01-01&g=2025-01-01"
+        explanation: "Artikel 10d lid 4 gebruikt de loonwaarde voor berekening van de loonkostensubsidie"
+      service_reference:
+        service: "UWV"
+        field: "loonwaarde_maandelijks"
+        law: "wet_wia"
+        parameters:
+          - name: "BSN"
+            reference: "$BSN"
+
+    - name: "KAN_GEEN_MINIMUMLOON_VERDIENEN"
+      description: "Kan geen wettelijk minimumloon verdienen bij fulltime arbeid"
+      type: "boolean"
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "10c"
+        paragraph: "1"
+        sentence: "a"
+        url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10c"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=10c&lid=1&z=2025-01-01&g=2025-01-01"
+        explanation: "Artikel 10c lid 1 onder a bepaalt doelgroep loonkostensubsidie als personen die geen minimumloon kunnen verdienen"
+      service_reference:
+        service: "UWV"
+        field: "kan_geen_minimumloon_verdienen"
+        law: "wet_wia"
+        parameters:
+          - name: "BSN"
+            reference: "$BSN"
+
+    - name: "MINIMUMLOON_MAANDELIJKS"
+      description: "Wettelijk minimumloon per maand in eurocents"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+        min: 0
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "10d"
+        paragraph: "4"
+        url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10d"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=10d&lid=4&z=2025-01-01&g=2025-01-01"
+        explanation: "Artikel 10d lid 4 gebruikt het wettelijk minimumloon voor berekening van de subsidie"
+      service_reference:
+        service: "SZW"
+        field: "minimumloon_maandelijks"
+        law: "wet_minimumloon"
+        parameters:
+          - name: "REFERENTIEDATUM"
+            reference: "$calculation_date"
+
+    - name: "VAKANTIETOESLAG_PERCENTAGE"
+      description: "Wettelijke vakantietoeslag als percentage (bijv. 0.08 voor 8%)"
+      type: "number"
+      type_spec:
+        precision: 2
+        min: 0
+        max: 1
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "10d"
+        paragraph: "4"
+        url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10d"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=10d&lid=4&z=2025-01-01&g=2025-01-01"
+        explanation: "Artikel 10d lid 4 includeert wettelijke vakantietoeslag in de subsidieberekening"
+      service_reference:
+        service: "SZW"
+        field: "vakantietoeslag_percentage"
+        law: "wet_minimumloon"
+        parameters:
+          - name: "REFERENTIEDATUM"
+            reference: "$calculation_date"
+
+    - name: "WERKGEVERSBIJDRAGE_PERCENTAGE"
+      description: "Opslag voor werkgeversbijdrage als percentage"
+      type: "number"
+      type_spec:
+        precision: 2
+        min: 0
+        max: 1
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "10d"
+        paragraph: "4"
+        url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10d"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=10d&lid=4&z=2025-01-01&g=2025-01-01"
+        explanation: "Artikel 10d lid 4 includeert opslag voor werkgeversbijdrage in subsidieberekening"
+      service_reference:
+        service: "SZW"
+        field: "werkgeversbijdrage_percentage"
+        law: "wet_minimumloon"
+        parameters:
+          - name: "REFERENTIEDATUM"
+            reference: "$calculation_date"
+
+  output:
+    - name: "is_gerechtigd_participatieplaats"
+      description: "Komt in aanmerking voor participatieplaats (onbeloonde additionele werkzaamheden)"
+      type: "boolean"
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "10a"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10a"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=10a&lid=1&z=2025-01-01&g=2025-01-01"
+        explanation: "Artikel 10a lid 1 bepaalt wie in aanmerking komt voor een participatieplaats"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+
+    - name: "maximale_duur_participatieplaats_maanden"
+      description: "Maximale duur van participatieplaats in maanden"
+      type: "number"
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "10a"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10a"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=10a&lid=1&z=2025-01-01&g=2025-01-01"
+        explanation: "Artikel 10a lid 1 bepaalt maximale duur van 2 jaar, verlengbaar met telkens 1 jaar"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+
+    - name: "is_gerechtigd_beschut_werk"
+      description: "Komt in aanmerking voor beschut werk"
+      type: "boolean"
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "10b"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10b"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=10b&lid=1&z=2025-01-01&g=2025-01-01"
+        explanation: "Artikel 10b lid 1 bepaalt wie in aanmerking komt voor beschut werk"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+
+    - name: "is_gerechtigd_loonkostensubsidie"
+      description: "Behoort tot doelgroep loonkostensubsidie"
+      type: "boolean"
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "10c"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10c"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=10c&lid=1&z=2025-01-01&g=2025-01-01"
+        explanation: "Artikel 10c lid 1 bepaalt de doelgroep voor loonkostensubsidie"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+
+    - name: "loonkostensubsidie_bedrag"
+      description: "Hoogte van de loonkostensubsidie in eurocents per maand"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+        min: 0
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "10d"
+        paragraph: "4"
+        url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10d"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=10d&lid=4&z=2025-01-01&g=2025-01-01"
+        explanation: "Artikel 10d lid 4 bepaalt de berekeningswijze van de loonkostensubsidie"
+      temporal:
+        type: "period"
+        period_type: "month"
+
+  definitions:
+    MAXIMUM_DUUR_PARTICIPATIEPLAATS_MAANDEN: 24  # Artikel 10a lid 1: maximaal 2 jaar
+    VERLENGING_DUUR_MAANDEN: 12  # Artikel 10a lid 6: verlengbaar met telkens 1 jaar
+    BESLISSINGSTERMIJN_WEKEN: 5  # Artikel 10d lid 12: beslissing binnen 5 weken
+    PERCENTAGE_LOONKOSTENSUBSIDIE_MAXIMUM: 0.70  # Artikel 10d lid 4: maximaal 70%
+    PERCENTAGE_EERSTE_6_MAANDEN: 0.50  # Artikel 10d lid 5: eerste 6 maanden 50%
+    STANDAARD_WERKWEEK_UREN: 36  # Artikel 10d lid 4: standaard werkweek voor berekening
+
+requirements:
+  - or:
+      # Participatieplaats of beschut werk of loonkostensubsidie
+      - all:
+          # Voor participatieplaats
+          - subject: "$ONTVANGT_BIJSTAND"
+            operation: EQUALS
+            value: true
+            legal_basis:
+              law: "Participatiewet"
+              bwb_id: "BWBR0015703"
+              article: "10a"
+              paragraph: "1"
+              url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10a"
+              juriconnect: "jci1.3:c:BWBR0015703&artikel=10a&lid=1&z=2025-01-01&g=2025-01-01"
+              explanation: "Artikel 10a lid 1 vereist bijstandsgerechtigdheid voor participatieplaats"
+
+          - subject: "$KANS_OP_WERK_GERING"
+            operation: EQUALS
+            value: true
+            legal_basis:
+              law: "Participatiewet"
+              bwb_id: "BWBR0015703"
+              article: "10a"
+              paragraph: "1"
+              url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10a"
+              juriconnect: "jci1.3:c:BWBR0015703&artikel=10a&lid=1&z=2025-01-01&g=2025-01-01"
+              explanation: "Artikel 10a lid 1 vereist geringe kans op inschakeling in arbeidsproces"
+
+      - all:
+          # Voor beschut werk
+          - subject: "$ONTVANGT_BIJSTAND"
+            operation: EQUALS
+            value: true
+            legal_basis:
+              law: "Participatiewet"
+              bwb_id: "BWBR0015703"
+              article: "10b"
+              paragraph: "1"
+              url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10b"
+              juriconnect: "jci1.3:c:BWBR0015703&artikel=10b&lid=1&z=2025-01-01&g=2025-01-01"
+              explanation: "Artikel 10b lid 1 vereist bijstandsgerechtigdheid voor beschut werk"
+
+          - subject: "$UITSLUITEND_BESCHUT_WERK_MOGELIJK"
+            operation: EQUALS
+            value: true
+            legal_basis:
+              law: "Participatiewet"
+              bwb_id: "BWBR0015703"
+              article: "10b"
+              paragraph: "1"
+              url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10b"
+              juriconnect: "jci1.3:c:BWBR0015703&artikel=10b&lid=1&z=2025-01-01&g=2025-01-01"
+              explanation: "Artikel 10b lid 1 vereist dat persoon uitsluitend in beschutte omgeving kan werken"
+
+      - all:
+          # Voor loonkostensubsidie
+          - subject: "$KAN_GEEN_MINIMUMLOON_VERDIENEN"
+            operation: EQUALS
+            value: true
+            legal_basis:
+              law: "Participatiewet"
+              bwb_id: "BWBR0015703"
+              article: "10c"
+              paragraph: "1"
+              sentence: "a"
+              url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10c"
+              juriconnect: "jci1.3:c:BWBR0015703&artikel=10c&lid=1&z=2025-01-01&g=2025-01-01"
+              explanation: "Artikel 10c lid 1 onder a bepaalt doelgroep als personen die geen minimumloon kunnen verdienen"
+
+actions:
+  - output: "is_gerechtigd_participatieplaats"
+    operation: IF
+    legal_basis:
+      law: "Participatiewet"
+      bwb_id: "BWBR0015703"
+      article: "10a"
+      paragraph: "1"
+      url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10a"
+      juriconnect: "jci1.3:c:BWBR0015703&artikel=10a&lid=1&z=2025-01-01&g=2025-01-01"
+      explanation: "Artikel 10a lid 1 bepaalt wie in aanmerking komt voor participatieplaats"
+    conditions:
+      - test:
+          all:
+            - subject: "$ONTVANGT_BIJSTAND"
+              operation: EQUALS
+              value: true
+            - subject: "$KANS_OP_WERK_GERING"
+              operation: EQUALS
+              value: true
+        then: true
+        legal_basis:
+          law: "Participatiewet"
+          bwb_id: "BWBR0015703"
+          article: "10a"
+          paragraph: "1"
+          url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10a"
+          juriconnect: "jci1.3:c:BWBR0015703&artikel=10a&lid=1&z=2025-01-01&g=2025-01-01"
+          explanation: "Gerechtigd tot participatieplaats als bijstand ontvangt en geringe kans op werk heeft"
+      - else: false
+        legal_basis:
+          law: "Participatiewet"
+          bwb_id: "BWBR0015703"
+          article: "10a"
+          paragraph: "1"
+          url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10a"
+          juriconnect: "jci1.3:c:BWBR0015703&artikel=10a&lid=1&z=2025-01-01&g=2025-01-01"
+          explanation: "Niet gerechtigd als niet aan voorwaarden wordt voldaan"
+
+  - output: "maximale_duur_participatieplaats_maanden"
+    value: "$MAXIMUM_DUUR_PARTICIPATIEPLAATS_MAANDEN"
+    legal_basis:
+      law: "Participatiewet"
+      bwb_id: "BWBR0015703"
+      article: "10a"
+      paragraph: "1"
+      url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10a"
+      juriconnect: "jci1.3:c:BWBR0015703&artikel=10a&lid=1&z=2025-01-01&g=2025-01-01"
+      explanation: "Artikel 10a lid 1 bepaalt maximale duur van 2 jaar (24 maanden)"
+
+  - output: "is_gerechtigd_beschut_werk"
+    operation: IF
+    legal_basis:
+      law: "Participatiewet"
+      bwb_id: "BWBR0015703"
+      article: "10b"
+      paragraph: "1"
+      url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10b"
+      juriconnect: "jci1.3:c:BWBR0015703&artikel=10b&lid=1&z=2025-01-01&g=2025-01-01"
+      explanation: "Artikel 10b lid 1 bepaalt wie in aanmerking komt voor beschut werk"
+    conditions:
+      - test:
+          all:
+            - subject: "$ONTVANGT_BIJSTAND"
+              operation: EQUALS
+              value: true
+            - subject: "$UITSLUITEND_BESCHUT_WERK_MOGELIJK"
+              operation: EQUALS
+              value: true
+        then: true
+        legal_basis:
+          law: "Participatiewet"
+          bwb_id: "BWBR0015703"
+          article: "10b"
+          paragraph: "1"
+          url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10b"
+          juriconnect: "jci1.3:c:BWBR0015703&artikel=10b&lid=1&z=2025-01-01&g=2025-01-01"
+          explanation: "Gerechtigd tot beschut werk als bijstand ontvangt en uitsluitend beschut werk mogelijk is"
+      - else: false
+        legal_basis:
+          law: "Participatiewet"
+          bwb_id: "BWBR0015703"
+          article: "10b"
+          paragraph: "1"
+          url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10b"
+          juriconnect: "jci1.3:c:BWBR0015703&artikel=10b&lid=1&z=2025-01-01&g=2025-01-01"
+          explanation: "Niet gerechtigd als niet aan voorwaarden wordt voldaan"
+
+  - output: "is_gerechtigd_loonkostensubsidie"
+    operation: IF
+    legal_basis:
+      law: "Participatiewet"
+      bwb_id: "BWBR0015703"
+      article: "10c"
+      paragraph: "1"
+      url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10c"
+      juriconnect: "jci1.3:c:BWBR0015703&artikel=10c&lid=1&z=2025-01-01&g=2025-01-01"
+      explanation: "Artikel 10c lid 1 bepaalt de doelgroep voor loonkostensubsidie"
+    conditions:
+      - test:
+          subject: "$KAN_GEEN_MINIMUMLOON_VERDIENEN"
+          operation: EQUALS
+          value: true
+        then: true
+        legal_basis:
+          law: "Participatiewet"
+          bwb_id: "BWBR0015703"
+          article: "10c"
+          paragraph: "1"
+          sentence: "a"
+          url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10c"
+          juriconnect: "jci1.3:c:BWBR0015703&artikel=10c&lid=1&z=2025-01-01&g=2025-01-01"
+          explanation: "Behoort tot doelgroep als persoon geen minimumloon kan verdienen"
+      - else: false
+        legal_basis:
+          law: "Participatiewet"
+          bwb_id: "BWBR0015703"
+          article: "10c"
+          paragraph: "1"
+          url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10c"
+          juriconnect: "jci1.3:c:BWBR0015703&artikel=10c&lid=1&z=2025-01-01&g=2025-01-01"
+          explanation: "Niet in doelgroep als wel minimumloon kan verdienen"
+
+  - output: "loonkostensubsidie_bedrag"
+    operation: IF
+    legal_basis:
+      law: "Participatiewet"
+      bwb_id: "BWBR0015703"
+      article: "10d"
+      paragraph: "4"
+      url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10d"
+      juriconnect: "jci1.3:c:BWBR0015703&artikel=10d&lid=4&z=2025-01-01&g=2025-01-01"
+      explanation: "Artikel 10d lid 4 bepaalt de berekeningswijze van de loonkostensubsidie"
+    conditions:
+      - test:
+          subject: "$is_gerechtigd_loonkostensubsidie"
+          operation: EQUALS
+          value: true
+        then:
+          operation: MIN
+          legal_basis:
+            law: "Participatiewet"
+            bwb_id: "BWBR0015703"
+            article: "10d"
+            paragraph: "4"
+            url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10d"
+            juriconnect: "jci1.3:c:BWBR0015703&artikel=10d&lid=4&z=2025-01-01&g=2025-01-01"
+            explanation: "Subsidie is verschil tussen minimumloon en loonwaarde, maximaal 70% van totale minimumloon"
+          values:
+            # Verschil tussen minimumloon + vakantietoeslag en loonwaarde + vakantietoeslag
+            - operation: SUBTRACT
+              values:
+                - operation: MULTIPLY
+                  values:
+                    - "$MINIMUMLOON_MAANDELIJKS"
+                    - operation: ADD
+                      values:
+                        - 1
+                        - "$VAKANTIETOESLAG_PERCENTAGE"
+                - operation: MULTIPLY
+                  values:
+                    - "$LOONWAARDE"
+                    - operation: ADD
+                      values:
+                        - 1
+                        - "$VAKANTIETOESLAG_PERCENTAGE"
+            # Maximum: 70% van minimumloon + vakantietoeslag + werkgeversbijdrage
+            - operation: MULTIPLY
+              values:
+                - operation: MULTIPLY
+                  values:
+                    - "$MINIMUMLOON_MAANDELIJKS"
+                    - operation: ADD
+                      values:
+                        - 1
+                        - "$VAKANTIETOESLAG_PERCENTAGE"
+                - operation: ADD
+                  values:
+                    - "$PERCENTAGE_LOONKOSTENSUBSIDIE_MAXIMUM"
+                    - "$WERKGEVERSBIJDRAGE_PERCENTAGE"
+      - else: 0
+        legal_basis:
+          law: "Participatiewet"
+          bwb_id: "BWBR0015703"
+          article: "10d"
+          paragraph: "1"
+          url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel10d"
+          juriconnect: "jci1.3:c:BWBR0015703&artikel=10d&lid=1&z=2025-01-01&g=2025-01-01"
+          explanation: "Geen subsidie als niet gerechtigd"

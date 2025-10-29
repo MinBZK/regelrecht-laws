@@ -1,0 +1,531 @@
+$id: https://raw.githubusercontent.com/MinBZK/poc-machine-law/refs/heads/main/schema/v0.1.6/schema.json
+uuid: c9f0e4d5-2d67-4b93-cf34-0f1g5c9e8d3b
+name: Bepalen tegenprestatie verplichting
+law: participatiewet/tegenprestatie
+valid_from: 2025-01-01
+service: "SZW"
+legal_basis:
+  law: "Participatiewet"
+  bwb_id: "BWBR0015703"
+  article: "9"
+  paragraph: "1"
+  sentence: "c"
+  url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
+  juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=1&z=2025-01-01&g=2025-01-01"
+  explanation: "Deze service implementeert de tegenprestatie verplichting volgens artikel 9 lid 1 onder c van de Participatiewet"
+description: >
+  Landelijke regels voor het bepalen van de tegenprestatie verplichting volgens de Participatiewet.
+  Artikel 9 lid 1 onder c bepaalt de verplichting om onbeloonde maatschappelijk nuttige werkzaamheden te verrichten.
+  Artikel 9 lid 3 en 9a bepalen vrijstellingen van deze verplichting.
+  Artikel 8a bepaalt dat gemeenten via verordening voorwaarden voor tegenprestatie vaststellen.
+
+references:
+  - law: "Participatiewet"
+    article: "8a"
+    url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel8a"
+  - law: "Participatiewet"
+    article: "9"
+    url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
+  - law: "Participatiewet"
+    article: "9a"
+    url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9a"
+
+properties:
+  parameters:
+    - name: "BSN"
+      description: "BSN van de persoon"
+      type: "string"
+      required: true
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "9"
+        paragraph: "1"
+        sentence: "c"
+        url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=1&z=2025-01-01&g=2025-01-01"
+        explanation: "BSN is nodig voor identificatie van de persoon die tegenprestatie moet verrichten"
+
+  input:
+    - name: "LEEFTIJD"
+      description: "Leeftijd van de persoon"
+      type: "number"
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "9"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=1&z=2025-01-01&g=2025-01-01"
+        explanation: "Artikel 9 lid 1 bepaalt verplichtingen voor personen van 18 jaar tot pensioenleeftijd"
+      service_reference:
+        service: "RvIG"
+        field: "leeftijd"
+        law: "wet_brp"
+        parameters:
+          - name: "BSN"
+            reference: "$BSN"
+
+    - name: "PENSIOENLEEFTIJD"
+      description: "AOW-leeftijd voor deze persoon"
+      type: "number"
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "9"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=1&z=2025-01-01&g=2025-01-01"
+        explanation: "Artikel 9 lid 1 bepaalt verplichtingen tot de pensioengerechtigde leeftijd"
+      service_reference:
+        service: "SVB"
+        field: "pensioenleeftijd"
+        law: "algemene_ouderdomswet/leeftijdsbepaling"
+        parameters:
+          - name: "GEBOORTEDATUM"
+            reference: "$GEBOORTEDATUM"
+
+    - name: "GEBOORTEDATUM"
+      description: "Geboortedatum van de persoon"
+      type: "date"
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "9"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=1&z=2025-01-01&g=2025-01-01"
+        explanation: "Geboortedatum is nodig om de leeftijd en pensioenleeftijd te bepalen"
+      service_reference:
+        service: "RvIG"
+        field: "geboortedatum"
+        law: "wet_brp"
+        parameters:
+          - name: "BSN"
+            reference: "$BSN"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+
+    - name: "ONTVANGT_BIJSTAND"
+      description: "Ontvangt algemene bijstand"
+      type: "boolean"
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "9"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=1&z=2025-01-01&g=2025-01-01"
+        explanation: "Artikel 9 lid 1 bepaalt verplichtingen voor bijstandsgerechtigden"
+      service_reference:
+        service: "SZW"
+        field: "is_gerechtigd"
+        law: "participatiewet/bijstand"
+        parameters:
+          - name: "BSN"
+            reference: "$BSN"
+
+    - name: "IS_VOLLEDIG_ARBEIDSONGESCHIKT"
+      description: "Is volledig en duurzaam arbeidsongeschikt"
+      type: "boolean"
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "9"
+        paragraph: "3"
+        sentence: "b"
+        url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=3&z=2025-01-01&g=2025-01-01"
+        explanation: "Artikel 9 lid 3 onder b bepaalt vrijstelling voor volledig en duurzaam arbeidsongeschikten"
+      service_reference:
+        service: "UWV"
+        field: "is_volledig_duurzaam_arbeidsongeschikt"
+        law: "wet_wia"
+        parameters:
+          - name: "BSN"
+            reference: "$BSN"
+
+    - name: "IS_ALLEENSTAANDE_OUDER"
+      description: "Is alleenstaande ouder"
+      type: "boolean"
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "9"
+        paragraph: "3"
+        sentence: "a"
+        url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=3&z=2025-01-01&g=2025-01-01"
+        explanation: "Artikel 9 lid 3 onder a bepaalt mogelijke vrijstelling voor alleenstaande ouders met kinderen jonger dan 12 jaar"
+      service_reference:
+        service: "RvIG"
+        field: "is_alleenstaande_ouder"
+        law: "wet_brp"
+        parameters:
+          - name: "BSN"
+            reference: "$BSN"
+
+    - name: "HEEFT_KIND_ONDER_12"
+      description: "Heeft kinderen jonger dan 12 jaar"
+      type: "boolean"
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "9"
+        paragraph: "3"
+        sentence: "a"
+        url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=3&z=2025-01-01&g=2025-01-01"
+        explanation: "Artikel 9 lid 3 onder a bepaalt vrijstelling voor alleenstaande ouders met kinderen jonger dan 12 jaar"
+      service_reference:
+        service: "RvIG"
+        field: "heeft_kind_onder_leeftijd"
+        law: "wet_brp"
+        parameters:
+          - name: "BSN"
+            reference: "$BSN"
+          - name: "LEEFTIJD_GRENS"
+            value: 12
+
+    - name: "HEEFT_KIND_ONDER_5"
+      description: "Heeft kinderen jonger dan 5 jaar"
+      type: "boolean"
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "9a"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9a"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=9a&lid=1&z=2025-01-01&g=2025-01-01"
+        explanation: "Artikel 9a lid 1 bepaalt vrijstelling voor alleenstaande ouders met kinderen jonger dan 5 jaar"
+      service_reference:
+        service: "RvIG"
+        field: "heeft_kind_onder_leeftijd"
+        law: "wet_brp"
+        parameters:
+          - name: "BSN"
+            reference: "$BSN"
+          - name: "LEEFTIJD_GRENS"
+            value: 5
+
+    - name: "HEEFT_ZORGTAKEN"
+      description: "Heeft dringende zorgtaken die niet via artikel 7 voorzieningen kunnen worden opgelost"
+      type: "boolean"
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "9"
+        paragraph: "2"
+        url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=2&z=2025-01-01&g=2025-01-01"
+        explanation: "Artikel 9 lid 2 bepaalt dat zorgtaken als dringende redenen kunnen worden aangemerkt voor tijdelijke ontheffing"
+      service_reference:
+        service: "SZW"
+        field: "heeft_dringende_zorgtaken"
+        law: "participatiewet/reintegratie"
+        parameters:
+          - name: "BSN"
+            reference: "$BSN"
+
+  output:
+    - name: "heeft_tegenprestatie_verplichting"
+      description: "Heeft verplichting om onbeloonde maatschappelijk nuttige werkzaamheden te verrichten"
+      type: "boolean"
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "9"
+        paragraph: "1"
+        sentence: "c"
+        url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=1&z=2025-01-01&g=2025-01-01"
+        explanation: "Artikel 9 lid 1 onder c bepaalt de verplichting tot tegenprestatie"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+
+    - name: "is_vrijgesteld_tegenprestatie"
+      description: "Is vrijgesteld van tegenprestatie verplichting"
+      type: "boolean"
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "9"
+        paragraph: "3"
+        url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=3&z=2025-01-01&g=2025-01-01"
+        explanation: "Artikel 9 lid 3 bepaalt vrijstellingen van tegenprestatie"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+
+    - name: "reden_vrijstelling"
+      description: "Reden voor vrijstelling van tegenprestatie"
+      type: "string"
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "9"
+        paragraph: "3"
+        url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=3&z=2025-01-01&g=2025-01-01"
+        explanation: "Artikel 9 lid 3 en 9a bepalen verschillende vrijstellingsgronden"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+
+  definitions:
+    MINIMUM_LEEFTIJD: 18  # Artikel 9 lid 1: vanaf 18 jaar verplichtingen
+    MAXIMUM_LEEFTIJD_KIND_VRIJSTELLING_9: 12  # Artikel 9 lid 3a: kinderen jonger dan 12 jaar
+    MAXIMUM_LEEFTIJD_KIND_VRIJSTELLING_9A: 5  # Artikel 9a: kinderen jonger dan 5 jaar
+    REDEN_VRIJSTELLING_ARBEIDSONGESCHIKT: "Volledig en duurzaam arbeidsongeschikt"
+    REDEN_VRIJSTELLING_ALLEENSTAANDE_OUDER_12: "Alleenstaande ouder met kind(eren) jonger dan 12 jaar"
+    REDEN_VRIJSTELLING_ALLEENSTAANDE_OUDER_5: "Alleenstaande ouder met kind(eren) jonger dan 5 jaar"
+    REDEN_VRIJSTELLING_ZORGTAKEN: "Dringende zorgtaken"
+    REDEN_GEEN_VRIJSTELLING: "Geen vrijstelling"
+
+requirements:
+  - all:
+      # Leeftijdseis
+      - subject: "$LEEFTIJD"
+        operation: GREATER_OR_EQUAL
+        value: "$MINIMUM_LEEFTIJD"
+        legal_basis:
+          law: "Participatiewet"
+          bwb_id: "BWBR0015703"
+          article: "9"
+          paragraph: "1"
+          url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
+          juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=1&z=2025-01-01&g=2025-01-01"
+          explanation: "Artikel 9 lid 1 bepaalt verplichtingen voor personen vanaf 18 jaar"
+
+      - subject: "$LEEFTIJD"
+        operation: LESS_THAN
+        value: "$PENSIOENLEEFTIJD"
+        legal_basis:
+          law: "Participatiewet"
+          bwb_id: "BWBR0015703"
+          article: "9"
+          paragraph: "1"
+          url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
+          juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=1&z=2025-01-01&g=2025-01-01"
+          explanation: "Artikel 9 lid 1 bepaalt verplichtingen tot pensioengerechtigde leeftijd"
+
+      # Ontvangt bijstand
+      - subject: "$ONTVANGT_BIJSTAND"
+        operation: EQUALS
+        value: true
+        legal_basis:
+          law: "Participatiewet"
+          bwb_id: "BWBR0015703"
+          article: "9"
+          paragraph: "1"
+          url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
+          juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=1&z=2025-01-01&g=2025-01-01"
+          explanation: "Artikel 9 lid 1 bepaalt verplichtingen voor bijstandsgerechtigden"
+
+actions:
+  - output: "is_vrijgesteld_tegenprestatie"
+    operation: IF
+    legal_basis:
+      law: "Participatiewet"
+      bwb_id: "BWBR0015703"
+      article: "9"
+      paragraph: "3"
+      url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
+      juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=3&z=2025-01-01&g=2025-01-01"
+      explanation: "Artikel 9 lid 3 bepaalt vrijstellingen van tegenprestatie"
+    conditions:
+      - test:
+          subject: "$IS_VOLLEDIG_ARBEIDSONGESCHIKT"
+          operation: EQUALS
+          value: true
+        then: true
+        legal_basis:
+          law: "Participatiewet"
+          bwb_id: "BWBR0015703"
+          article: "9"
+          paragraph: "3"
+          sentence: "b"
+          url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
+          juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=3&z=2025-01-01&g=2025-01-01"
+          explanation: "Volledig en duurzaam arbeidsongeschikten zijn vrijgesteld"
+      - test:
+          all:
+            - subject: "$IS_ALLEENSTAANDE_OUDER"
+              operation: EQUALS
+              value: true
+            - subject: "$HEEFT_KIND_ONDER_5"
+              operation: EQUALS
+              value: true
+        then: true
+        legal_basis:
+          law: "Participatiewet"
+          bwb_id: "BWBR0015703"
+          article: "9a"
+          paragraph: "1"
+          url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9a"
+          juriconnect: "jci1.3:c:BWBR0015703&artikel=9a&lid=1&z=2025-01-01&g=2025-01-01"
+          explanation: "Alleenstaande ouders met kinderen jonger dan 5 jaar kunnen vrijstelling aanvragen"
+      - test:
+          all:
+            - subject: "$IS_ALLEENSTAANDE_OUDER"
+              operation: EQUALS
+              value: true
+            - subject: "$HEEFT_KIND_ONDER_12"
+              operation: EQUALS
+              value: true
+        then: true
+        legal_basis:
+          law: "Participatiewet"
+          bwb_id: "BWBR0015703"
+          article: "9"
+          paragraph: "3"
+          sentence: "a"
+          url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
+          juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=3&z=2025-01-01&g=2025-01-01"
+          explanation: "Alleenstaande ouders met kinderen jonger dan 12 jaar zijn vrijgesteld"
+      - test:
+          subject: "$HEEFT_ZORGTAKEN"
+          operation: EQUALS
+          value: true
+        then: true
+        legal_basis:
+          law: "Participatiewet"
+          bwb_id: "BWBR0015703"
+          article: "9"
+          paragraph: "2"
+          url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
+          juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=2&z=2025-01-01&g=2025-01-01"
+          explanation: "Zorgtaken kunnen als dringende redenen voor vrijstelling worden aangemerkt"
+      - else: false
+        legal_basis:
+          law: "Participatiewet"
+          bwb_id: "BWBR0015703"
+          article: "9"
+          paragraph: "1"
+          sentence: "c"
+          url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
+          juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=1&z=2025-01-01&g=2025-01-01"
+          explanation: "Geen vrijstelling, standaard tegenprestatie verplichting"
+
+  - output: "heeft_tegenprestatie_verplichting"
+    operation: IF
+    legal_basis:
+      law: "Participatiewet"
+      bwb_id: "BWBR0015703"
+      article: "9"
+      paragraph: "1"
+      sentence: "c"
+      url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
+      juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=1&z=2025-01-01&g=2025-01-01"
+      explanation: "Artikel 9 lid 1 onder c bepaalt de tegenprestatie verplichting"
+    conditions:
+      - test:
+          subject: "$is_vrijgesteld_tegenprestatie"
+          operation: EQUALS
+          value: true
+        then: false
+        legal_basis:
+          law: "Participatiewet"
+          bwb_id: "BWBR0015703"
+          article: "9"
+          paragraph: "3"
+          url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
+          juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=3&z=2025-01-01&g=2025-01-01"
+          explanation: "Geen verplichting als vrijgesteld"
+      - else: true
+        legal_basis:
+          law: "Participatiewet"
+          bwb_id: "BWBR0015703"
+          article: "9"
+          paragraph: "1"
+          sentence: "c"
+          url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
+          juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=1&z=2025-01-01&g=2025-01-01"
+          explanation: "Standaard tegenprestatie verplichting als niet vrijgesteld"
+
+  - output: "reden_vrijstelling"
+    operation: IF
+    legal_basis:
+      law: "Participatiewet"
+      bwb_id: "BWBR0015703"
+      article: "9"
+      paragraph: "3"
+      url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
+      juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=3&z=2025-01-01&g=2025-01-01"
+      explanation: "Artikel 9 lid 3 en 9a bepalen verschillende vrijstellingsgronden"
+    conditions:
+      - test:
+          subject: "$IS_VOLLEDIG_ARBEIDSONGESCHIKT"
+          operation: EQUALS
+          value: true
+        then: "$REDEN_VRIJSTELLING_ARBEIDSONGESCHIKT"
+        legal_basis:
+          law: "Participatiewet"
+          bwb_id: "BWBR0015703"
+          article: "9"
+          paragraph: "3"
+          sentence: "b"
+          url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
+          juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=3&z=2025-01-01&g=2025-01-01"
+          explanation: "Vrijstelling wegens volledige en duurzame arbeidsongeschiktheid"
+      - test:
+          all:
+            - subject: "$IS_ALLEENSTAANDE_OUDER"
+              operation: EQUALS
+              value: true
+            - subject: "$HEEFT_KIND_ONDER_5"
+              operation: EQUALS
+              value: true
+        then: "$REDEN_VRIJSTELLING_ALLEENSTAANDE_OUDER_5"
+        legal_basis:
+          law: "Participatiewet"
+          bwb_id: "BWBR0015703"
+          article: "9a"
+          paragraph: "1"
+          url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9a"
+          juriconnect: "jci1.3:c:BWBR0015703&artikel=9a&lid=1&z=2025-01-01&g=2025-01-01"
+          explanation: "Vrijstelling voor alleenstaande ouders met kinderen jonger dan 5 jaar"
+      - test:
+          all:
+            - subject: "$IS_ALLEENSTAANDE_OUDER"
+              operation: EQUALS
+              value: true
+            - subject: "$HEEFT_KIND_ONDER_12"
+              operation: EQUALS
+              value: true
+        then: "$REDEN_VRIJSTELLING_ALLEENSTAANDE_OUDER_12"
+        legal_basis:
+          law: "Participatiewet"
+          bwb_id: "BWBR0015703"
+          article: "9"
+          paragraph: "3"
+          sentence: "a"
+          url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
+          juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=3&z=2025-01-01&g=2025-01-01"
+          explanation: "Vrijstelling voor alleenstaande ouders met kinderen jonger dan 12 jaar"
+      - test:
+          subject: "$HEEFT_ZORGTAKEN"
+          operation: EQUALS
+          value: true
+        then: "$REDEN_VRIJSTELLING_ZORGTAKEN"
+        legal_basis:
+          law: "Participatiewet"
+          bwb_id: "BWBR0015703"
+          article: "9"
+          paragraph: "2"
+          url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
+          juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=2&z=2025-01-01&g=2025-01-01"
+          explanation: "Vrijstelling wegens dringende zorgtaken"
+      - else: "$REDEN_GEEN_VRIJSTELLING"
+        legal_basis:
+          law: "Participatiewet"
+          bwb_id: "BWBR0015703"
+          article: "9"
+          paragraph: "1"
+          sentence: "c"
+          url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
+          juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=1&z=2025-01-01&g=2025-01-01"
+          explanation: "Geen vrijstellingsgrond van toepassing"
