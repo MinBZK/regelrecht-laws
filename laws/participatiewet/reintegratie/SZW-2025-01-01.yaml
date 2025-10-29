@@ -44,10 +44,10 @@ properties:
         juriconnect: "jci1.3:c:BWBR0015703&artikel=7&lid=1&z=2025-01-01&g=2025-01-01"
         explanation: "BSN is nodig voor identificatie van de persoon die in aanmerking komt voor re-integratie ondersteuning"
 
-  input:
-    - name: "LEEFTIJD"
-      description: "Leeftijd van de persoon"
-      type: "number"
+  sources:
+    - name: "GEBOORTEDATUM"
+      description: "Geboortedatum van de persoon"
+      type: "date"
       legal_basis:
         law: "Participatiewet"
         bwb_id: "BWBR0015703"
@@ -55,14 +55,16 @@ properties:
         paragraph: "1"
         url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
         juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=1&z=2025-01-01&g=2025-01-01"
-        explanation: "Artikel 9 lid 1 bepaalt arbeidsverplichtingen voor personen vanaf 18 jaar tot pensioenleeftijd"
-      service_reference:
-        service: "RvIG"
-        field: "leeftijd"
-        law: "wet_brp"
-        parameters:
-          - name: "BSN"
-            reference: "$BSN"
+        explanation: "Geboortedatum is nodig om de leeftijd en pensioenleeftijd te bepalen"
+      source_reference:
+        table: "personen"
+        field: "geboortedatum"
+        select_on:
+          - name: "bsn"
+            value: "$BSN"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
 
     - name: "PENSIOENLEEFTIJD"
       description: "AOW-leeftijd voor deze persoon"
@@ -75,35 +77,12 @@ properties:
         url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
         juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=1&z=2025-01-01&g=2025-01-01"
         explanation: "Artikel 9 lid 1 bepaalt arbeidsverplichtingen tot de pensioengerechtigde leeftijd"
-      service_reference:
-        service: "SVB"
+      source_reference:
+        table: "ouderdomspensioenen"
         field: "pensioenleeftijd"
-        law: "algemene_ouderdomswet/leeftijdsbepaling"
-        parameters:
-          - name: "GEBOORTEDATUM"
-            reference: "$GEBOORTEDATUM"
-
-    - name: "GEBOORTEDATUM"
-      description: "Geboortedatum van de persoon"
-      type: "date"
-      legal_basis:
-        law: "Participatiewet"
-        bwb_id: "BWBR0015703"
-        article: "9"
-        paragraph: "1"
-        url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
-        juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=1&z=2025-01-01&g=2025-01-01"
-        explanation: "Geboortedatum is nodig om de leeftijd en pensioenleeftijd te bepalen"
-      service_reference:
-        service: "RvIG"
-        field: "geboortedatum"
-        law: "wet_brp"
-        parameters:
-          - name: "BSN"
-            reference: "$BSN"
-      temporal:
-        type: "point_in_time"
-        reference: "$calculation_date"
+        select_on:
+          - name: "geboortedatum"
+            value: "$GEBOORTEDATUM"
 
     - name: "ONTVANGT_BIJSTAND"
       description: "Ontvangt algemene bijstand"
@@ -117,13 +96,12 @@ properties:
         url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel7"
         juriconnect: "jci1.3:c:BWBR0015703&artikel=7&lid=1&z=2025-01-01&g=2025-01-01"
         explanation: "Artikel 7 lid 1 onder a bepaalt dat bijstandsgerechtigden in aanmerking komen voor re-integratie ondersteuning"
-      service_reference:
-        service: "SZW"
+      source_reference:
+        table: "bijstand"
         field: "is_gerechtigd"
-        law: "participatiewet/bijstand"
-        parameters:
-          - name: "BSN"
-            reference: "$BSN"
+        select_on:
+          - name: "bsn"
+            value: "$BSN"
 
     - name: "IS_VOLLEDIG_ARBEIDSONGESCHIKT"
       description: "Is volledig en duurzaam arbeidsongeschikt"
@@ -137,13 +115,12 @@ properties:
         url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
         juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=3&z=2025-01-01&g=2025-01-01"
         explanation: "Artikel 9 lid 3 onder b bepaalt vrijstelling van verplichtingen voor volledig en duurzaam arbeidsongeschikten"
-      service_reference:
-        service: "UWV"
+      source_reference:
+        table: "wia"
         field: "is_volledig_duurzaam_arbeidsongeschikt"
-        law: "wet_wia"
-        parameters:
-          - name: "BSN"
-            reference: "$BSN"
+        select_on:
+          - name: "bsn"
+            value: "$BSN"
 
     - name: "IS_ALLEENSTAANDE_OUDER"
       description: "Is alleenstaande ouder"
@@ -157,13 +134,12 @@ properties:
         url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
         juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=3&z=2025-01-01&g=2025-01-01"
         explanation: "Artikel 9 lid 3 onder a bepaalt mogelijke vrijstelling voor alleenstaande ouders met kinderen jonger dan 12 jaar"
-      service_reference:
-        service: "RvIG"
+      source_reference:
+        table: "relaties"
         field: "is_alleenstaande_ouder"
-        law: "wet_brp"
-        parameters:
-          - name: "BSN"
-            reference: "$BSN"
+        select_on:
+          - name: "bsn"
+            value: "$BSN"
 
     - name: "HEEFT_KIND_ONDER_12"
       description: "Heeft kinderen jonger dan 12 jaar"
@@ -177,15 +153,12 @@ properties:
         url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
         juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=3&z=2025-01-01&g=2025-01-01"
         explanation: "Artikel 9 lid 3 onder a bepaalt vrijstelling voor alleenstaande ouders met kinderen jonger dan 12 jaar"
-      service_reference:
-        service: "RvIG"
-        field: "heeft_kind_onder_leeftijd"
-        law: "wet_brp"
-        parameters:
-          - name: "BSN"
-            reference: "$BSN"
-          - name: "LEEFTIJD_GRENS"
-            value: 12
+      source_reference:
+        table: "relaties"
+        field: "heeft_kind_onder_leeftijd_12"
+        select_on:
+          - name: "bsn"
+            value: "$BSN"
 
   output:
     - name: "is_gerechtigd_reintegratie"
@@ -234,15 +207,12 @@ properties:
         reference: "$calculation_date"
 
   definitions:
-    MINIMUM_LEEFTIJD: 18  # Artikel 9 lid 1: vanaf 18 jaar arbeidsverplichtingen
-    MAXIMUM_LEEFTIJD_KIND_VRIJSTELLING: 12  # Artikel 9 lid 3 onder a: kinderen jonger dan 12 jaar
+    MINIMUM_LEEFTIJD_JAREN: 18  # Artikel 9 lid 1: vanaf 18 jaar arbeidsverplichtingen
 
 requirements:
   - all:
-      # Leeftijdseis
-      - subject: "$LEEFTIJD"
-        operation: GREATER_OR_EQUAL
-        value: "$MINIMUM_LEEFTIJD"
+      # Leeftijdseis: minimaal 18 jaar
+      - operation: GREATER_OR_EQUAL
         legal_basis:
           law: "Participatiewet"
           bwb_id: "BWBR0015703"
@@ -251,10 +221,16 @@ requirements:
           url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
           juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=1&z=2025-01-01&g=2025-01-01"
           explanation: "Artikel 9 lid 1 bepaalt verplichtingen voor personen vanaf 18 jaar"
+        values:
+          - operation: SUBTRACT_DATE
+            unit: "years"
+            values:
+              - "$calculation_date"
+              - "$GEBOORTEDATUM"
+          - "$MINIMUM_LEEFTIJD_JAREN"
 
-      - subject: "$LEEFTIJD"
-        operation: LESS_THAN
-        value: "$PENSIOENLEEFTIJD"
+      # Leeftijdseis: jonger dan pensioenleeftijd
+      - operation: LESS_THAN
         legal_basis:
           law: "Participatiewet"
           bwb_id: "BWBR0015703"
@@ -263,6 +239,13 @@ requirements:
           url: "https://wetten.overheid.nl/BWBR0015703/2025-01-01#Hoofdstuk2_Paragraaf2.1_Artikel9"
           juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=1&z=2025-01-01&g=2025-01-01"
           explanation: "Artikel 9 lid 1 bepaalt verplichtingen tot pensioengerechtigde leeftijd"
+        values:
+          - operation: SUBTRACT_DATE
+            unit: "years"
+            values:
+              - "$calculation_date"
+              - "$GEBOORTEDATUM"
+          - "$PENSIOENLEEFTIJD"
 
       # Ontvangt bijstand
       - subject: "$ONTVANGT_BIJSTAND"
@@ -369,7 +352,8 @@ actions:
           juriconnect: "jci1.3:c:BWBR0015703&artikel=9&lid=3&z=2025-01-01&g=2025-01-01"
           explanation: "Vrijstelling voor volledig en duurzaam arbeidsongeschikten"
       - test:
-          all:
+          operation: AND
+          values:
             - subject: "$IS_ALLEENSTAANDE_OUDER"
               operation: EQUALS
               value: true
