@@ -2,7 +2,7 @@ $id: https://raw.githubusercontent.com/MinBZK/poc-machine-law/refs/heads/main/sc
 uuid: b8e9f3d4-1c56-4a92-be23-9e0f4b8d7c2a
 name: Bepalen recht op participatiebanen en loonkostensubsidie
 law: participatiewet/participatiebanen
-valid_from: 2025-01-01
+valid_from: "2025-01-01"
 service: "SZW"
 legal_basis:
   law: "Participatiewet"
@@ -76,6 +76,8 @@ properties:
         field: "is_gerechtigd"
         select_on:
           - name: "bsn"
+            description: "BSN van de persoon"
+            type: "string"
             value: "$BSN"
 
     - name: "KANS_OP_WERK_GERING"
@@ -94,6 +96,9 @@ properties:
         field: "kans_op_werk_gering"
         select_on:
           - name: "bsn"
+
+            description: "BSN van de persoon"
+            type: "string"
             value: "$BSN"
 
     - name: "UITSLUITEND_BESCHUT_WERK_MOGELIJK"
@@ -112,6 +117,9 @@ properties:
         field: "uitsluitend_beschut_werk_mogelijk"
         select_on:
           - name: "bsn"
+
+            description: "BSN van de persoon"
+            type: "string"
             value: "$BSN"
 
     - name: "LOONWAARDE"
@@ -134,6 +142,9 @@ properties:
         field: "loonwaarde_maandelijks"
         select_on:
           - name: "bsn"
+
+            description: "BSN van de persoon"
+            type: "string"
             value: "$BSN"
 
     - name: "KAN_GEEN_MINIMUMLOON_VERDIENEN"
@@ -153,6 +164,9 @@ properties:
         field: "kan_geen_minimumloon_verdienen"
         select_on:
           - name: "bsn"
+
+            description: "BSN van de persoon"
+            type: "string"
             value: "$BSN"
 
     - name: "MINIMUMLOON_MAANDELIJKS"
@@ -175,6 +189,9 @@ properties:
         field: "minimumloon_maandelijks"
         select_on:
           - name: "referentiedatum"
+
+            description: "Referentiedatum voor de gegevens"
+            type: "string"
             value: "$calculation_date"
 
     - name: "VAKANTIETOESLAG_PERCENTAGE"
@@ -197,6 +214,9 @@ properties:
         field: "vakantietoeslag_percentage"
         select_on:
           - name: "referentiedatum"
+
+            description: "Referentiedatum voor de gegevens"
+            type: "string"
             value: "$calculation_date"
 
     - name: "WERKGEVERSBIJDRAGE_PERCENTAGE"
@@ -219,6 +239,9 @@ properties:
         field: "werkgeversbijdrage_percentage"
         select_on:
           - name: "referentiedatum"
+
+            description: "Referentiedatum voor de gegevens"
+            type: "string"
             value: "$calculation_date"
 
   output:

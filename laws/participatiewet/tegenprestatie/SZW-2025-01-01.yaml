@@ -1,8 +1,8 @@
 $id: https://raw.githubusercontent.com/MinBZK/poc-machine-law/refs/heads/main/schema/v0.1.6/schema.json
-uuid: c9f0e4d5-2d67-4b93-cf34-0f1g5c9e8d3b
+uuid: c9f0e4d5-2d67-4b93-8f34-0f1f5c9e8d3b
 name: Bepalen tegenprestatie verplichting
 law: participatiewet/tegenprestatie
-valid_from: 2025-01-01
+valid_from: "2025-01-01"
 service: "SZW"
 legal_basis:
   law: "Participatiewet"
@@ -63,6 +63,9 @@ properties:
         field: "geboortedatum"
         select_on:
           - name: "bsn"
+
+            description: "BSN van de persoon"
+            type: "string"
             value: "$BSN"
       temporal:
         type: "point_in_time"
@@ -84,6 +87,9 @@ properties:
         field: "pensioenleeftijd"
         select_on:
           - name: "geboortedatum"
+
+            description: "Geboortedatum van de persoon"
+            type: "string"
             value: "$GEBOORTEDATUM"
 
     - name: "ONTVANGT_BIJSTAND"
@@ -102,6 +108,9 @@ properties:
         field: "is_gerechtigd"
         select_on:
           - name: "bsn"
+
+            description: "BSN van de persoon"
+            type: "string"
             value: "$BSN"
 
     - name: "IS_VOLLEDIG_ARBEIDSONGESCHIKT"
@@ -121,6 +130,9 @@ properties:
         field: "is_volledig_duurzaam_arbeidsongeschikt"
         select_on:
           - name: "bsn"
+
+            description: "BSN van de persoon"
+            type: "string"
             value: "$BSN"
 
     - name: "IS_ALLEENSTAANDE_OUDER"
@@ -140,6 +152,9 @@ properties:
         field: "is_alleenstaande_ouder"
         select_on:
           - name: "bsn"
+
+            description: "BSN van de persoon"
+            type: "string"
             value: "$BSN"
 
     - name: "HEEFT_KIND_ONDER_12"
@@ -159,6 +174,9 @@ properties:
         field: "heeft_kind_onder_leeftijd_12"
         select_on:
           - name: "bsn"
+
+            description: "BSN van de persoon"
+            type: "string"
             value: "$BSN"
 
     - name: "HEEFT_KIND_ONDER_5"
@@ -177,6 +195,9 @@ properties:
         field: "heeft_kind_onder_leeftijd_5"
         select_on:
           - name: "bsn"
+
+            description: "BSN van de persoon"
+            type: "string"
             value: "$BSN"
 
     - name: "HEEFT_ZORGTAKEN"
@@ -195,6 +216,9 @@ properties:
         field: "heeft_dringende_zorgtaken"
         select_on:
           - name: "bsn"
+
+            description: "BSN van de persoon"
+            type: "string"
             value: "$BSN"
 
   output:

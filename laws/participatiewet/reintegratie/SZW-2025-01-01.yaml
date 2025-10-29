@@ -2,7 +2,7 @@ $id: https://raw.githubusercontent.com/MinBZK/poc-machine-law/refs/heads/main/sc
 uuid: a7f8d2c3-9b45-4e89-bf12-8d9e3a7c6b1f
 name: Bepalen recht op re-integratie ondersteuning
 law: participatiewet/reintegratie
-valid_from: 2025-01-01
+valid_from: "2025-01-01"
 service: "SZW"
 legal_basis:
   law: "Participatiewet"
@@ -61,6 +61,9 @@ properties:
         field: "geboortedatum"
         select_on:
           - name: "bsn"
+
+            description: "BSN van de persoon"
+            type: "string"
             value: "$BSN"
       temporal:
         type: "point_in_time"
@@ -82,6 +85,9 @@ properties:
         field: "pensioenleeftijd"
         select_on:
           - name: "geboortedatum"
+
+            description: "Geboortedatum van de persoon"
+            type: "string"
             value: "$GEBOORTEDATUM"
 
     - name: "ONTVANGT_BIJSTAND"
@@ -101,6 +107,9 @@ properties:
         field: "is_gerechtigd"
         select_on:
           - name: "bsn"
+
+            description: "BSN van de persoon"
+            type: "string"
             value: "$BSN"
 
     - name: "IS_VOLLEDIG_ARBEIDSONGESCHIKT"
@@ -120,6 +129,9 @@ properties:
         field: "is_volledig_duurzaam_arbeidsongeschikt"
         select_on:
           - name: "bsn"
+
+            description: "BSN van de persoon"
+            type: "string"
             value: "$BSN"
 
     - name: "IS_ALLEENSTAANDE_OUDER"
@@ -139,6 +151,9 @@ properties:
         field: "is_alleenstaande_ouder"
         select_on:
           - name: "bsn"
+
+            description: "BSN van de persoon"
+            type: "string"
             value: "$BSN"
 
     - name: "HEEFT_KIND_ONDER_12"
@@ -158,6 +173,9 @@ properties:
         field: "heeft_kind_onder_leeftijd_12"
         select_on:
           - name: "bsn"
+
+            description: "BSN van de persoon"
+            type: "string"
             value: "$BSN"
 
   output:
