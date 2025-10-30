@@ -2,7 +2,7 @@ $id: https://raw.githubusercontent.com/MinBZK/poc-machine-law/refs/heads/main/sc
 uuid: a7f8d2c3-9b45-4e89-bf12-8d9e3a7c6b1f
 name: Bepalen recht op re-integratie ondersteuning
 law: participatiewet/reintegratie
-valid_from: "2025-01-01"
+valid_from: 2025-01-01
 service: "SZW"
 legal_basis:
   law: "Participatiewet"
