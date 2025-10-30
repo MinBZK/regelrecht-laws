@@ -2,7 +2,7 @@ $id: https://raw.githubusercontent.com/MinBZK/poc-machine-law/refs/heads/main/sc
 uuid: b8e9f3d4-1c56-4a92-be23-9e0f4b8d7c2a
 name: Bepalen recht op participatiebanen en loonkostensubsidie
 law: participatiewet/participatiebanen
-valid_from: "2025-01-01"
+valid_from: 2025-01-01
 service: "SZW"
 legal_basis:
   law: "Participatiewet"

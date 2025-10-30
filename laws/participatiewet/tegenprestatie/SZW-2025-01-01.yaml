@@ -2,7 +2,7 @@ $id: https://raw.githubusercontent.com/MinBZK/poc-machine-law/refs/heads/main/sc
 uuid: c9f0e4d5-2d67-4b93-8f34-0f1f5c9e8d3b
 name: Bepalen tegenprestatie verplichting
 law: participatiewet/tegenprestatie
-valid_from: "2025-01-01"
+valid_from: 2025-01-01
 service: "SZW"
 legal_basis:
   law: "Participatiewet"
