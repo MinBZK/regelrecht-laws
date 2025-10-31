@@ -118,7 +118,6 @@ properties:
         field: "aantal_meerderjarige_bewoners"
         law: "wet_brp"
       type_spec:
-        unit: "persons"
         precision: 0
         min: 1
       temporal:

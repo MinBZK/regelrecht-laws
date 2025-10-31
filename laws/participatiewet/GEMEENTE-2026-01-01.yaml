@@ -1,0 +1,799 @@
+$id: https://raw.githubusercontent.com/MinBZK/poc-machine-law/refs/heads/main/schema/v0.1.6/schema.json
+uuid: a7f3b8e4-9c2d-4a1b-8f6e-3d9c5b7a2e0f
+name: Algemene bijstand (Participatiewet in balans)
+law: participatiewet
+law_type: "FORMELE_WET"
+legal_character: "BESCHIKKING"
+decision_type: "TOEKENNING"
+discoverable: "CITIZEN"
+valid_from: 2026-01-01
+service: "GEMEENTE"
+description: >
+  Berekeningsregels voor het bepalen van het recht op en de hoogte van algemene bijstand volgens
+  de Participatiewet, inclusief de wijzigingen uit "Participatiewet in balans". Deze wet regelt de
+  bijstandsverlening aan personen die niet over voldoende middelen beschikken om in de noodzakelijke
+  kosten van het bestaan te voorzien. De wijzigingen omvatten o.a. werkbonus (artikel 34a),
+  bufferbudget (artikel 34b), aanvullende jongerennorm (artikel 20 lid 3-4) en verhoogde giftvrijlating.
+
+legal_basis:
+  law: "Participatiewet"
+  bwb_id: "BWBR0015703"
+  article: "11"
+  url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel11"
+  juriconnect: "jci1.3:c:BWBR0015703&artikel=11&z=2026-01-01&g=2026-01-01"
+  explanation: "Artikel 11 stelt vast dat iedere in Nederland woonachtige Nederlander die niet over voldoende middelen beschikt voor noodzakelijke kosten van bestaan, recht heeft op bijstand"
+
+references:
+  - law: "Participatiewet"
+    article: "20"
+    url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01#Artikel20"
+    description: "Jongerennormen (18-20 jaar) inclusief aanvullende norm"
+  - law: "Participatiewet"
+    article: "21"
+    url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01#Artikel21"
+    description: "Normen 21-pensioengerechtigde leeftijd"
+  - law: "Participatiewet"
+    article: "23"
+    url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01#Artikel23"
+    description: "Kostendelersnorm"
+  - law: "Participatiewet"
+    article: "31"
+    url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01#Artikel31"
+    description: "Middelen (vrijgelaten inkomen, inclusief verhoogde giftvrijlating)"
+  - law: "Participatiewet"
+    article: "34"
+    url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01#Artikel34"
+    description: "Vermogensgrenzen"
+  - law: "Participatiewet"
+    article: "34a"
+    url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01#Artikel34a"
+    description: "Verrekening inkomsten uit arbeid (werkbonus)"
+  - law: "Participatiewet"
+    article: "34b"
+    url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01#Artikel34b"
+    description: "Bufferbudget"
+
+properties:
+  parameters:
+    - name: "BSN"
+      description: "Burgerservicenummer van de aanvrager"
+      type: "string"
+      required: true
+
+  input:
+    - name: "LEEFTIJD"
+      description: "Leeftijd van de aanvrager in jaren"
+      type: "number"
+      service_reference:
+        service: "RvIG"
+        field: "leeftijd"
+        law: "wet_brp"
+      type_spec:
+        unit: "years"
+        precision: 0
+        min: 0
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "20"
+        url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel20"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=20&z=2026-01-01&g=2026-01-01"
+        explanation: "Artikel 20 en 21 differentieren de bijstandsnorm naar leeftijd"
+
+    - name: "HEEFT_PARTNER"
+      description: "Aanvrager heeft een partner (is gehuwd of wordt als zodanig aangemerkt)"
+      type: "boolean"
+      service_reference:
+        service: "RvIG"
+        field: "heeft_partner"
+        law: "wet_brp"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "21"
+        url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel21"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=21&z=2026-01-01&g=2026-01-01"
+        explanation: "Artikel 21 onderscheidt tussen alleenstaande en gehuwden voor de norm"
+
+    - name: "HEEFT_KINDEREN"
+      description: "Aanvrager heeft ten laste komende kinderen"
+      type: "boolean"
+      service_reference:
+        service: "RvIG"
+        field: "heeft_kinderen"
+        law: "wet_brp"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "20"
+        paragraph: "2"
+        url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel20"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=20&lid=2&z=2026-01-01&g=2026-01-01"
+        explanation: "Artikel 20 lid 2 bepaalt hogere normen voor jongeren met kinderen"
+
+    - name: "KAN_BEROEP_DOEN_OP_OUDERS"
+      description: "Jongere kan voor levensonderhoud beroep doen op ouders"
+      type: "boolean"
+      service_reference:
+        service: "GEMEENTE"
+        field: "kan_beroep_doen_op_ouders"
+        law: "participatiewet"
+      required: false
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "20"
+        paragraph: "3"
+        url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel20"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=20&lid=3&z=2026-01-01&g=2026-01-01"
+        explanation: "Artikel 20 lid 3 bepaalt aanvullende norm voor jongeren die geen beroep kunnen doen op ouders"
+
+    - name: "AANTAL_KOSTENDELERS"
+      description: "Aantal kostendelers in de woning (inclusief aanvrager)"
+      type: "number"
+      service_reference:
+        service: "RvIG"
+        field: "aantal_meerderjarige_bewoners"
+        law: "wet_brp"
+      type_spec:
+        precision: 0
+        min: 1
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "23"
+        url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel23"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=23&z=2026-01-01&g=2026-01-01"
+        explanation: "Artikel 23 regelt de kostendelersnorm voor personen die woonkosten delen met anderen"
+
+    - name: "INKOMEN_NIET_UIT_ARBEID_PER_MAAND"
+      description: "Inkomen per maand (niet uit arbeid) in eurocenten"
+      type: "amount"
+      service_reference:
+        service: "BELASTINGDIENST"
+        field: "maandelijks_inkomen_niet_arbeid"
+        law: "wet_inkomstenbelasting"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+        min: 0
+      temporal:
+        type: "period"
+        period_type: "month"
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "31"
+        url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel31"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=31&z=2026-01-01&g=2026-01-01"
+        explanation: "Artikel 31 bepaalt welke middelen in aanmerking worden genomen bij de bijstandsverlening"
+
+    - name: "ARBEIDSINKOMST_PER_MAAND"
+      description: "Inkomen uit arbeid per maand in eurocenten (voor werkbonus)"
+      type: "amount"
+      service_reference:
+        service: "BELASTINGDIENST"
+        field: "maandelijks_arbeidsinkomst"
+        law: "wet_inkomstenbelasting"
+      required: false
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+        min: 0
+      temporal:
+        type: "period"
+        period_type: "month"
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "34a"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel34a"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=34a&lid=1&z=2026-01-01&g=2026-01-01"
+        explanation: "Artikel 34a bepaalt dat inkomsten uit arbeid gedeeltelijk worden vrijgelaten (werkbonus)"
+
+    - name: "IS_MEDISCH_URENBEPERKT"
+      description: "Persoon is medisch urenbeperkt"
+      type: "boolean"
+      service_reference:
+        service: "UWV"
+        field: "is_medisch_urenbeperkt"
+        law: "wet_wia"
+      required: false
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "34a"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel34a"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=34a&lid=1&onderdeel=b&z=2026-01-01&g=2026-01-01"
+        explanation: "Artikel 34a lid 1 onderdeel b bepaalt permanente werkbonus voor medisch urenbeperkt"
+
+    - name: "HEEFT_AOW_LEEFTIJD_BEREIKT"
+      description: "Persoon heeft de pensioengerechtigde leeftijd bereikt"
+      type: "boolean"
+      service_reference:
+        service: "SVB"
+        field: "heeft_aow_leeftijd_bereikt"
+        law: "algemene_ouderdomswet"
+      required: false
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "34a"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel34a"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=34a&lid=1&onderdeel=c&z=2026-01-01&g=2026-01-01"
+        explanation: "Artikel 34a lid 1 onderdeel c bepaalt hogere werkbonus voor AOW-gerechtigden"
+
+    - name: "VERMOGEN"
+      description: "Vermogen in eurocenten"
+      type: "amount"
+      service_reference:
+        service: "BELASTINGDIENST"
+        field: "vermogen"
+        law: "wet_inkomstenbelasting"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+        min: 0
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "34"
+        url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel34"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=34&z=2026-01-01&g=2026-01-01"
+        explanation: "Artikel 34 bepaalt de vermogensgrenzen voor bijstand"
+
+  output:
+    - name: "heeft_recht_op_bijstand"
+      description: "Geeft aan of de aanvrager recht heeft op bijstand"
+      type: "boolean"
+      temporal:
+        type: "period"
+        period_type: "month"
+      citizen_relevance: "primary"
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "11"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel11"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=11&lid=1&z=2026-01-01&g=2026-01-01"
+        explanation: "Artikel 11 lid 1 geeft recht op bijstand aan wie niet over voldoende middelen beschikt"
+
+    - name: "hoogte_bijstand_per_maand"
+      description: "De hoogte van de bijstandsuitkering per maand in eurocenten"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+        min: 0
+      temporal:
+        type: "period"
+        period_type: "month"
+      citizen_relevance: "primary"
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "20"
+        url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel20"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=20&z=2026-01-01&g=2026-01-01"
+        explanation: "Artikelen 20-24 bepalen de normbedragen voor de bijstand"
+
+    - name: "werkbonus_per_maand"
+      description: "Werkbonus: vrijlating inkomsten uit arbeid per maand"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+        min: 0
+      temporal:
+        type: "period"
+        period_type: "month"
+      citizen_relevance: "secondary"
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "34a"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel34a"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=34a&lid=1&z=2026-01-01&g=2026-01-01"
+        explanation: "Artikel 34a lid 1 bepaalt dat een percentage van arbeidsinkomsten niet wordt verrekend"
+
+  definitions:
+    MINIMUM_LEEFTIJD: 18
+
+    NORM_JONGERE_ALLEENSTAAND_ZONDER_KINDEREN: 33798
+    NORM_JONGERE_BEIDEN_ZONDER_KINDEREN: 67596
+    NORM_JONGERE_MET_OUDERE_PARTNER_ZONDER_KINDEREN: 131588
+
+    NORM_JONGERE_ALLEENSTAAND_MET_KINDEREN: 105806
+    NORM_JONGERE_BEIDEN_MET_KINDEREN: 139604
+    NORM_JONGERE_MET_OUDERE_PARTNER_MET_KINDEREN: 203396
+
+    AANVULLENDE_JONGERENNORM:
+      value: 63448
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "20"
+        paragraph: "3"
+        url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel20"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=20&lid=3&z=2026-01-01&g=2026-01-01"
+        explanation: "Artikel 20 lid 3 bepaalt aanvullende norm van €634,48 voor jongeren die geen beroep kunnen doen op ouders"
+
+    NORM_ALLEENSTAANDE:
+      value: 136906
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "21"
+        url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel21"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=21&z=2026-01-01&g=2026-01-01"
+        explanation: "Artikel 21 bepaalt de norm voor alleenstaande van 21 jaar tot pensioengerechtigde leeftijd"
+
+    NORM_GEHUWDEN:
+      value: 195580
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "21"
+        url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel21"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=21&z=2026-01-01&g=2026-01-01"
+        explanation: "Artikel 21 bepaalt de norm voor gehuwden van 21 jaar tot pensioengerechtigde leeftijd"
+
+    NORM_KOSTENDELERS_2_PERSONEN: 97790
+    NORM_KOSTENDELERS_3_PERSONEN: 84751
+    NORM_KOSTENDELERS_4_PERSONEN: 78232
+    NORM_KOSTENDELERS_5_PERSONEN: 74972
+    NORM_KOSTENDELERS_6_PERSONEN: 72341
+    NORM_KOSTENDELERS_7_PERSONEN: 70339
+    NORM_KOSTENDELERS_8_PLUS_PERSONEN: 68708
+
+    WERKBONUS_PERCENTAGE_REGULIER:
+      value: 0.15
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "34a"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel34a"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=34a&lid=1&onderdeel=a-b&z=2026-01-01&g=2026-01-01"
+        explanation: "Artikel 34a lid 1 onderdeel a en b bepalen 15% vrijlating voor arbeidsinschakeling en medisch urenbeperkt"
+
+    WERKBONUS_PERCENTAGE_AOW:
+      value: 0.25
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "34a"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel34a"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=34a&lid=1&onderdeel=c&z=2026-01-01&g=2026-01-01"
+        explanation: "Artikel 34a lid 1 onderdeel c bepaalt 25% vrijlating voor AOW-gerechtigden"
+
+    WERKBONUS_MAX_AOW:
+      value: 22600
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "34a"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel34a"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=34a&lid=1&onderdeel=c&z=2026-01-01&g=2026-01-01"
+        explanation: "Artikel 34a lid 1 onderdeel c bepaalt maximum van €226,00 voor AOW-gerechtigden"
+
+    VERMOGENSGRENS_ALLEENSTAAND:
+      value: 777000
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "34"
+        paragraph: "3"
+        url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel34"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=34&lid=3&z=2026-01-01&g=2026-01-01"
+        explanation: "Artikel 34 lid 3 stelt de vermogensgrens voor alleenstaanden op €7.770"
+
+    VERMOGENSGRENS_GEZIN:
+      value: 1554000
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "34"
+        paragraph: "3"
+        url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel34"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=34&lid=3&z=2026-01-01&g=2026-01-01"
+        explanation: "Artikel 34 lid 3 stelt de vermogensgrens voor gehuwden en alleenstaande ouders op €15.540"
+
+requirements:
+  - all:
+      - subject: "$LEEFTIJD"
+        operation: GREATER_OR_EQUAL
+        value: "$MINIMUM_LEEFTIJD"
+        legal_basis:
+          law: "Participatiewet"
+          bwb_id: "BWBR0015703"
+          article: "11"
+          url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel11"
+          juriconnect: "jci1.3:c:BWBR0015703&artikel=11&z=2026-01-01&g=2026-01-01"
+          explanation: "Personen jonger dan 18 jaar vallen onder de verantwoordelijkheid van hun ouders"
+
+      - operation: IF
+        conditions:
+          - test:
+              subject: "$HEEFT_PARTNER"
+              operation: EQUALS
+              value: true
+            then:
+              operation: LESS_OR_EQUAL
+              values:
+                - "$VERMOGEN"
+                - "$VERMOGENSGRENS_GEZIN"
+            legal_basis:
+              law: "Participatiewet"
+              bwb_id: "BWBR0015703"
+              article: "34"
+              paragraph: "3"
+              url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel34"
+              juriconnect: "jci1.3:c:BWBR0015703&artikel=34&lid=3&z=2026-01-01&g=2026-01-01"
+              explanation: "Gehuwden mogen niet meer vermogen hebben dan de gezinsgrens"
+          - test:
+              subject: "$HEEFT_PARTNER"
+              operation: EQUALS
+              value: false
+            then:
+              operation: LESS_OR_EQUAL
+              values:
+                - "$VERMOGEN"
+                - "$VERMOGENSGRENS_ALLEENSTAAND"
+            legal_basis:
+              law: "Participatiewet"
+              bwb_id: "BWBR0015703"
+              article: "34"
+              paragraph: "3"
+              url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel34"
+              juriconnect: "jci1.3:c:BWBR0015703&artikel=34&lid=3&z=2026-01-01&g=2026-01-01"
+              explanation: "Alleenstaanden mogen niet meer vermogen hebben dan de alleenstaandengrens"
+
+actions:
+  - output: "heeft_recht_op_bijstand"
+    value: true
+    legal_basis:
+      law: "Participatiewet"
+      bwb_id: "BWBR0015703"
+      article: "11"
+      paragraph: "1"
+      url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel11"
+      juriconnect: "jci1.3:c:BWBR0015703&artikel=11&lid=1&z=2026-01-01&g=2026-01-01"
+      explanation: "Als aan de voorwaarden is voldaan, bestaat er recht op bijstand"
+
+  - output: "werkbonus_per_maand"
+    operation: IF
+    legal_basis:
+      law: "Participatiewet"
+      bwb_id: "BWBR0015703"
+      article: "34a"
+      paragraph: "1"
+      url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel34a"
+      juriconnect: "jci1.3:c:BWBR0015703&artikel=34a&lid=1&z=2026-01-01&g=2026-01-01"
+      explanation: "Artikel 34a bepaalt werkbonus op basis van situatie"
+    conditions:
+      - test:
+          subject: "$HEEFT_AOW_LEEFTIJD_BEREIKT"
+          operation: EQUALS
+          value: true
+        legal_basis:
+          law: "Participatiewet"
+          bwb_id: "BWBR0015703"
+          article: "34a"
+          paragraph: "1"
+          url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel34a"
+          juriconnect: "jci1.3:c:BWBR0015703&artikel=34a&lid=1&onderdeel=c&z=2026-01-01&g=2026-01-01"
+          explanation: "AOW-gerechtigden krijgen 25% werkbonus met maximum €226"
+        then:
+          operation: MIN
+          values:
+            - operation: MULTIPLY
+              values:
+                - "$ARBEIDSINKOMST_PER_MAAND"
+                - "$WERKBONUS_PERCENTAGE_AOW"
+            - "$WERKBONUS_MAX_AOW"
+      - test:
+          subject: "$IS_MEDISCH_URENBEPERKT"
+          operation: EQUALS
+          value: true
+        legal_basis:
+          law: "Participatiewet"
+          bwb_id: "BWBR0015703"
+          article: "34a"
+          paragraph: "1"
+          url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel34a"
+          juriconnect: "jci1.3:c:BWBR0015703&artikel=34a&lid=1&onderdeel=b&z=2026-01-01&g=2026-01-01"
+          explanation: "Medisch urenbeperkt krijgen 15% werkbonus permanent"
+        then:
+          operation: MULTIPLY
+          values:
+            - "$ARBEIDSINKOMST_PER_MAAND"
+            - "$WERKBONUS_PERCENTAGE_REGULIER"
+      - else:
+          operation: MULTIPLY
+          values:
+            - "$ARBEIDSINKOMST_PER_MAAND"
+            - "$WERKBONUS_PERCENTAGE_REGULIER"
+
+  - output: "hoogte_bijstand_per_maand"
+    operation: IF
+    legal_basis:
+      law: "Participatiewet"
+      bwb_id: "BWBR0015703"
+      article: "20"
+      url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel20"
+      juriconnect: "jci1.3:c:BWBR0015703&artikel=20&z=2026-01-01&g=2026-01-01"
+      explanation: "De hoogte van de bijstand is afhankelijk van leeftijd, gezinssamenstelling en inkomen"
+    conditions:
+      - test:
+          operation: LESS_THAN
+          values:
+            - "$LEEFTIJD"
+            - 21
+        legal_basis:
+          law: "Participatiewet"
+          bwb_id: "BWBR0015703"
+          article: "20"
+          url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel20"
+          juriconnect: "jci1.3:c:BWBR0015703&artikel=20&z=2026-01-01&g=2026-01-01"
+          explanation: "Voor jongeren onder de 21 jaar gelden de jongerennormen"
+        then:
+          operation: IF
+          conditions:
+            - test:
+                subject: "$HEEFT_KINDEREN"
+                operation: EQUALS
+                value: true
+              legal_basis:
+                law: "Participatiewet"
+                bwb_id: "BWBR0015703"
+                article: "20"
+                paragraph: "2"
+                url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel20"
+                juriconnect: "jci1.3:c:BWBR0015703&artikel=20&lid=2&z=2026-01-01&g=2026-01-01"
+                explanation: "Jongeren met kinderen krijgen hogere norm"
+              then:
+                operation: IF
+                conditions:
+                  - test:
+                      subject: "$KAN_BEROEP_DOEN_OP_OUDERS"
+                      operation: EQUALS
+                      value: false
+                    legal_basis:
+                      law: "Participatiewet"
+                      bwb_id: "BWBR0015703"
+                      article: "20"
+                      paragraph: "3"
+                      url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel20"
+                      juriconnect: "jci1.3:c:BWBR0015703&artikel=20&lid=3&z=2026-01-01&g=2026-01-01"
+                      explanation: "Jongeren die geen beroep kunnen doen op ouders krijgen aanvullende norm"
+                    then:
+                      operation: SUBTRACT
+                      values:
+                        - operation: MIN
+                          values:
+                            - operation: ADD
+                              values:
+                                - "$NORM_JONGERE_ALLEENSTAAND_MET_KINDEREN"
+                                - "$AANVULLENDE_JONGERENNORM"
+                            - "$NORM_ALLEENSTAANDE"
+                        - operation: SUBTRACT
+                          values:
+                            - "$INKOMEN_NIET_UIT_ARBEID_PER_MAAND"
+                            - "$werkbonus_per_maand"
+                  - else:
+                      operation: SUBTRACT
+                      values:
+                        - "$NORM_JONGERE_ALLEENSTAAND_MET_KINDEREN"
+                        - operation: SUBTRACT
+                          values:
+                            - "$INKOMEN_NIET_UIT_ARBEID_PER_MAAND"
+                            - "$werkbonus_per_maand"
+            - test:
+                subject: "$HEEFT_KINDEREN"
+                operation: EQUALS
+                value: false
+              legal_basis:
+                law: "Participatiewet"
+                bwb_id: "BWBR0015703"
+                article: "20"
+                paragraph: "1"
+                url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel20"
+                juriconnect: "jci1.3:c:BWBR0015703&artikel=20&lid=1&z=2026-01-01&g=2026-01-01"
+                explanation: "Jongeren zonder kinderen krijgen lagere norm"
+              then:
+                operation: IF
+                conditions:
+                  - test:
+                      subject: "$KAN_BEROEP_DOEN_OP_OUDERS"
+                      operation: EQUALS
+                      value: false
+                    legal_basis:
+                      law: "Participatiewet"
+                      bwb_id: "BWBR0015703"
+                      article: "20"
+                      paragraph: "3"
+                      url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel20"
+                      juriconnect: "jci1.3:c:BWBR0015703&artikel=20&lid=3&z=2026-01-01&g=2026-01-01"
+                      explanation: "Jongeren die geen beroep kunnen doen op ouders krijgen aanvullende norm"
+                    then:
+                      operation: SUBTRACT
+                      values:
+                        - operation: MIN
+                          values:
+                            - operation: ADD
+                              values:
+                                - "$NORM_JONGERE_ALLEENSTAAND_ZONDER_KINDEREN"
+                                - "$AANVULLENDE_JONGERENNORM"
+                            - "$NORM_ALLEENSTAANDE"
+                        - operation: SUBTRACT
+                          values:
+                            - "$INKOMEN_NIET_UIT_ARBEID_PER_MAAND"
+                            - "$werkbonus_per_maand"
+                  - else:
+                      operation: SUBTRACT
+                      values:
+                        - "$NORM_JONGERE_ALLEENSTAAND_ZONDER_KINDEREN"
+                        - operation: SUBTRACT
+                          values:
+                            - "$INKOMEN_NIET_UIT_ARBEID_PER_MAAND"
+                            - "$werkbonus_per_maand"
+
+      - test:
+          operation: GREATER_OR_EQUAL
+          values:
+            - "$LEEFTIJD"
+            - 21
+        legal_basis:
+          law: "Participatiewet"
+          bwb_id: "BWBR0015703"
+          article: "21"
+          url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel21"
+          juriconnect: "jci1.3:c:BWBR0015703&artikel=21&z=2026-01-01&g=2026-01-01"
+          explanation: "Voor personen van 21 jaar en ouder gelden de reguliere normen"
+        then:
+          operation: IF
+          conditions:
+            - test:
+                operation: GREATER_OR_EQUAL
+                values:
+                  - "$AANTAL_KOSTENDELERS"
+                  - 2
+              legal_basis:
+                law: "Participatiewet"
+                bwb_id: "BWBR0015703"
+                article: "23"
+                url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel23"
+                juriconnect: "jci1.3:c:BWBR0015703&artikel=23&z=2026-01-01&g=2026-01-01"
+                explanation: "Bij kostendeling geldt een verlaagde norm"
+              then:
+                operation: IF
+                conditions:
+                  - test:
+                      subject: "$AANTAL_KOSTENDELERS"
+                      operation: EQUALS
+                      value: 2
+                    then:
+                      operation: SUBTRACT
+                      values:
+                        - "$NORM_KOSTENDELERS_2_PERSONEN"
+                        - operation: SUBTRACT
+                          values:
+                            - "$INKOMEN_NIET_UIT_ARBEID_PER_MAAND"
+                            - "$werkbonus_per_maand"
+                  - test:
+                      subject: "$AANTAL_KOSTENDELERS"
+                      operation: EQUALS
+                      value: 3
+                    then:
+                      operation: SUBTRACT
+                      values:
+                        - "$NORM_KOSTENDELERS_3_PERSONEN"
+                        - operation: SUBTRACT
+                          values:
+                            - "$INKOMEN_NIET_UIT_ARBEID_PER_MAAND"
+                            - "$werkbonus_per_maand"
+                  - test:
+                      subject: "$AANTAL_KOSTENDELERS"
+                      operation: EQUALS
+                      value: 4
+                    then:
+                      operation: SUBTRACT
+                      values:
+                        - "$NORM_KOSTENDELERS_4_PERSONEN"
+                        - operation: SUBTRACT
+                          values:
+                            - "$INKOMEN_NIET_UIT_ARBEID_PER_MAAND"
+                            - "$werkbonus_per_maand"
+                  - test:
+                      operation: GREATER_OR_EQUAL
+                      values:
+                        - "$AANTAL_KOSTENDELERS"
+                        - 8
+                    then:
+                      operation: SUBTRACT
+                      values:
+                        - "$NORM_KOSTENDELERS_8_PLUS_PERSONEN"
+                        - operation: SUBTRACT
+                          values:
+                            - "$INKOMEN_NIET_UIT_ARBEID_PER_MAAND"
+                            - "$werkbonus_per_maand"
+                  - else:
+                      operation: SUBTRACT
+                      values:
+                        - "$NORM_KOSTENDELERS_5_PERSONEN"
+                        - operation: SUBTRACT
+                          values:
+                            - "$INKOMEN_NIET_UIT_ARBEID_PER_MAAND"
+                            - "$werkbonus_per_maand"
+
+            - test:
+                subject: "$HEEFT_PARTNER"
+                operation: EQUALS
+                value: true
+              legal_basis:
+                law: "Participatiewet"
+                bwb_id: "BWBR0015703"
+                article: "21"
+                url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel21"
+                juriconnect: "jci1.3:c:BWBR0015703&artikel=21&z=2026-01-01&g=2026-01-01"
+                explanation: "Voor gehuwden geldt de gehuwd norm"
+              then:
+                operation: SUBTRACT
+                values:
+                  - "$NORM_GEHUWDEN"
+                  - operation: SUBTRACT
+                    values:
+                      - "$INKOMEN_NIET_UIT_ARBEID_PER_MAAND"
+                      - "$werkbonus_per_maand"
+
+            - test:
+                subject: "$HEEFT_PARTNER"
+                operation: EQUALS
+                value: false
+              legal_basis:
+                law: "Participatiewet"
+                bwb_id: "BWBR0015703"
+                article: "21"
+                url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/Artikel21"
+                juriconnect: "jci1.3:c:BWBR0015703&artikel=21&z=2026-01-01&g=2026-01-01"
+                explanation: "Voor alleenstaanden geldt de alleenstaandennorm"
+              then:
+                operation: SUBTRACT
+                values:
+                  - "$NORM_ALLEENSTAANDE"
+                  - operation: SUBTRACT
+                    values:
+                      - "$INKOMEN_NIET_UIT_ARBEID_PER_MAAND"
+                      - "$werkbonus_per_maand"
