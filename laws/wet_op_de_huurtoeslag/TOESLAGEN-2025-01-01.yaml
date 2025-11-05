@@ -60,6 +60,7 @@ properties:
         period_type: "month"
       source_reference:
         source_type: "claim"
+        wallet_attribute: "rent"
       legal_basis:
         law: "Wet op de huurtoeslag"
         bwb_id: "BWBR0008659"
@@ -82,6 +83,7 @@ properties:
         period_type: "month"
       source_reference:
         source_type: "claim"
+        wallet_attribute: "service_charges"
       legal_basis:
         law: "Wet op de huurtoeslag"
         bwb_id: "BWBR0008659"
@@ -104,6 +106,7 @@ properties:
         period_type: "month"
       source_reference:
         source_type: "claim"
+        wallet_attribute: "eligible_service_charges"
       legal_basis:
         law: "Wet op de huurtoeslag"
         bwb_id: "BWBR0008659"
