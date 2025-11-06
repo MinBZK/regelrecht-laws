@@ -6,7 +6,7 @@ law_type: "FORMELE_WET"
 legal_character: "BESLUIT_VAN_ALGEMENE_STREKKING"
 decision_type: "ANDERE_HANDELING"
 discoverable: "CITIZEN"
-valid_from: 2024-01-01
+valid_from: "2024-01-01"
 service: "IENW"
 description: >
   Rijksregels voor vergunningsvrije dakkapellen volgens artikel 2.29 van het Besluit

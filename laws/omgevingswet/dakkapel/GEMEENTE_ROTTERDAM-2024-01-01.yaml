@@ -6,7 +6,7 @@ law_type: "FORMELE_WET"
 legal_character: "BESLUIT_VAN_ALGEMENE_STREKKING"
 decision_type: "ANDERE_HANDELING"
 discoverable: "CITIZEN"
-valid_from: 2024-01-01
+valid_from: "2024-01-01"
 service: "GEMEENTE_ROTTERDAM"
 description: >
   Gemeentelijke regels voor vergunningsvrije dakkapellen volgens het omgevingsplan van Rotterdam.
@@ -16,10 +16,8 @@ description: >
 
 legal_basis:
   law: "Omgevingsplan Rotterdam"
-  bwb_id: "CVDR696362"
   article: "Hoofdstuk 22 - Bouwactiviteiten"
   url: "https://lokaleregelgeving.overheid.nl/CVDR696362/1"
-  juriconnect: "jci1.3:c:CVDR696362&z=2024-01-01&g=2024-01-01"
   explanation: "Het omgevingsplan van Rotterdam stelt aanvullende eisen aan dakkapellen bovenop de rijksregels van artikel 2.29 Bbl"
 
 references:
@@ -45,9 +43,7 @@ properties:
         max: 20.0
       legal_basis:
         law: "Omgevingsplan Rotterdam"
-        bwb_id: "CVDR696362"
         url: "https://lokaleregelgeving.overheid.nl/CVDR696362/1"
-        juriconnect: "jci1.3:c:CVDR696362&z=2024-01-01&g=2024-01-01"
         explanation: "Rotterdam hanteert een maximale breedte van 1/3 van de woningbreedte"
 
     - name: "HEEFT_OVERSTEK"
@@ -56,9 +52,7 @@ properties:
       required: true
       legal_basis:
         law: "Omgevingsplan Rotterdam"
-        bwb_id: "CVDR696362"
         url: "https://lokaleregelgeving.overheid.nl/CVDR696362/1"
-        juriconnect: "jci1.3:c:CVDR696362&z=2024-01-01&g=2024-01-01"
         explanation: "Rotterdam vereist een overstek bij dakkapellen"
 
     - name: "OVERSTEK_DIEPTE_M"
@@ -72,9 +66,7 @@ properties:
         max: 0.5
       legal_basis:
         law: "Omgevingsplan Rotterdam"
-        bwb_id: "CVDR696362"
         url: "https://lokaleregelgeving.overheid.nl/CVDR696362/1"
-        juriconnect: "jci1.3:c:CVDR696362&z=2024-01-01&g=2024-01-01"
         explanation: "Rotterdam stelt eisen aan overstek: minimum 0,05m en maximum 0,10m"
 
     - name: "AFSTAND_OPENBAAR_GEBIED_ZIJ_M"
@@ -88,9 +80,7 @@ properties:
         max: 20.0
       legal_basis:
         law: "Omgevingsplan Rotterdam"
-        bwb_id: "CVDR696362"
         url: "https://lokaleregelgeving.overheid.nl/CVDR696362/1"
-        juriconnect: "jci1.3:c:CVDR696362&z=2024-01-01&g=2024-01-01"
         explanation: "Rotterdam vereist 2 meter afstand voor zijdakvlakken grenzend aan openbaar gebied"
 
   input:
@@ -165,9 +155,7 @@ properties:
         precision: 2
       legal_basis:
         law: "Omgevingsplan Rotterdam"
-        bwb_id: "CVDR696362"
         url: "https://lokaleregelgeving.overheid.nl/CVDR696362/1"
-        juriconnect: "jci1.3:c:CVDR696362&z=2024-01-01&g=2024-01-01"
         explanation: "Rotterdam toetst hoogte op strengere norm dan rijks"
 
     - name: "LOCATIE"
@@ -177,9 +165,7 @@ properties:
         parameter: "LOCATIE"
       legal_basis:
         law: "Omgevingsplan Rotterdam"
-        bwb_id: "CVDR696362"
         url: "https://lokaleregelgeving.overheid.nl/CVDR696362/1"
-        juriconnect: "jci1.3:c:CVDR696362&z=2024-01-01&g=2024-01-01"
         explanation: "Rotterdam heeft extra eisen voor zijdaken bij openbaar gebied"
 
     - name: "GRENST_AAN_OPENBAAR_GEBIED"
@@ -189,9 +175,7 @@ properties:
         parameter: "GRENST_AAN_OPENBAAR_GEBIED"
       legal_basis:
         law: "Omgevingsplan Rotterdam"
-        bwb_id: "CVDR696362"
         url: "https://lokaleregelgeving.overheid.nl/CVDR696362/1"
-        juriconnect: "jci1.3:c:CVDR696362&z=2024-01-01&g=2024-01-01"
         explanation: "Rotterdam stelt extra afstandseisen voor zijdaken bij openbaar gebied"
 
     - name: "WONING_BREEDTE_M"
@@ -204,9 +188,7 @@ properties:
         precision: 2
       legal_basis:
         law: "Omgevingsplan Rotterdam"
-        bwb_id: "CVDR696362"
         url: "https://lokaleregelgeving.overheid.nl/CVDR696362/1"
-        juriconnect: "jci1.3:c:CVDR696362&z=2024-01-01&g=2024-01-01"
         explanation: "Rotterdam limiteert dakkapelbreedte tot 1/3 van woningbreedte"
 
   definitions:
@@ -223,9 +205,7 @@ properties:
       citizen_relevance: primary
       legal_basis:
         law: "Omgevingsplan Rotterdam"
-        bwb_id: "CVDR696362"
         url: "https://lokaleregelgeving.overheid.nl/CVDR696362/1"
-        juriconnect: "jci1.3:c:CVDR696362&z=2024-01-01&g=2024-01-01"
         explanation: "Eindoordeel of dakkapel vergunningsvrij is in Rotterdam"
 
     - name: "vergunning_vereist"
@@ -234,9 +214,7 @@ properties:
       citizen_relevance: primary
       legal_basis:
         law: "Omgevingsplan Rotterdam"
-        bwb_id: "CVDR696362"
         url: "https://lokaleregelgeving.overheid.nl/CVDR696362/1"
-        juriconnect: "jci1.3:c:CVDR696362&z=2024-01-01&g=2024-01-01"
         explanation: "Tegengestelde van vergunningsvrij"
 
     - name: "rotterdam_specifieke_eisen_nageleefd"
@@ -245,9 +223,7 @@ properties:
       citizen_relevance: secondary
       legal_basis:
         law: "Omgevingsplan Rotterdam"
-        bwb_id: "CVDR696362"
         url: "https://lokaleregelgeving.overheid.nl/CVDR696362/1"
-        juriconnect: "jci1.3:c:CVDR696362&z=2024-01-01&g=2024-01-01"
         explanation: "Indicatie of specifiek Rotterdam-regels gevolgd zijn"
 
     - name: "reden_afwijzing"
@@ -256,9 +232,7 @@ properties:
       citizen_relevance: primary
       legal_basis:
         law: "Omgevingsplan Rotterdam"
-        bwb_id: "CVDR696362"
         url: "https://lokaleregelgeving.overheid.nl/CVDR696362/1"
-        juriconnect: "jci1.3:c:CVDR696362&z=2024-01-01&g=2024-01-01"
         explanation: "Specifieke reden waarom niet voldaan wordt aan Rotterdam eisen"
 
 # NO requirements section - rijksregels check gebeurt in actions
@@ -271,9 +245,7 @@ actions:
     value: "$MAX_HOOGTE_ROTTERDAM_M"
     legal_basis:
       law: "Omgevingsplan Rotterdam"
-      bwb_id: "CVDR696362"
       url: "https://lokaleregelgeving.overheid.nl/CVDR696362/1"
-      juriconnect: "jci1.3:c:CVDR696362&z=2024-01-01&g=2024-01-01"
       explanation: "Rotterdam maximum van 1,5 meter (strenger dan 1,75m rijks)"
 
   # Stap 2: Bereken maximum toegestane breedte
@@ -283,9 +255,7 @@ actions:
     value: "$MAX_BREEDTE_FACTOR"
     legal_basis:
       law: "Omgevingsplan Rotterdam"
-      bwb_id: "CVDR696362"
       url: "https://lokaleregelgeving.overheid.nl/CVDR696362/1"
-      juriconnect: "jci1.3:c:CVDR696362&z=2024-01-01&g=2024-01-01"
       explanation: "Maximale breedte is 1/3 van woningbreedte"
 
   # Stap 3: Check of breedte voldoet
@@ -295,9 +265,7 @@ actions:
     value: "$MAX_BREEDTE_TOEGESTAAN_M"
     legal_basis:
       law: "Omgevingsplan Rotterdam"
-      bwb_id: "CVDR696362"
       url: "https://lokaleregelgeving.overheid.nl/CVDR696362/1"
-      juriconnect: "jci1.3:c:CVDR696362&z=2024-01-01&g=2024-01-01"
       explanation: "Dakkapel mag niet breder zijn dan 1/3 woningbreedte"
 
   # Stap 4: Check overstek
@@ -322,9 +290,7 @@ actions:
       - else: false
     legal_basis:
       law: "Omgevingsplan Rotterdam"
-      bwb_id: "CVDR696362"
       url: "https://lokaleregelgeving.overheid.nl/CVDR696362/1"
-      juriconnect: "jci1.3:c:CVDR696362&z=2024-01-01&g=2024-01-01"
       explanation: "Overstek is verplicht en moet tussen 0,05 en 0,10 meter zijn"
 
   # Stap 5: Check extra afstand voor zijdaken bij openbaar gebied
@@ -351,9 +317,7 @@ actions:
       - else: false
     legal_basis:
       law: "Omgevingsplan Rotterdam"
-      bwb_id: "CVDR696362"
       url: "https://lokaleregelgeving.overheid.nl/CVDR696362/1"
-      juriconnect: "jci1.3:c:CVDR696362&z=2024-01-01&g=2024-01-01"
       explanation: "Zijdaken grenzend aan openbaar gebied vereisen 2 meter afstand"
 
   # Stap 6: Combineer alle Rotterdam-specifieke eisen
@@ -374,9 +338,7 @@ actions:
         value: true
     legal_basis:
       law: "Omgevingsplan Rotterdam"
-      bwb_id: "CVDR696362"
       url: "https://lokaleregelgeving.overheid.nl/CVDR696362/1"
-      juriconnect: "jci1.3:c:CVDR696362&z=2024-01-01&g=2024-01-01"
       explanation: "Alle Rotterdam-specifieke eisen moeten nagekomen worden"
 
   # Stap 7: Bepaal finaal resultaat
@@ -404,9 +366,7 @@ actions:
       - else: true
     legal_basis:
       law: "Omgevingsplan Rotterdam"
-      bwb_id: "CVDR696362"
       url: "https://lokaleregelgeving.overheid.nl/CVDR696362/1"
-      juriconnect: "jci1.3:c:CVDR696362&z=2024-01-01&g=2024-01-01"
       explanation: "Vergunningsvrij alleen als zowel rijks als Rotterdam-eisen nageleefd worden"
 
   # Stap 8: Inverse voor vergunning_vereist
@@ -421,9 +381,7 @@ actions:
       - else: true
     legal_basis:
       law: "Omgevingsplan Rotterdam"
-      bwb_id: "CVDR696362"
       url: "https://lokaleregelgeving.overheid.nl/CVDR696362/1"
-      juriconnect: "jci1.3:c:CVDR696362&z=2024-01-01&g=2024-01-01"
       explanation: "Als niet vergunningsvrij, dan vergunning vereist"
 
   # Stap 9: Bepaal reden afwijzing
@@ -458,7 +416,5 @@ actions:
       - else: "Voldoet aan alle Rotterdam eisen voor vergunningsvrij bouwen"
     legal_basis:
       law: "Omgevingsplan Rotterdam"
-      bwb_id: "CVDR696362"
       url: "https://lokaleregelgeving.overheid.nl/CVDR696362/1"
-      juriconnect: "jci1.3:c:CVDR696362&z=2024-01-01&g=2024-01-01"
       explanation: "Specifieke reden waarom niet voldaan wordt aan Rotterdam eisen"
