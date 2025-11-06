@@ -1,0 +1,615 @@
+$id: https://raw.githubusercontent.com/MinBZK/poc-machine-law/refs/heads/main/schema/v0.1.6/schema.json
+uuid: 8f3a7b2c-9d4e-4f1a-b8c6-5e7a9f2d4c3b
+name: Dakkapel vergunningsvrijheid volgens rijksregels
+law: omgevingswet/besluit_bouwwerken_leefomgeving
+law_type: "FORMELE_WET"
+legal_character: "BESLUIT_VAN_ALGEMENE_STREKKING"
+decision_type: "ANDERE_HANDELING"
+discoverable: "CITIZEN"
+valid_from: 2024-01-01
+service: "IENW"
+description: >
+  Rijksregels voor vergunningsvrije dakkapellen volgens artikel 2.29 van het Besluit
+  bouwwerken leefomgeving (Bbl). Deze regels bepalen wanneer het plaatsen van een dakkapel
+  zonder omgevingsvergunning is toegestaan voor de omgevingsplanactiviteit.
+
+legal_basis:
+  law: "Besluit bouwwerken leefomgeving"
+  bwb_id: "BWBR0041297"
+  article: "2.29"
+  paragraph: "1"
+  sentence: "b"
+  url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Hoofdstuk2_Afdeling2.3_Paragraaf2.3.3_Artikel2.29"
+  juriconnect: "jci1.3:c:BWBR0041297&artikel=2.29&lid=1&z=2024-01-01&g=2024-01-01"
+  explanation: "Artikel 2.29 lid 1 onder b Bbl bepaalt dat een dakkapel in het achterdakvlak of een niet naar openbaar toegankelijk gebied gekeerd zijdakvlak vergunningsvrij is, mits voldaan wordt aan specifieke afmetingen en positionering"
+
+references:
+  - law: "Besluit bouwwerken leefomgeving"
+    article: "2.29"
+    url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.29"
+    description: "Vergunningsvrije omgevingsplanactiviteiten met betrekking tot bouwwerken"
+  - law: "Besluit bouwwerken leefomgeving"
+    article: "2.30"
+    url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.30"
+    description: "Uitzonderingen voor beschermde stads- en dorpsgezichten"
+  - law: "Omgevingswet"
+    article: "5.1"
+    url: "https://wetten.overheid.nl/BWBR0037885/2024-01-01#Artikel5.1"
+    description: "Vergunningplicht omgevingsvergunning"
+
+properties:
+  parameters:
+    - name: "LOCATIE"
+      description: "Locatie van de dakkapel op het dak"
+      type: "string"
+      required: true
+      allowed_values: ["VOOR", "ACHTER", "ZIJ"]
+      legal_basis:
+        law: "Besluit bouwwerken leefomgeving"
+        bwb_id: "BWBR0041297"
+        article: "2.29"
+        paragraph: "1"
+        sentence: "b"
+        url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.29"
+        juriconnect: "jci1.3:c:BWBR0041297&artikel=2.29&lid=1&z=2024-01-01&g=2024-01-01"
+        explanation: "Artikel 2.29 lid 1 onder b maakt onderscheid tussen achterdakvlak, zijdakvlak en (impliciet) voordakvlak"
+
+    - name: "GRENST_AAN_OPENBAAR_GEBIED"
+      description: "Of het dakvlak grenst aan openbaar toegankelijk gebied"
+      type: "boolean"
+      required: true
+      legal_basis:
+        law: "Besluit bouwwerken leefomgeving"
+        bwb_id: "BWBR0041297"
+        article: "2.29"
+        paragraph: "1"
+        sentence: "b"
+        url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.29"
+        juriconnect: "jci1.3:c:BWBR0041297&artikel=2.29&lid=1&z=2024-01-01&g=2024-01-01"
+        explanation: "Artikel 2.29 lid 1 onder b stelt expliciet dat een naar openbaar toegankelijk gebied gekeerd zijdakvlak NIET vergunningsvrij is"
+
+    - name: "HOOGTE_M"
+      description: "Hoogte van de dakkapel in meters"
+      type: "number"
+      required: true
+      type_spec:
+        unit: "meter"
+        precision: 2
+        min: 0
+        max: 5.0
+      legal_basis:
+        law: "Besluit bouwwerken leefomgeving"
+        bwb_id: "BWBR0041297"
+        article: "2.29"
+        paragraph: "1"
+        sentence: "b"
+        url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.29"
+        juriconnect: "jci1.3:c:BWBR0041297&artikel=2.29&lid=1&z=2024-01-01&g=2024-01-01"
+        explanation: "Artikel 2.29 lid 1 onder b stelt maximum hoogte van 1,75 meter voor vergunningsvrije dakkapellen"
+
+    - name: "AFSTAND_DAKVOET_M"
+      description: "Afstand van onderzijde dakkapel tot dakvoet in meters"
+      type: "number"
+      required: true
+      type_spec:
+        unit: "meter"
+        precision: 2
+        min: 0
+        max: 10.0
+      legal_basis:
+        law: "Besluit bouwwerken leefomgeving"
+        bwb_id: "BWBR0041297"
+        article: "2.29"
+        paragraph: "1"
+        sentence: "b"
+        url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.29"
+        juriconnect: "jci1.3:c:BWBR0041297&artikel=2.29&lid=1&z=2024-01-01&g=2024-01-01"
+        explanation: "Artikel 2.29 lid 1 onder b stelt dat onderzijde meer dan 0,5 m en minder dan 1 m boven de dakvoet moet zijn"
+
+    - name: "AFSTAND_DAKNOK_M"
+      description: "Afstand van bovenzijde dakkapel tot daknok in meters"
+      type: "number"
+      required: true
+      type_spec:
+        unit: "meter"
+        precision: 2
+        min: 0
+        max: 10.0
+      legal_basis:
+        law: "Besluit bouwwerken leefomgeving"
+        bwb_id: "BWBR0041297"
+        article: "2.29"
+        paragraph: "1"
+        sentence: "b"
+        url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.29"
+        juriconnect: "jci1.3:c:BWBR0041297&artikel=2.29&lid=1&z=2024-01-01&g=2024-01-01"
+        explanation: "Artikel 2.29 lid 1 onder b stelt dat bovenzijde meer dan 0,5 m onder de daknok moet zijn"
+
+    - name: "AFSTAND_ZIJKANT_LINKS_M"
+      description: "Afstand van linkerzijde dakkapel tot linkerzijkant dakvlak in meters"
+      type: "number"
+      required: true
+      type_spec:
+        unit: "meter"
+        precision: 2
+        min: 0
+        max: 10.0
+      legal_basis:
+        law: "Besluit bouwwerken leefomgeving"
+        bwb_id: "BWBR0041297"
+        article: "2.29"
+        paragraph: "1"
+        sentence: "b"
+        url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.29"
+        juriconnect: "jci1.3:c:BWBR0041297&artikel=2.29&lid=1&z=2024-01-01&g=2024-01-01"
+        explanation: "Artikel 2.29 lid 1 onder b stelt dat zijkanten meer dan 0,5 m van de zijkanten van het dakvlak moeten zijn"
+
+    - name: "AFSTAND_ZIJKANT_RECHTS_M"
+      description: "Afstand van rechterzijde dakkapel tot rechterzijkant dakvlak in meters"
+      type: "number"
+      required: true
+      type_spec:
+        unit: "meter"
+        precision: 2
+        min: 0
+        max: 10.0
+      legal_basis:
+        law: "Besluit bouwwerken leefomgeving"
+        bwb_id: "BWBR0041297"
+        article: "2.29"
+        paragraph: "1"
+        sentence: "b"
+        url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.29"
+        juriconnect: "jci1.3:c:BWBR0041297&artikel=2.29&lid=1&z=2024-01-01&g=2024-01-01"
+        explanation: "Artikel 2.29 lid 1 onder b stelt dat zijkanten meer dan 0,5 m van de zijkanten van het dakvlak moeten zijn"
+
+    - name: "DAKVORM"
+      description: "Vorm van het dak van de dakkapel"
+      type: "string"
+      required: true
+      allowed_values: ["PLAT", "SCHUIN"]
+      legal_basis:
+        law: "Besluit bouwwerken leefomgeving"
+        bwb_id: "BWBR0041297"
+        article: "2.29"
+        paragraph: "1"
+        sentence: "b"
+        url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.29"
+        juriconnect: "jci1.3:c:BWBR0041297&artikel=2.29&lid=1&z=2024-01-01&g=2024-01-01"
+        explanation: "Artikel 2.29 lid 1 onder b vereist een plat dak voor vergunningsvrije dakkapellen"
+    - name: "IS_RIJKSMONUMENT"
+      description: "Of het gebouw een rijksmonument is"
+      type: "boolean"
+      required: false
+      legal_basis:
+        law: "Besluit bouwwerken leefomgeving"
+        bwb_id: "BWBR0041297"
+        article: "2.30"
+        url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.30"
+        juriconnect: "jci1.3:c:BWBR0041297&artikel=2.30&z=2024-01-01&g=2024-01-01"
+        explanation: "Artikel 2.30 Bbl stelt dat vergunningsvrije regelingen NIET gelden voor monumenten"
+
+    - name: "IS_GEMEENTELIJK_MONUMENT"
+      description: "Of het gebouw een gemeentelijk monument is"
+      type: "boolean"
+      required: false
+      legal_basis:
+        law: "Besluit bouwwerken leefomgeving"
+        bwb_id: "BWBR0041297"
+        article: "2.30"
+        url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.30"
+        juriconnect: "jci1.3:c:BWBR0041297&artikel=2.30&z=2024-01-01&g=2024-01-01"
+        explanation: "Artikel 2.30 Bbl stelt dat vergunningsvrije regelingen NIET gelden voor gemeentelijke monumenten"
+
+    - name: "IS_BESCHERMD_STADS_OF_DORPSGEZICHT"
+      description: "Of het gebouw in een beschermd stads- of dorpsgezicht ligt"
+      type: "boolean"
+      required: false
+      legal_basis:
+        law: "Besluit bouwwerken leefomgeving"
+        bwb_id: "BWBR0041297"
+        article: "2.30"
+        url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.30"
+        juriconnect: "jci1.3:c:BWBR0041297&artikel=2.30&z=2024-01-01&g=2024-01-01"
+        explanation: "Artikel 2.30 Bbl stelt dat voor beschermde stads- en dorpsgezichten aanvullende eisen kunnen gelden"
+
+  definitions:
+    MAX_HOOGTE_M: 1.75  # Artikel 2.29 lid 1 onder b Bbl - maximum hoogte dakkapel
+    MIN_AFSTAND_DAKVOET_M: 0.5  # Artikel 2.29 lid 1 onder b Bbl - minimaal 0,5 m boven dakvoet
+    MAX_AFSTAND_DAKVOET_M: 1.0  # Artikel 2.29 lid 1 onder b Bbl - maximaal 1 m boven dakvoet
+    MIN_AFSTAND_DAKNOK_M: 0.5  # Artikel 2.29 lid 1 onder b Bbl - minimaal 0,5 m onder daknok
+    MIN_AFSTAND_ZIJKANT_M: 0.5  # Artikel 2.29 lid 1 onder b Bbl - minimaal 0,5 m van zijkanten dakvlak
+
+  output:
+    - name: "voldoet_aan_rijksregels"
+      description: "Of de dakkapel voldoet aan de rijksregels voor vergunningsvrij bouwen"
+      type: "boolean"
+      citizen_relevance: primary
+      legal_basis:
+        law: "Besluit bouwwerken leefomgeving"
+        bwb_id: "BWBR0041297"
+        article: "2.29"
+        url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.29"
+        juriconnect: "jci1.3:c:BWBR0041297&artikel=2.29&z=2024-01-01&g=2024-01-01"
+        explanation: "Geeft aan of de dakkapel vergunningsvrij mag worden geplaatst volgens de rijksregels"
+
+    - name: "reden_afwijzing"
+      description: "Reden waarom de dakkapel niet vergunningsvrij is (indien van toepassing)"
+      type: "string"
+      citizen_relevance: primary
+      legal_basis:
+        law: "Besluit bouwwerken leefomgeving"
+        bwb_id: "BWBR0041297"
+        article: "2.29"
+        url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.29"
+        juriconnect: "jci1.3:c:BWBR0041297&artikel=2.29&z=2024-01-01&g=2024-01-01"
+        explanation: "Geeft specifieke reden aan waarom niet voldaan wordt aan artikel 2.29"
+
+    - name: "artikel_2_29_compliant"
+      description: "Of voldaan wordt aan artikel 2.29 lid 1 onder b Bbl"
+      type: "boolean"
+      citizen_relevance: secondary
+      legal_basis:
+        law: "Besluit bouwwerken leefomgeving"
+        bwb_id: "BWBR0041297"
+        article: "2.29"
+        paragraph: "1"
+        sentence: "b"
+        url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.29"
+        juriconnect: "jci1.3:c:BWBR0041297&artikel=2.29&lid=1&z=2024-01-01&g=2024-01-01"
+        explanation: "Technische indicator voor compliance met specifiek artikel 2.29 lid 1 onder b"
+
+requirements:
+  # Monumenten zijn ALTIJD vergunningplichtig - requirements zijn alleen met als BEIDE monument checks false zijn
+  - operation: AND
+    values:
+      - subject: "$IS_RIJKSMONUMENT"
+        operation: EQUALS
+        value: false
+      - subject: "$IS_GEMEENTELIJK_MONUMENT"
+        operation: EQUALS
+        value: false
+    legal_basis:
+      law: "Besluit bouwwerken leefomgeving"
+      bwb_id: "BWBR0041297"
+      article: "2.30"
+      url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.30"
+      juriconnect: "jci1.3:c:BWBR0041297&artikel=2.30&z=2024-01-01&g=2024-01-01"
+      explanation: "Artikel 2.30 bepaalt dat monumenten uitgezonderd zijn van vergunningsvrije regelingen"
+
+actions:
+  # Stap 1: Check monumentstatus
+  - output: "IS_MONUMENT"
+    operation: OR
+    values:
+      - subject: "$IS_RIJKSMONUMENT"
+        operation: EQUALS
+        value: true
+      - subject: "$IS_GEMEENTELIJK_MONUMENT"
+        operation: EQUALS
+        value: true
+    legal_basis:
+      law: "Besluit bouwwerken leefomgeving"
+      bwb_id: "BWBR0041297"
+      article: "2.30"
+      url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.30"
+      juriconnect: "jci1.3:c:BWBR0041297&artikel=2.30&z=2024-01-01&g=2024-01-01"
+      explanation: "Check of gebouw een monument is"
+
+  # Stap 2: Check locatie en openbaar gebied
+  - output: "LOCATIE_TOEGESTAAN"
+    operation: IF
+    conditions:
+      # Voorkant is nooit vergunningsvrij
+      - test:
+          subject: "$LOCATIE"
+          operation: EQUALS
+          value: "VOOR"
+        then: false
+      # Achterkant is altijd OK voor locatie
+      - test:
+          subject: "$LOCATIE"
+          operation: EQUALS
+          value: "ACHTER"
+        then: true
+      # Zijkant alleen OK als NIET grenst aan openbaar gebied
+      - test:
+          operation: AND
+          values:
+            - subject: "$LOCATIE"
+              operation: EQUALS
+              value: "ZIJ"
+            - subject: "$GRENST_AAN_OPENBAAR_GEBIED"
+              operation: EQUALS
+              value: false
+        then: true
+      - else: false
+    legal_basis:
+      law: "Besluit bouwwerken leefomgeving"
+      bwb_id: "BWBR0041297"
+      article: "2.29"
+      paragraph: "1"
+      sentence: "b"
+      url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.29"
+      juriconnect: "jci1.3:c:BWBR0041297&artikel=2.29&lid=1&z=2024-01-01&g=2024-01-01"
+      explanation: "Artikel 2.29 lid 1 onder b staat alleen achterdakvlak of niet naar openbaar toegankelijk gebied gekeerd zijdakvlak toe"
+
+  # Stap 3: Check hoogte
+  - output: "HOOGTE_TOEGESTAAN"
+    operation: LESS_OR_EQUAL
+    subject: "$HOOGTE_M"
+    value: "$MAX_HOOGTE_M"
+    legal_basis:
+      law: "Besluit bouwwerken leefomgeving"
+      bwb_id: "BWBR0041297"
+      article: "2.29"
+      paragraph: "1"
+      sentence: "b"
+      url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.29"
+      juriconnect: "jci1.3:c:BWBR0041297&artikel=2.29&lid=1&z=2024-01-01&g=2024-01-01"
+      explanation: "Maximale hoogte van 1,75 meter"
+
+  # Stap 4: Check afstand dakvoet (moet >= 0.5m EN <= 1.0m zijn)
+  - output: "DAKVOET_MIN_OK"
+    operation: GREATER_OR_EQUAL
+    subject: "$AFSTAND_DAKVOET_M"
+    value: "$MIN_AFSTAND_DAKVOET_M"
+    legal_basis:
+      law: "Besluit bouwwerken leefomgeving"
+      bwb_id: "BWBR0041297"
+      article: "2.29"
+      paragraph: "1"
+      sentence: "b"
+      url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.29"
+      juriconnect: "jci1.3:c:BWBR0041297&artikel=2.29&lid=1&z=2024-01-01&g=2024-01-01"
+      explanation: "Onderzijde moet meer dan 0,5 m boven dakvoet zijn"
+
+  - output: "DAKVOET_MAX_OK"
+    operation: LESS_THAN
+    subject: "$AFSTAND_DAKVOET_M"
+    value: "$MAX_AFSTAND_DAKVOET_M"
+    legal_basis:
+      law: "Besluit bouwwerken leefomgeving"
+      bwb_id: "BWBR0041297"
+      article: "2.29"
+      paragraph: "1"
+      sentence: "b"
+      url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.29"
+      juriconnect: "jci1.3:c:BWBR0041297&artikel=2.29&lid=1&z=2024-01-01&g=2024-01-01"
+      explanation: "Onderzijde moet minder dan 1 m boven dakvoet zijn"
+
+  - output: "DAKVOET_AFSTAND_OK"
+    operation: AND
+    values:
+      - subject: "$DAKVOET_MIN_OK"
+        operation: EQUALS
+        value: true
+      - subject: "$DAKVOET_MAX_OK"
+        operation: EQUALS
+        value: true
+    legal_basis:
+      law: "Besluit bouwwerken leefomgeving"
+      bwb_id: "BWBR0041297"
+      article: "2.29"
+      paragraph: "1"
+      sentence: "b"
+      url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.29"
+      juriconnect: "jci1.3:c:BWBR0041297&artikel=2.29&lid=1&z=2024-01-01&g=2024-01-01"
+      explanation: "Afstand tot dakvoet moet tussen 0,5 en 1 meter zijn"
+
+  # Stap 5: Check afstand daknok
+  - output: "DAKNOK_AFSTAND_OK"
+    operation: GREATER_OR_EQUAL
+    subject: "$AFSTAND_DAKNOK_M"
+    value: "$MIN_AFSTAND_DAKNOK_M"
+    legal_basis:
+      law: "Besluit bouwwerken leefomgeving"
+      bwb_id: "BWBR0041297"
+      article: "2.29"
+      paragraph: "1"
+      sentence: "b"
+      url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.29"
+      juriconnect: "jci1.3:c:BWBR0041297&artikel=2.29&lid=1&z=2024-01-01&g=2024-01-01"
+      explanation: "Bovenzijde moet meer dan 0,5 m onder daknok zijn"
+
+  # Stap 6: Check afstanden zijkanten
+  - output: "ZIJKANT_LINKS_OK"
+    operation: GREATER_OR_EQUAL
+    subject: "$AFSTAND_ZIJKANT_LINKS_M"
+    value: "$MIN_AFSTAND_ZIJKANT_M"
+    legal_basis:
+      law: "Besluit bouwwerken leefomgeving"
+      bwb_id: "BWBR0041297"
+      article: "2.29"
+      paragraph: "1"
+      sentence: "b"
+      url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.29"
+      juriconnect: "jci1.3:c:BWBR0041297&artikel=2.29&lid=1&z=2024-01-01&g=2024-01-01"
+      explanation: "Zijkanten moeten meer dan 0,5 m van zijkanten dakvlak zijn"
+
+  - output: "ZIJKANT_RECHTS_OK"
+    operation: GREATER_OR_EQUAL
+    subject: "$AFSTAND_ZIJKANT_RECHTS_M"
+    value: "$MIN_AFSTAND_ZIJKANT_M"
+    legal_basis:
+      law: "Besluit bouwwerken leefomgeving"
+      bwb_id: "BWBR0041297"
+      article: "2.29"
+      paragraph: "1"
+      sentence: "b"
+      url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.29"
+      juriconnect: "jci1.3:c:BWBR0041297&artikel=2.29&lid=1&z=2024-01-01&g=2024-01-01"
+      explanation: "Zijkanten moeten meer dan 0,5 m van zijkanten dakvlak zijn"
+
+  - output: "ZIJKANTEN_AFSTAND_OK"
+    operation: AND
+    values:
+      - subject: "$ZIJKANT_LINKS_OK"
+        operation: EQUALS
+        value: true
+      - subject: "$ZIJKANT_RECHTS_OK"
+        operation: EQUALS
+        value: true
+    legal_basis:
+      law: "Besluit bouwwerken leefomgeving"
+      bwb_id: "BWBR0041297"
+      article: "2.29"
+      paragraph: "1"
+      sentence: "b"
+      url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.29"
+      juriconnect: "jci1.3:c:BWBR0041297&artikel=2.29&lid=1&z=2024-01-01&g=2024-01-01"
+      explanation: "Beide zijkanten moeten voldoen aan minimum afstand"
+
+  # Stap 7: Check dakvorm
+  - output: "DAKVORM_OK"
+    operation: EQUALS
+    subject: "$DAKVORM"
+    value: "PLAT"
+    legal_basis:
+      law: "Besluit bouwwerken leefomgeving"
+      bwb_id: "BWBR0041297"
+      article: "2.29"
+      paragraph: "1"
+      sentence: "b"
+      url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.29"
+      juriconnect: "jci1.3:c:BWBR0041297&artikel=2.29&lid=1&z=2024-01-01&g=2024-01-01"
+      explanation: "Dakkapel moet een plat dak hebben"
+
+  # Stap 8: Combineer alle dimensie-checks
+  - output: "AFMETINGEN_OK"
+    operation: AND
+    values:
+      - subject: "$HOOGTE_TOEGESTAAN"
+        operation: EQUALS
+        value: true
+      - subject: "$DAKVOET_AFSTAND_OK"
+        operation: EQUALS
+        value: true
+      - subject: "$DAKNOK_AFSTAND_OK"
+        operation: EQUALS
+        value: true
+      - subject: "$ZIJKANTEN_AFSTAND_OK"
+        operation: EQUALS
+        value: true
+      - subject: "$DAKVORM_OK"
+        operation: EQUALS
+        value: true
+    legal_basis:
+      law: "Besluit bouwwerken leefomgeving"
+      bwb_id: "BWBR0041297"
+      article: "2.29"
+      paragraph: "1"
+      sentence: "b"
+      url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.29"
+      juriconnect: "jci1.3:c:BWBR0041297&artikel=2.29&lid=1&z=2024-01-01&g=2024-01-01"
+      explanation: "Alle afmetingen en vorm moeten voldoen"
+
+  # Stap 9: Bepaal of artikel 2.29 compliant
+  - output: "artikel_2_29_compliant"
+    operation: AND
+    values:
+      - subject: "$IS_MONUMENT"
+        operation: EQUALS
+        value: false
+      - subject: "$LOCATIE_TOEGESTAAN"
+        operation: EQUALS
+        value: true
+      - subject: "$AFMETINGEN_OK"
+        operation: EQUALS
+        value: true
+    legal_basis:
+      law: "Besluit bouwwerken leefomgeving"
+      bwb_id: "BWBR0041297"
+      article: "2.29"
+      url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.29"
+      juriconnect: "jci1.3:c:BWBR0041297&artikel=2.29&z=2024-01-01&g=2024-01-01"
+      explanation: "Volledige compliance check met artikel 2.29"
+
+  # Stap 10: Bepaal finaal resultaat (inline AND om dependency resolution te vermijden)
+  - output: "voldoet_aan_rijksregels"
+    operation: AND
+    values:
+      - subject: "$IS_MONUMENT"
+        operation: EQUALS
+        value: false
+      - subject: "$LOCATIE_TOEGESTAAN"
+        operation: EQUALS
+        value: true
+      - subject: "$AFMETINGEN_OK"
+        operation: EQUALS
+        value: true
+    legal_basis:
+      law: "Besluit bouwwerken leefomgeving"
+      bwb_id: "BWBR0041297"
+      article: "2.29"
+      url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.29"
+      juriconnect: "jci1.3:c:BWBR0041297&artikel=2.29&z=2024-01-01&g=2024-01-01"
+      explanation: "Eindresultaat: voldoet aan rijksregels voor vergunningsvrij"
+
+  # Stap 11: Bepaal reden afwijzing
+  - output: "reden_afwijzing"
+    operation: IF
+    conditions:
+      - test:
+          subject: "$IS_MONUMENT"
+          operation: EQUALS
+          value: true
+        then: "Monument: artikel 2.30 Bbl sluit monumenten uit van vergunningsvrije regelingen"
+      - test:
+          subject: "$LOCATIE"
+          operation: EQUALS
+          value: "VOOR"
+        then: "Locatie: voordakvlak is niet vergunningsvrij volgens artikel 2.29 lid 1 onder b Bbl"
+      - test:
+          operation: AND
+          values:
+            - subject: "$LOCATIE"
+              operation: EQUALS
+              value: "ZIJ"
+            - subject: "$GRENST_AAN_OPENBAAR_GEBIED"
+              operation: EQUALS
+              value: true
+        then: "Locatie: zijdakvlak grenst aan openbaar toegankelijk gebied, niet vergunningsvrij volgens artikel 2.29 lid 1 onder b Bbl"
+      - test:
+          subject: "$DAKVORM"
+          operation: EQUALS
+          value: "SCHUIN"
+        then: "Dakvorm: dakkapel moet plat dak hebben volgens artikel 2.29 lid 1 onder b Bbl"
+      - test:
+          subject: "$HOOGTE_TOEGESTAAN"
+          operation: EQUALS
+          value: false
+        then: "Hoogte: dakkapel overschrijdt maximum van 1,75 meter volgens artikel 2.29 lid 1 onder b Bbl"
+      - test:
+          subject: "$DAKVOET_MIN_OK"
+          operation: EQUALS
+          value: false
+        then: "Afstand dakvoet: onderzijde moet meer dan 0,5 meter boven dakvoet zijn volgens artikel 2.29 lid 1 onder b Bbl"
+      - test:
+          subject: "$DAKVOET_MAX_OK"
+          operation: EQUALS
+          value: false
+        then: "Afstand dakvoet: onderzijde moet minder dan 1 meter boven dakvoet zijn volgens artikel 2.29 lid 1 onder b Bbl"
+      - test:
+          subject: "$DAKNOK_AFSTAND_OK"
+          operation: EQUALS
+          value: false
+        then: "Afstand daknok: bovenzijde moet meer dan 0,5 meter onder daknok zijn volgens artikel 2.29 lid 1 onder b Bbl"
+      - test:
+          subject: "$ZIJKANT_LINKS_OK"
+          operation: EQUALS
+          value: false
+        then: "Afstand zijkant: linkerzijde moet meer dan 0,5 meter van zijkant dakvlak zijn volgens artikel 2.29 lid 1 onder b Bbl"
+      - test:
+          subject: "$ZIJKANT_RECHTS_OK"
+          operation: EQUALS
+          value: false
+        then: "Afstand zijkant: rechterzijde moet meer dan 0,5 meter van zijkant dakvlak zijn volgens artikel 2.29 lid 1 onder b Bbl"
+      - else: "Voldoet aan alle rijksregels voor vergunningsvrij bouwen"
+    legal_basis:
+      law: "Besluit bouwwerken leefomgeving"
+      bwb_id: "BWBR0041297"
+      article: "2.29"
+      url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.29"
+      juriconnect: "jci1.3:c:BWBR0041297&artikel=2.29&z=2024-01-01&g=2024-01-01"
+      explanation: "Geeft specifieke reden waarom niet voldaan wordt aan vergunningsvrije voorwaarden"

@@ -1,0 +1,308 @@
+$id: https://raw.githubusercontent.com/MinBZK/poc-machine-law-new-law-demo/refs/heads/main/schema/v0.1.6/schema.json
+uuid: 5d8f3e7a-2c9b-4f6d-8a1e-9b4c7f3d2e6a
+name: Dakkapel vergunningsvrijheid Amsterdam (gemeentelijk omgevingsplan)
+law: omgevingswet/omgevingsplan_amsterdam
+law_type: "FORMELE_WET"
+legal_character: "BESLUIT_VAN_ALGEMENE_STREKKING"
+decision_type: "ANDERE_HANDELING"
+discoverable: "CITIZEN"
+valid_from: 2024-01-01
+service: "GEMEENTE_AMSTERDAM"
+description: >
+  Gemeentelijke regels voor vergunningsvrije dakkapellen volgens het omgevingsplan van Amsterdam.
+  Amsterdam volgt de rijksregels voor afmetingen, maar stelt aanvullende welstandseisen via de
+  Commissie Ruimtelijke Kwaliteit (CRK). In beschermde gebieden zoals de grachtengordel
+  gelden strengere eisen en is vaak een vergunning met welstandstoets vereist.
+
+legal_basis:
+  law: "Omgevingsplan Amsterdam"
+  bwb_id: "CVDR696291"
+  article: "Hoofdstuk 22 - Bouwactiviteiten"
+  url: "https://lokaleregelgeving.overheid.nl/CVDR696291/1"
+  juriconnect: "jci1.3:c:CVDR696291&z=2024-01-01&g=2024-01-01"
+  explanation: "Het omgevingsplan van Amsterdam stelt aanvullende welstandseisen aan dakkapellen bovenop de rijksregels"
+
+references:
+  - law: "Besluit bouwwerken leefomgeving"
+    article: "2.29"
+    url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.29"
+    description: "Rijksregels voor vergunningsvrije dakkapellen"
+  - law: "Welstandsnota Amsterdam - De Schoonheid van Amsterdam"
+    url: "https://www.crk.amsterdam.nl/welstandsnota"
+    description: "Welstandscriteria zoals vastgesteld door gemeenteraad"
+  - law: "Erfgoedwet"
+    article: "3.17"
+    url: "https://wetten.overheid.nl/BWBR0037885/2024-01-01"
+    description: "Bescherming stads- en dorpsgezichten"
+
+properties:
+  parameters:
+    - name: "POSTCODE"
+      description: "Postcode van het gebouw (4 cijfers)"
+      type: "string"
+      required: true
+      legal_basis:
+        law: "Omgevingsplan Amsterdam"
+        bwb_id: "CVDR696291"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR696291/1"
+        juriconnect: "jci1.3:c:CVDR696291&z=2024-01-01&g=2024-01-01"
+        explanation: "Postcode bepaalt of gebouw in welstandsgebied of beschermd gebied ligt"
+
+  input:
+    - name: "voldoet_aan_rijksregels"
+      description: "Of de dakkapel voldoet aan de rijksregels (van IENW)"
+      type: "boolean"
+      service_reference:
+        service: "IENW"
+        law: "omgevingswet/besluit_bouwwerken_leefomgeving"
+        field: "voldoet_aan_rijksregels"
+      legal_basis:
+        law: "Omgevingswet"
+        bwb_id: "BWBR0037885"
+        article: "4.3"
+        url: "https://wetten.overheid.nl/BWBR0037885/2024-01-01#Artikel4.3"
+        juriconnect: "jci1.3:c:BWBR0037885&artikel=4.3&z=2024-01-01&g=2024-01-01"
+        explanation: "Gemeentelijke regels gelden bovenop rijksregels"
+
+    - name: "LOCATIE"
+      description: "Locatie van de dakkapel (uit parameters)"
+      type: "string"
+      source_reference:
+        parameter: "LOCATIE"
+      legal_basis:
+        law: "Omgevingsplan Amsterdam"
+        bwb_id: "CVDR696291"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR696291/1"
+        juriconnect: "jci1.3:c:CVDR696291&z=2024-01-01&g=2024-01-01"
+        explanation: "Voordaken in welstandsgebieden vereisen extra toetsing"
+
+    - name: "IS_BESCHERMD_STADS_OF_DORPSGEZICHT"
+      description: "Of gebouw in beschermd stads- of dorpsgezicht ligt (uit parameters)"
+      type: "boolean"
+      source_reference:
+        parameter: "IS_BESCHERMD_STADS_OF_DORPSGEZICHT"
+      legal_basis:
+        law: "Erfgoedwet"
+        bwb_id: "BWBR0037521"
+        article: "3.17"
+        url: "https://wetten.overheid.nl/BWBR0037521/2024-01-01#Artikel3.17"
+        juriconnect: "jci1.3:c:BWBR0037521&artikel=3.17&z=2024-01-01&g=2024-01-01"
+        explanation: "Beschermde stads- en dorpsgezichten hebben aanvullende bescherming"
+
+  definitions:
+    BESCHERMDE_GEBIEDEN_POSTCODES: ["1012", "1013", "1015", "1016", "1017"]  # Grachtengordel en centrum
+    WELSTAND_VERPLICHT_POSTCODES: ["1012", "1013", "1015", "1016", "1017", "1018", "1011", "1091", "1092"]  # CRK welstandstoets vereist
+
+  output:
+    - name: "vergunningvrij"
+      description: "Of de dakkapel vergunningsvrij mag worden geplaatst volgens Amsterdam"
+      type: "boolean"
+      citizen_relevance: primary
+      legal_basis:
+        law: "Omgevingsplan Amsterdam"
+        bwb_id: "CVDR696291"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR696291/1"
+        juriconnect: "jci1.3:c:CVDR696291&z=2024-01-01&g=2024-01-01"
+        explanation: "Eindoordeel of dakkapel vergunningsvrij is in Amsterdam"
+
+    - name: "vergunning_vereist"
+      description: "Of een omgevingsvergunning vereist is"
+      type: "boolean"
+      citizen_relevance: primary
+      legal_basis:
+        law: "Omgevingsplan Amsterdam"
+        bwb_id: "CVDR696291"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR696291/1"
+        juriconnect: "jci1.3:c:CVDR696291&z=2024-01-01&g=2024-01-01"
+        explanation: "Indicatie of vergunning nodig is"
+
+    - name: "welstandstoets_vereist"
+      description: "Of een welstandstoets door CRK vereist is"
+      type: "boolean"
+      citizen_relevance: primary
+      legal_basis:
+        law: "Welstandsnota Amsterdam"
+        url: "https://www.crk.amsterdam.nl/welstandsnota"
+        juriconnect: "jci1.3:c:CVDR696291&z=2024-01-01&g=2024-01-01"
+        explanation: "Indicatie of CRK welstandsadvies nodig is"
+
+    - name: "reden_afwijzing"
+      description: "Reden waarom de dakkapel niet vergunningsvrij is in Amsterdam"
+      type: "string"
+      citizen_relevance: primary
+      legal_basis:
+        law: "Omgevingsplan Amsterdam"
+        bwb_id: "CVDR696291"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR696291/1"
+        juriconnect: "jci1.3:c:CVDR696291&z=2024-01-01&g=2024-01-01"
+        explanation: "Specifieke reden waarom niet voldaan wordt aan Amsterdam eisen"
+
+# NO requirements section - rijksregels check gebeurt in actions
+
+actions:
+  # Stap 1: Haal eerste 4 cijfers van postcode (bijv. "1012AB" -> "1012")
+  - output: "POSTCODE_4"
+    value: "$POSTCODE"
+    legal_basis:
+      law: "Omgevingsplan Amsterdam"
+      bwb_id: "CVDR696291"
+      url: "https://lokaleregelgeving.overheid.nl/CVDR696291/1"
+      juriconnect: "jci1.3:c:CVDR696291&z=2024-01-01&g=2024-01-01"
+      explanation: "Gebruik eerste 4 cijfers postcode voor gebiedsindeling"
+
+  # Stap 2: Check of in beschermd gebied
+  - output: "IN_BESCHERMD_GEBIED"
+    operation: IN
+    subject: "$POSTCODE_4"
+    value: "$BESCHERMDE_GEBIEDEN_POSTCODES"
+    legal_basis:
+      law: "Erfgoedwet en Omgevingsplan Amsterdam"
+      bwb_id: "CVDR696291"
+      url: "https://lokaleregelgeving.overheid.nl/CVDR696291/1"
+      juriconnect: "jci1.3:c:CVDR696291&z=2024-01-01&g=2024-01-01"
+      explanation: "Check of postcode in beschermd gebied ligt (centrum, grachtengordel)"
+
+  # Stap 3: Check of in welstandsgebied
+  - output: "IN_WELSTANDSGEBIED"
+    operation: IN
+    subject: "$POSTCODE_4"
+    value: "$WELSTAND_VERPLICHT_POSTCODES"
+    legal_basis:
+      law: "Welstandsnota Amsterdam"
+      url: "https://www.crk.amsterdam.nl/welstandsnota"
+      juriconnect: "jci1.3:c:CVDR696291&z=2024-01-01&g=2024-01-01"
+      explanation: "Check of postcode in gebied met verplichte welstandstoets ligt"
+
+  # Stap 4: Bepaal of welstandstoets vereist is
+  - output: "welstandstoets_vereist"
+    operation: IF
+    conditions:
+      # Beschermde gebieden: altijd welstandstoets
+      - test:
+          operation: OR
+          values:
+            - subject: "$IN_BESCHERMD_GEBIED"
+              operation: EQUALS
+              value: true
+            - subject: "$IS_BESCHERMD_STADS_OF_DORPSGEZICHT"
+              operation: EQUALS
+              value: true
+        then: true
+      # Welstandsgebied + voordak: welstandstoets vereist
+      - test:
+          operation: AND
+          values:
+            - subject: "$IN_WELSTANDSGEBIED"
+              operation: EQUALS
+              value: true
+            - subject: "$LOCATIE"
+              operation: EQUALS
+              value: "VOOR"
+        then: true
+      - else: false
+    legal_basis:
+      law: "Welstandsnota Amsterdam en Omgevingsplan"
+      bwb_id: "CVDR696291"
+      url: "https://lokaleregelgeving.overheid.nl/CVDR696291/1"
+      juriconnect: "jci1.3:c:CVDR696291&z=2024-01-01&g=2024-01-01"
+      explanation: "Welstandstoets vereist in beschermde gebieden of voor voordaken in welstandsgebieden"
+
+  # Stap 5: Bepaal of vergunningsvrij
+  - output: "vergunningvrij"
+    operation: IF
+    conditions:
+      # Niet vergunningsvrij als rijksregels niet beoordeeld (None = IENW requirements niet gehaald)
+      - test:
+          subject: "$voldoet_aan_rijksregels"
+          operation: IS_NULL
+        then: false
+      # Niet vergunningsvrij als rijksregels niet nageleefd
+      - test:
+          subject: "$voldoet_aan_rijksregels"
+          operation: EQUALS
+          value: false
+        then: false
+      # Niet vergunningsvrij in beschermde gebieden
+      - test:
+          operation: OR
+          values:
+            - subject: "$IN_BESCHERMD_GEBIED"
+              operation: EQUALS
+              value: true
+            - subject: "$IS_BESCHERMD_STADS_OF_DORPSGEZICHT"
+              operation: EQUALS
+              value: true
+        then: false
+      # Niet vergunningsvrij voor voordaken in welstandsgebieden
+      - test:
+          operation: AND
+          values:
+            - subject: "$IN_WELSTANDSGEBIED"
+              operation: EQUALS
+              value: true
+            - subject: "$LOCATIE"
+              operation: EQUALS
+              value: "VOOR"
+        then: false
+      # Anders: vergunningsvrij
+      - else: true
+    legal_basis:
+      law: "Omgevingsplan Amsterdam"
+      bwb_id: "CVDR696291"
+      url: "https://lokaleregelgeving.overheid.nl/CVDR696291/1"
+      juriconnect: "jci1.3:c:CVDR696291&z=2024-01-01&g=2024-01-01"
+      explanation: "Vergunningsvrij tenzij in beschermd gebied of voordak in welstandsgebied"
+
+  # Stap 6: Inverse voor vergunning_vereist
+  - output: "vergunning_vereist"
+    operation: IF
+    conditions:
+      - test:
+          subject: "$vergunningvrij"
+          operation: EQUALS
+          value: true
+        then: false
+      - else: true
+    legal_basis:
+      law: "Omgevingsplan Amsterdam"
+      bwb_id: "CVDR696291"
+      url: "https://lokaleregelgeving.overheid.nl/CVDR696291/1"
+      juriconnect: "jci1.3:c:CVDR696291&z=2024-01-01&g=2024-01-01"
+      explanation: "Als niet vergunningsvrij, dan vergunning vereist"
+
+  # Stap 7: Bepaal reden afwijzing
+  - output: "reden_afwijzing"
+    operation: IF
+    conditions:
+      - test:
+          subject: "$voldoet_aan_rijksregels"
+          operation: EQUALS
+          value: false
+        then: "Voldoet niet aan rijksregels (zie IENW wet voor details)"
+      - test:
+          operation: OR
+          values:
+            - subject: "$IN_BESCHERMD_GEBIED"
+              operation: EQUALS
+              value: true
+            - subject: "$IS_BESCHERMD_STADS_OF_DORPSGEZICHT"
+              operation: EQUALS
+              value: true
+        then: "Beschermd gebied (grachtengordel/stadsgezicht): vergunning met CRK welstandstoets vereist"
+      - test:
+          operation: AND
+          values:
+            - subject: "$IN_WELSTANDSGEBIED"
+              operation: EQUALS
+              value: true
+            - subject: "$LOCATIE"
+              operation: EQUALS
+              value: "VOOR"
+        then: "Voordak in welstandsgebied: vergunning met CRK welstandsadvies vereist"
+      - else: "Voldoet aan alle Amsterdam eisen voor vergunningsvrij bouwen"
+    legal_basis:
+      law: "Omgevingsplan Amsterdam"
+      bwb_id: "CVDR696291"
+      url: "https://lokaleregelgeving.overheid.nl/CVDR696291/1"
+      juriconnect: "jci1.3:c:CVDR696291&z=2024-01-01&g=2024-01-01"
+      explanation: "Specifieke reden waarom niet voldaan wordt aan Amsterdam eisen"
