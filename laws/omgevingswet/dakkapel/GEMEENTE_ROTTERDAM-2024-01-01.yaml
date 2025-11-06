@@ -6,7 +6,7 @@ law_type: "FORMELE_WET"
 legal_character: "BESLUIT_VAN_ALGEMENE_STREKKING"
 decision_type: "ANDERE_HANDELING"
 discoverable: "CITIZEN"
-valid_from: "2024-01-01"
+valid_from: 2024-01-01
 service: "GEMEENTE_ROTTERDAM"
 description: >
   Gemeentelijke regels voor vergunningsvrije dakkapellen volgens het omgevingsplan van Rotterdam.
