@@ -37,7 +37,6 @@ properties:
       type: "number"
       required: true
       type_spec:
-        unit: "meter"
         precision: 2
         min: 0
         max: 20.0
@@ -60,7 +59,6 @@ properties:
       type: "number"
       required: false
       type_spec:
-        unit: "meter"
         precision: 2
         min: 0
         max: 0.5
@@ -74,7 +72,6 @@ properties:
       type: "number"
       required: false
       type_spec:
-        unit: "meter"
         precision: 2
         min: 0
         max: 20.0
@@ -82,6 +79,51 @@ properties:
         law: "Omgevingsplan Rotterdam"
         url: "https://lokaleregelgeving.overheid.nl/CVDR696362/1"
         explanation: "Rotterdam vereist 2 meter afstand voor zijdakvlakken grenzend aan openbaar gebied"
+
+  sources:
+    - name: "HOOGTE_M"
+      description: "Hoogte van de dakkapel (uit parameters, not IENW)"
+      type: "number"
+      source_reference:
+        parameter: "HOOGTE_M"
+      type_spec:
+        precision: 2
+      legal_basis:
+        law: "Omgevingsplan Rotterdam"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR696362/1"
+        explanation: "Rotterdam toetst hoogte op strengere norm dan rijks"
+
+    - name: "LOCATIE"
+      description: "Locatie van de dakkapel (uit parameters)"
+      type: "string"
+      source_reference:
+        parameter: "LOCATIE"
+      legal_basis:
+        law: "Omgevingsplan Rotterdam"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR696362/1"
+        explanation: "Rotterdam heeft extra eisen voor zijdaken bij openbaar gebied"
+
+    - name: "GRENST_AAN_OPENBAAR_GEBIED"
+      description: "Of het dakvlak grenst aan openbaar gebied (uit parameters)"
+      type: "boolean"
+      source_reference:
+        parameter: "GRENST_AAN_OPENBAAR_GEBIED"
+      legal_basis:
+        law: "Omgevingsplan Rotterdam"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR696362/1"
+        explanation: "Rotterdam stelt extra afstandseisen voor zijdaken bij openbaar gebied"
+
+    - name: "WONING_BREEDTE_M"
+      description: "Breedte van de woning in meters (uit parameters)"
+      type: "number"
+      source_reference:
+        parameter: "WONING_BREEDTE_M"
+      type_spec:
+        precision: 2
+      legal_basis:
+        law: "Omgevingsplan Rotterdam"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR696362/1"
+        explanation: "Rotterdam limiteert dakkapelbreedte tot 1/3 van woningbreedte"
 
   input:
     # Haal alle benodigde outputs van IENW op (engine computes dependencies niet automatisch)
@@ -144,52 +186,6 @@ properties:
         url: "https://wetten.overheid.nl/BWBR0037885/2024-01-01#Artikel4.3"
         juriconnect: "jci1.3:c:BWBR0037885&artikel=4.3&z=2024-01-01&g=2024-01-01"
         explanation: "Gemeentelijke regels gelden bovenop rijksregels, niet in plaats daarvan"
-
-    - name: "HOOGTE_M"
-      description: "Hoogte van de dakkapel (uit parameters, not IENW)"
-      type: "number"
-      source_reference:
-        parameter: "HOOGTE_M"
-      type_spec:
-        unit: "meter"
-        precision: 2
-      legal_basis:
-        law: "Omgevingsplan Rotterdam"
-        url: "https://lokaleregelgeving.overheid.nl/CVDR696362/1"
-        explanation: "Rotterdam toetst hoogte op strengere norm dan rijks"
-
-    - name: "LOCATIE"
-      description: "Locatie van de dakkapel (uit parameters)"
-      type: "string"
-      source_reference:
-        parameter: "LOCATIE"
-      legal_basis:
-        law: "Omgevingsplan Rotterdam"
-        url: "https://lokaleregelgeving.overheid.nl/CVDR696362/1"
-        explanation: "Rotterdam heeft extra eisen voor zijdaken bij openbaar gebied"
-
-    - name: "GRENST_AAN_OPENBAAR_GEBIED"
-      description: "Of het dakvlak grenst aan openbaar gebied (uit parameters)"
-      type: "boolean"
-      source_reference:
-        parameter: "GRENST_AAN_OPENBAAR_GEBIED"
-      legal_basis:
-        law: "Omgevingsplan Rotterdam"
-        url: "https://lokaleregelgeving.overheid.nl/CVDR696362/1"
-        explanation: "Rotterdam stelt extra afstandseisen voor zijdaken bij openbaar gebied"
-
-    - name: "WONING_BREEDTE_M"
-      description: "Breedte van de woning in meters (uit parameters)"
-      type: "number"
-      source_reference:
-        parameter: "WONING_BREEDTE_M"
-      type_spec:
-        unit: "meter"
-        precision: 2
-      legal_basis:
-        law: "Omgevingsplan Rotterdam"
-        url: "https://lokaleregelgeving.overheid.nl/CVDR696362/1"
-        explanation: "Rotterdam limiteert dakkapelbreedte tot 1/3 van woningbreedte"
 
   definitions:
     MAX_HOOGTE_ROTTERDAM_M: 1.5  # Omgevingsplan Rotterdam - max 1,5 m (strenger dan rijks 1,75 m)

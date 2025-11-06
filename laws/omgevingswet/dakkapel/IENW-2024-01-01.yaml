@@ -73,7 +73,6 @@ properties:
       type: "number"
       required: true
       type_spec:
-        unit: "meter"
         precision: 2
         min: 0
         max: 5.0
@@ -92,7 +91,6 @@ properties:
       type: "number"
       required: true
       type_spec:
-        unit: "meter"
         precision: 2
         min: 0
         max: 10.0
@@ -111,7 +109,6 @@ properties:
       type: "number"
       required: true
       type_spec:
-        unit: "meter"
         precision: 2
         min: 0
         max: 10.0
@@ -130,7 +127,6 @@ properties:
       type: "number"
       required: true
       type_spec:
-        unit: "meter"
         precision: 2
         min: 0
         max: 10.0
@@ -149,7 +145,6 @@ properties:
       type: "number"
       required: true
       type_spec:
-        unit: "meter"
         precision: 2
         min: 0
         max: 10.0
@@ -244,6 +239,46 @@ properties:
         url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.29"
         juriconnect: "jci1.3:c:BWBR0041297&artikel=2.29&z=2024-01-01&g=2024-01-01"
         explanation: "Geeft specifieke reden aan waarom niet voldaan wordt aan artikel 2.29"
+
+    - name: "IS_MONUMENT"
+      description: "Of het gebouw een monument is (rijksmonument of in beschermd stads-/dorpsgezicht)"
+      type: "boolean"
+      citizen_relevance: secondary
+      legal_basis:
+        law: "Besluit bouwwerken leefomgeving"
+        bwb_id: "BWBR0041297"
+        article: "2.30"
+        url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.30"
+        juriconnect: "jci1.3:c:BWBR0041297&artikel=2.30&z=2024-01-01&g=2024-01-01"
+        explanation: "Monumenten en beschermde stads-/dorpsgezichten zijn uitgesloten van vergunningsvrije bouw"
+
+    - name: "LOCATIE_TOEGESTAAN"
+      description: "Of de locatie van de dakkapel toegestaan is volgens rijksregels"
+      type: "boolean"
+      citizen_relevance: secondary
+      legal_basis:
+        law: "Besluit bouwwerken leefomgeving"
+        bwb_id: "BWBR0041297"
+        article: "2.29"
+        paragraph: "1"
+        sentence: "b"
+        url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.29"
+        juriconnect: "jci1.3:c:BWBR0041297&artikel=2.29&lid=1&z=2024-01-01&g=2024-01-01"
+        explanation: "Dakkapel moet in achterdakvlak of niet naar openbaar gebied gekeerd zijdakvlak"
+
+    - name: "AFMETINGEN_OK"
+      description: "Of de afmetingen van de dakkapel voldoen aan rijksregels"
+      type: "boolean"
+      citizen_relevance: secondary
+      legal_basis:
+        law: "Besluit bouwwerken leefomgeving"
+        bwb_id: "BWBR0041297"
+        article: "2.29"
+        paragraph: "1"
+        sentence: "b"
+        url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.29"
+        juriconnect: "jci1.3:c:BWBR0041297&artikel=2.29&lid=1&z=2024-01-01&g=2024-01-01"
+        explanation: "Dakkapel moet voldoen aan maximale hoogtes en afstanden tot dakvlakzijkanten"
 
     - name: "artikel_2_29_compliant"
       description: "Of voldaan wordt aan artikel 2.29 lid 1 onder b Bbl"

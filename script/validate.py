@@ -101,7 +101,7 @@ def validate_service_references(yaml_files: List[Path]) -> None:
 
 
 def collect_defined_variables(data: dict) -> Set[str]:
-    """Collect all defined variables from inputs, sources, definitions, and parameters."""
+    """Collect all defined variables from inputs, sources, definitions, parameters, and action outputs."""
     variables = set()
 
     properties = data.get("properties", {})
@@ -121,6 +121,11 @@ def collect_defined_variables(data: dict) -> Set[str]:
     # Add definitions
     for def_name in properties.get("definitions", {}).keys():
         variables.add(def_name)
+
+    # Add action outputs (intermediate variables)
+    for action in data.get("actions", []):
+        if "output" in action:
+            variables.add(action["output"])
 
     return variables
 

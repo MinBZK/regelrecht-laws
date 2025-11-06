@@ -26,6 +26,7 @@ references:
     url: "https://wetten.overheid.nl/BWBR0041297/2024-01-01#Artikel2.29"
     description: "Rijksregels voor vergunningsvrije dakkapellen"
   - law: "Welstandsnota Amsterdam - De Schoonheid van Amsterdam"
+    article: "Algemeen"
     url: "https://www.crk.amsterdam.nl/welstandsnota"
     description: "Welstandscriteria zoals vastgesteld door gemeenteraad"
   - law: "Erfgoedwet"
@@ -44,22 +45,7 @@ properties:
         url: "https://lokaleregelgeving.overheid.nl/CVDR696291/1"
         explanation: "Postcode bepaalt of gebouw in welstandsgebied of beschermd gebied ligt"
 
-  input:
-    - name: "voldoet_aan_rijksregels"
-      description: "Of de dakkapel voldoet aan de rijksregels (van IENW)"
-      type: "boolean"
-      service_reference:
-        service: "IENW"
-        law: "omgevingswet/besluit_bouwwerken_leefomgeving"
-        field: "voldoet_aan_rijksregels"
-      legal_basis:
-        law: "Omgevingswet"
-        bwb_id: "BWBR0037885"
-        article: "4.3"
-        url: "https://wetten.overheid.nl/BWBR0037885/2024-01-01#Artikel4.3"
-        juriconnect: "jci1.3:c:BWBR0037885&artikel=4.3&z=2024-01-01&g=2024-01-01"
-        explanation: "Gemeentelijke regels gelden bovenop rijksregels"
-
+  sources:
     - name: "LOCATIE"
       description: "Locatie van de dakkapel (uit parameters)"
       type: "string"
@@ -82,6 +68,22 @@ properties:
         url: "https://wetten.overheid.nl/BWBR0037521/2024-01-01#Artikel3.17"
         juriconnect: "jci1.3:c:BWBR0037521&artikel=3.17&z=2024-01-01&g=2024-01-01"
         explanation: "Beschermde stads- en dorpsgezichten hebben aanvullende bescherming"
+
+  input:
+    - name: "voldoet_aan_rijksregels"
+      description: "Of de dakkapel voldoet aan de rijksregels (van IENW)"
+      type: "boolean"
+      service_reference:
+        service: "IENW"
+        law: "omgevingswet/besluit_bouwwerken_leefomgeving"
+        field: "voldoet_aan_rijksregels"
+      legal_basis:
+        law: "Omgevingswet"
+        bwb_id: "BWBR0037885"
+        article: "4.3"
+        url: "https://wetten.overheid.nl/BWBR0037885/2024-01-01#Artikel4.3"
+        juriconnect: "jci1.3:c:BWBR0037885&artikel=4.3&z=2024-01-01&g=2024-01-01"
+        explanation: "Gemeentelijke regels gelden bovenop rijksregels"
 
   definitions:
     BESCHERMDE_GEBIEDEN_POSTCODES: ["1012", "1013", "1015", "1016", "1017"]  # Grachtengordel en centrum
