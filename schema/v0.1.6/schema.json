@@ -159,7 +159,11 @@
                 "eurocent",
                 "years",
                 "weeks",
-                "months"
+                "months",
+                "days",
+                "meter",
+                "centimeter",
+                "kilometer"
               ]
             },
             "precision": {

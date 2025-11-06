@@ -73,6 +73,7 @@ properties:
       type: "number"
       required: true
       type_spec:
+        unit: "meter"
         precision: 2
         min: 0
         max: 5.0
@@ -91,6 +92,7 @@ properties:
       type: "number"
       required: true
       type_spec:
+        unit: "meter"
         precision: 2
         min: 0
         max: 10.0
@@ -109,6 +111,7 @@ properties:
       type: "number"
       required: true
       type_spec:
+        unit: "meter"
         precision: 2
         min: 0
         max: 10.0
@@ -127,6 +130,7 @@ properties:
       type: "number"
       required: true
       type_spec:
+        unit: "meter"
         precision: 2
         min: 0
         max: 10.0
@@ -145,6 +149,7 @@ properties:
       type: "number"
       required: true
       type_spec:
+        unit: "meter"
         precision: 2
         min: 0
         max: 10.0

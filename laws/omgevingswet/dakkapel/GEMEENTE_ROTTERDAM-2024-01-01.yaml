@@ -37,6 +37,7 @@ properties:
       type: "number"
       required: true
       type_spec:
+        unit: "meter"
         precision: 2
         min: 0
         max: 20.0
@@ -59,6 +60,7 @@ properties:
       type: "number"
       required: false
       type_spec:
+        unit: "meter"
         precision: 2
         min: 0
         max: 0.5
@@ -72,6 +74,7 @@ properties:
       type: "number"
       required: false
       type_spec:
+        unit: "meter"
         precision: 2
         min: 0
         max: 20.0
@@ -87,6 +90,7 @@ properties:
       source_reference:
         parameter: "HOOGTE_M"
       type_spec:
+        unit: "meter"
         precision: 2
       legal_basis:
         law: "Omgevingsplan Rotterdam"
@@ -119,6 +123,7 @@ properties:
       source_reference:
         parameter: "WONING_BREEDTE_M"
       type_spec:
+        unit: "meter"
         precision: 2
       legal_basis:
         law: "Omgevingsplan Rotterdam"
