@@ -1,10 +1,12 @@
-$id: https://raw.githubusercontent.com/MinBZK/poc-machine-law/refs/heads/main/schema/v0.2.0/schema.json
+$schema: https://raw.githubusercontent.com/MinBZK/poc-machine-law/refs/heads/main/schema/v0.2.0/schema.json
+$id: "zorgtoeslagwet"
 uuid: 60e71675-38bc-4297-87ac-0c145613e481
 regulatory_layer: "WET"
 publication_date: "2024-12-20"
 
-bwb_id: "BWBR0018451"
-url: "https://wetten.overheid.nl/BWBR0018451/2025-01-01"
+identifiers:
+  bwb_id: "BWBR0018451"
+  url: "https://wetten.overheid.nl/BWBR0018451/2025-01-01"
 
 articles:
   - number: "1"
@@ -20,15 +22,10 @@ articles:
 
     machine_readable:
       requires:
-        - law: "Zorgverzekeringswet"
-          values: ["verzekerde"]
-        - law: "Wet inkomstenbelasting 2001"
-          article: "2.18"
-          values: ["verzamelinkomen"]
-        - article: "2"
-          values: ["drempelinkomen", "normpremie"]
-        - article: "4"
-          values: ["standaardpremie"]
+        - "regelrecht://zvw/is_verzekerd"
+        - "regelrecht://awir/verzamelinkomen"
+        - "regelrecht://zorgtoeslagwet/bereken_zorgtoeslag"
+        - "regelrecht://regeling_standaardpremie/standaardpremie"
 
   - number: "1a"
     text: |
@@ -74,15 +71,15 @@ articles:
     machine_readable:
       public: true
       competent_authority: "Dienst Toeslagen"
-      endpoint: "zorgtoeslagwet.bereken_zorgtoeslag"
+      endpoint: "bereken_zorgtoeslag"
 
       requires:
-        - article: "1"
-          values: ["verzekerde", "toetsingsinkomen"]
-        - article: "3"
-          values: ["vermogen_onder_grens"]
-        - regeling: "regeling_standaardpremie"
-          values: ["standaardpremie"]
+        - "regelrecht://zvw/is_verzekerd"
+        - "regelrecht://wet_brp/leeftijd"
+        - "regelrecht://awir/toeslagpartner"
+        - "regelrecht://awir/verzamelinkomen"
+        - "regelrecht://zorgtoeslagwet/check_vermogen"
+        - "regelrecht://regeling_standaardpremie/standaardpremie"
 
       definitions:
         DREMPELINKOMEN_ALLEENSTAANDE:
@@ -113,44 +110,48 @@ articles:
         input:
           - name: "LEEFTIJD"
             type: "number"
-            source:
-              article: "wet_brp.leeftijd"
-              field: "leeftijd"
+            call:
+              url: "regelrecht://wet_brp/leeftijd#leeftijd"
+              parameters:
+                BSN: $BSN
 
           - name: "IS_VERZEKERDE"
             type: "boolean"
-            source:
-              article: "zvw.is_verzekerd"
-              field: "is_verzekerd"
+            call:
+              url: "regelrecht://zvw/is_verzekerd#is_verzekerd"
+              parameters:
+                BSN: $BSN
 
           - name: "HEEFT_TOESLAGPARTNER"
             type: "boolean"
-            source:
-              article: "awir.toeslagpartner"
-              field: "heeft_toeslagpartner"
+            call:
+              url: "regelrecht://awir/toeslagpartner#heeft_toeslagpartner"
+              parameters:
+                BSN: $BSN
 
           - name: "TOETSINGSINKOMEN"
             type: "amount"
-            source:
-              article: "awir.verzamelinkomen"
-              field: "toetsingsinkomen"
+            call:
+              url: "regelrecht://awir/verzamelinkomen#toetsingsinkomen"
+              parameters:
+                BSN: $BSN
             type_spec:
               unit: "eurocent"
 
           - name: "STANDAARDPREMIE"
             type: "amount"
-            source:
-              regeling: "regeling_standaardpremie"
-              article: "1"
-              field: "standaardpremie"
+            call:
+              url: "regelrecht://regeling_standaardpremie/standaardpremie#standaardpremie"
+              parameters: {}
             type_spec:
               unit: "eurocent"
 
           - name: "VERMOGEN_ONDER_GRENS"
             type: "boolean"
-            source:
-              article: "3"
-              field: "vermogen_onder_grens"
+            call:
+              url: "regelrecht://zorgtoeslagwet/check_vermogen#vermogen_onder_grens"
+              parameters:
+                BSN: $BSN
 
         output:
           - name: "heeft_recht_op_zorgtoeslag"
@@ -235,11 +236,13 @@ articles:
     url: "https://wetten.overheid.nl/BWBR0018451/2025-01-01#Artikel3"
 
     machine_readable:
+      public: true
+      endpoint: "check_vermogen"
       competent_authority: "Dienst Toeslagen"
 
       requires:
-        - article: "1"
-          values: ["verzekerde"]
+        - "regelrecht://belastingdienst/rendementsgrondslag"
+        - "regelrecht://awir/toeslagpartner"
 
       definitions:
         VERMOGENSGRENS_ALLEENSTAAND:
@@ -261,17 +264,19 @@ articles:
         input:
           - name: "VERMOGEN"
             type: "amount"
-            source:
-              article: "belastingdienst.rendementsgrondslag"
-              field: "rendementsgrondslag"
+            call:
+              url: "regelrecht://belastingdienst/rendementsgrondslag#rendementsgrondslag"
+              parameters:
+                BSN: $BSN
             type_spec:
               unit: "eurocent"
 
           - name: "HEEFT_TOESLAGPARTNER"
             type: "boolean"
-            source:
-              article: "awir.toeslagpartner"
-              field: "heeft_toeslagpartner"
+            call:
+              url: "regelrecht://awir/toeslagpartner#heeft_toeslagpartner"
+              parameters:
+                BSN: $BSN
 
         output:
           - name: "vermogen_onder_grens"
@@ -302,8 +307,7 @@ articles:
 
     machine_readable:
       requires:
-        - regeling: "regeling_standaardpremie"
-          values: ["standaardpremie"]
+        - "regelrecht://regeling_standaardpremie/standaardpremie"
 
   - number: "4a"
     text: |
@@ -340,8 +344,7 @@ articles:
 
     machine_readable:
       requires:
-        - koninklijk_besluit: "KB inwerkingtreding Wet op de zorgtoeslag"
-          values: ["datum_inwerkingtreding"]
+        - "regelrecht://kb_inwerkingtreding_zorgtoeslag/datum_inwerkingtreding"
 
   - number: "8"
     text: |

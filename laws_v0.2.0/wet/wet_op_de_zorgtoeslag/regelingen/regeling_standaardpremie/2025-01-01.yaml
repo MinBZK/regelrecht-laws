@@ -1,10 +1,12 @@
-$id: https://raw.githubusercontent.com/MinBZK/poc-machine-law/refs/heads/main/schema/v0.2.0/schema.json
+$schema: https://raw.githubusercontent.com/MinBZK/poc-machine-law/refs/heads/main/schema/v0.2.0/schema.json
+$id: "regeling_standaardpremie"
 uuid: ac962262-6628-49bf-a465-5d831271936a
 regulatory_layer: "MINISTERIELE_REGELING"
 publication_date: "2024-11-19"
 
-bwb_id: "BWBR0050536"
-url: "https://wetten.overheid.nl/BWBR0050536/2025-01-01"
+identifiers:
+  bwb_id: "BWBR0050536"
+  url: "https://wetten.overheid.nl/BWBR0050536/2025-01-01"
 
 articles:
   - number: "1"
@@ -15,7 +17,7 @@ articles:
 
     machine_readable:
       public: true
-      endpoint: "regeling_standaardpremie.standaardpremie"
+      endpoint: "standaardpremie"
 
       definitions:
         STANDAARDPREMIE_2025:
