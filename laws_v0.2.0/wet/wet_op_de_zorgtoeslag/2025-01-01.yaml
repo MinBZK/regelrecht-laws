@@ -142,7 +142,6 @@ articles:
             type: "amount"
             call:
               url: "regelrecht://regeling_standaardpremie/standaardpremie#standaardpremie"
-              parameters: {}
             type_spec:
               unit: "eurocent"
 
