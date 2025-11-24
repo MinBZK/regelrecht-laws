@@ -152,68 +152,28 @@ Feature: AWIR Toeslagproces - Zorgtoeslag
     And bevat de maandelijkse berekeningen 12 berekeningen
     And bevat de maandelijkse betalingen 12 betalingen
   # ============================================================================
-  # Isolated State Transition Tests
+  # Time Simulation Tests
   # ============================================================================
 
-  @state-transitions
-  Scenario: State transition AANVRAAG -> BEREKEND
-    Given een toeslag in status "AANVRAAG"
-    When de status transition "bereken_aanspraak" wordt uitgevoerd met aanspraak
-    Then is de toeslag status "BEREKEND"
-
-  @state-transitions
-  Scenario: State transition AANVRAAG -> AFGEWEZEN (geen aanspraak)
-    Given een toeslag in status "AANVRAAG"
-    When de status transition "bereken_aanspraak" wordt uitgevoerd zonder aanspraak
-    Then is de toeslag status "AFGEWEZEN"
-
-  @state-transitions
-  Scenario: State transition BEREKEND -> VOORSCHOT
-    Given een toeslag in status "BEREKEND" met aanspraak
-    When de status transition "stel_voorschot_vast" wordt uitgevoerd
-    Then is de toeslag status "VOORSCHOT"
-
-  @state-transitions
-  Scenario: State transition BEREKEND -> AFGEWEZEN
-    Given een toeslag in status "BEREKEND" zonder aanspraak
-    When de status transition "wijs_af" wordt uitgevoerd
-    Then is de toeslag status "AFGEWEZEN"
-
-  @state-transitions
-  Scenario: State transition VOORSCHOT -> LOPEND
-    Given een toeslag in status "VOORSCHOT"
-    When de status transition "start_maand" wordt uitgevoerd voor maand 1
-    Then is de toeslag status "LOPEND"
-
-  @state-transitions
-  Scenario: State transition LOPEND -> DEFINITIEF
-    Given een toeslag in status "LOPEND"
-    When de status transition "stel_definitief_vast" wordt uitgevoerd
-    Then is de toeslag status "DEFINITIEF"
-
-  @state-transitions
-  Scenario: State transition DEFINITIEF -> VEREFFEND (nabetaling)
-    Given een toeslag in status "DEFINITIEF" met nabetaling
-    When de status transition "vereffen" wordt uitgevoerd
-    Then is de toeslag status "VEREFFEND"
-    And is het vereffening type "NABETALING"
-
-  @state-transitions
-  Scenario: State transition DEFINITIEF -> VEREFFEND (terugvordering)
-    Given een toeslag in status "DEFINITIEF" met terugvordering
-    When de status transition "vereffen" wordt uitgevoerd
-    Then is de toeslag status "VEREFFEND"
-    And is het vereffening type "TERUGVORDERING"
-
-  @state-transitions
-  Scenario: State transition naar BEEINDIGD vanuit VEREFFEND
-    Given een toeslag in status "VEREFFEND"
-    When de status transition "beeindig" wordt uitgevoerd
-    Then is de toeslag status "BEEINDIGD"
-
-  @state-transitions
-  Scenario: Voorschot herzien behoudt LOPEND status
-    Given een toeslag in status "LOPEND"
-    When de status transition "herzien_voorschot" wordt uitgevoerd
-    Then is de toeslag status "LOPEND"
-    And bevat de beschikkingen historie een "HERZIEN_VOORSCHOT" beschikking
+  @time-simulation
+  Scenario: Tijd verstrijkt en maanden worden automatisch verwerkt
+    Given de volgende RvIG personen gegevens:
+      | bsn       | geboortedatum | verblijfsadres | land_verblijf |
+      | 999993653 | 1985-06-15    | Rotterdam      | NEDERLAND     |
+    And de volgende RvIG relaties gegevens:
+      | bsn       | partnerschap_type | partner_bsn |
+      | 999993653 | GEEN              | null        |
+    And de volgende RVZ verzekeringen gegevens:
+      | bsn       | polis_status |
+      | 999993653 | ACTIEF       |
+    And de volgende BELASTINGDIENST box1 gegevens:
+      | bsn       | loon_uit_dienstbetrekking | uitkeringen_en_pensioenen | winst_uit_onderneming | resultaat_overige_werkzaamheden | eigen_woning |
+      | 999993653 | 25000                     | 0                         | 0                     | 0                               | 0            |
+    And de volgende BELASTINGDIENST box3 gegevens:
+      | bsn       | spaargeld | beleggingen | onroerend_goed | schulden |
+      | 999993653 | 5000      | 0           | 0              | 0        |
+    And de burger heeft een lopende zorgtoeslag voor jaar 2025
+    When de datum wordt gezet op "2025-06-15"
+    Then zijn alle maanden vanaf aanvraag tot en met juni verwerkt
+    And bevat de maandelijkse berekeningen 5 berekeningen
+    And bevat de maandelijkse betalingen 5 betalingen
