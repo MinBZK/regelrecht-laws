@@ -22,15 +22,38 @@ legal_basis:
 
 properties:
   parameters:
-    - name: "BSN"
-      description: "BSN van de aanvrager"
+    - name: "TOESLAG_ID"
+      description: "Unieke identifier van de toeslagaanvraag (zaaknummer)"
       type: "string"
       required: true
+      legal_basis:
+        law: "Algemene wet inkomensafhankelijke regelingen"
+        bwb_id: "BWBR0018472"
+        article: "15"
+        url: "https://wetten.overheid.nl/BWBR0018472/2025-01-01#Hoofdstuk2_Paragraaf3_Artikel15"
+        explanation: "De aanvraag wordt geïdentificeerd door een uniek zaaknummer"
+
+  # Gegevens worden opgehaald uit de aanvraag op basis van TOESLAG_ID
+  sources:
+    - name: "BSN"
+      description: "BSN van de aanvrager, opgehaald uit de aanvraag"
+      type: "string"
+      source_reference:
+        table: "toeslagen"
+        field: "bsn"
+        select_on:
+          - name: "toeslag_id"
+            value: "$TOESLAG_ID"
 
     - name: "TOESLAG_TYPE"
       description: "Het type toeslag waarvoor aanspraak wordt gedaan"
       type: "string"
-      required: true
+      source_reference:
+        table: "toeslagen"
+        field: "toeslag_type"
+        select_on:
+          - name: "toeslag_id"
+            value: "$TOESLAG_ID"
       allowed_values:
         - value: "ZORGTOESLAG"
           description: "Zorgtoeslag (Wet op de zorgtoeslag)"
@@ -44,17 +67,16 @@ properties:
         - value: "KINDEROPVANGTOESLAG"
           description: "Kinderopvangtoeslag (Wet kinderopvang)"
           regeling: "wet_kinderopvang"
-      legal_basis:
-        law: "Algemene wet inkomensafhankelijke regelingen"
-        bwb_id: "BWBR0018472"
-        article: "1"
-        url: "https://wetten.overheid.nl/BWBR0018472/2025-01-01#Hoofdstuk1_Artikel1"
-        explanation: "De AWIR is van toepassing op alle inkomensafhankelijke regelingen zoals gedefinieerd in artikel 1"
 
     - name: "BEREKENINGSJAAR"
       description: "Het jaar waarvoor de toeslag wordt aangevraagd"
       type: "number"
-      required: true
+      source_reference:
+        table: "toeslagen"
+        field: "berekeningsjaar"
+        select_on:
+          - name: "toeslag_id"
+            value: "$TOESLAG_ID"
 
   definitions:
     # Mapping van TOESLAG_TYPE naar regeling (wet)
@@ -109,13 +131,6 @@ workflow:
         article: "15"
         url: "https://wetten.overheid.nl/BWBR0018472/2025-01-01#Hoofdstuk2_Paragraaf3_Artikel15"
         explanation: "De aanvraag om een voorschot moet uiterlijk worden ingediend vóór 1 september van het berekeningsjaar."
-      inputs:
-        - name: "BSN"
-          type: "string"
-          required: true
-        - name: "berekeningsjaar"
-          type: "number"
-          required: true
       transitions:
         - to: "berekenen_aanspraak"
 
@@ -447,19 +462,12 @@ workflow:
     description: "De actuele status van een toeslagaanvraag per burger per berekeningsjaar"
 
     identifier:
-      - name: "BSN"
+      - name: "TOESLAG_ID"
         type: "string"
-        description: "BSN van de aanvrager"
-      - name: "TOESLAG_TYPE"
-        type: "string"
-        description: "Het type toeslag (ZORGTOESLAG, HUURTOESLAG, etc.)"
-      - name: "BEREKENINGSJAAR"
-        type: "number"
-        description: "Het berekeningsjaar"
+        description: "Unieke identifier van de toeslagaanvraag (zaaknummer)"
 
-    # OID (Object Identifier) format: NL.TOESLAGEN.{TOESLAG_TYPE}.{BSN}.{BEREKENINGSJAAR}
-    # Voorbeeld: NL.TOESLAGEN.ZORGTOESLAG.123456789.2025
-    oid_format: "NL.TOESLAGEN.{TOESLAG_TYPE}.{BSN}.{BEREKENINGSJAAR}"
+    # OID is gelijk aan de TOESLAG_ID
+    oid_format: "{TOESLAG_ID}"
 
     fields:
       # Workflow state
