@@ -5,7 +5,7 @@ law: "awir/workflow"
 law_type: "FORMELE_WET"
 legal_character: "PROCES"
 decision_type: "WORKFLOW"
-discoverable: "CITIZEN"
+discoverable: "NONE"
 valid_from: 2025-01-01
 service: "AWIR"
 description: |
