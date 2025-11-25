@@ -26,7 +26,8 @@
     "law_type": {
       "type": "string",
       "enum": [
-        "FORMELE_WET"
+        "FORMELE_WET",
+        "BELEIDSREGEL"
       ]
     },
     "legal_character": {

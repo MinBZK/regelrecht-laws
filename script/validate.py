@@ -176,11 +176,15 @@ def validate_variable_definitions(yaml_files: List[Path]) -> None:
 
 
 def main():
-    BASE_DIR = Path("laws")
+    BASE_DIRS = [Path("laws"), Path("policy")]
     schema = "schema/v0.1.6/schema.json"
 
-    # Find all YAML files
-    yaml_files = list(BASE_DIR.rglob("*.yaml")) + list(BASE_DIR.rglob("*.yml"))
+    # Find all YAML files from both laws and policy directories
+    yaml_files = []
+    for base_dir in BASE_DIRS:
+        if base_dir.exists():
+            yaml_files.extend(list(base_dir.rglob("*.yaml")))
+            yaml_files.extend(list(base_dir.rglob("*.yml")))
 
     # First validate all files against the schema
     for f in yaml_files:

@@ -1,0 +1,173 @@
+schema_version: "0.1.5"
+uuid: e0f4c13f-7a9d-4e5c-bf8a-3d6a0c4e9152
+name: Collectieve Zorgverzekering Bijzondere Bijstand Amsterdam
+law: beleidsregels_bijzondere_bijstand_amsterdam/collectieve_zorgverzekering
+law_type: "BELEIDSREGEL"
+legal_character: "BESCHIKKING"
+decision_type: "BELEIDSREGEL"
+discoverable: "CITIZEN"
+valid_from: 2024-01-01
+service: "GEMEENTE_AMSTERDAM"
+description: >
+  Collectieve zorgverzekering voor inwoners van Amsterdam met een inkomen tot 130%
+  van het Wettelijk Sociaal Minimum. De gemeente betaalt een bijdrage voor de
+  aanvullende verzekering. Gebaseerd op artikel 10 van de Beleidsregels Bijzondere
+  Bijstand Gemeente Amsterdam.
+legal_basis:
+  law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+  article: "10"
+  url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+  explanation: "Artikel 10 regelt de collectieve zorgverzekering voor mensen met een laag inkomen"
+
+references:
+  - law: "Participatiewet"
+    article: "35"
+    url: "https://wetten.overheid.nl/BWBR0015703/2024-01-01#Hoofdstuk4_Paragraaf4.1_Artikel35"
+  - law: "Zorgverzekeringswet"
+    article: "1"
+    url: "https://wetten.overheid.nl/BWBR0018450/2024-01-01#Hoofdstuk1_Artikel1"
+
+properties:
+  parameters:
+    - name: "BSN"
+      description: "BSN van de aanvrager"
+      type: "string"
+      required: true
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "35"
+        url: "https://wetten.overheid.nl/BWBR0015703/2024-01-01#Hoofdstuk4_Paragraaf4.1_Artikel35"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=35&z=2024-01-01&g=2024-01-01"
+        explanation: "BSN is nodig voor identificatie van de aanvrager"
+
+  input:
+    - name: "INKOMEN"
+      description: "Toetsingsinkomen van de aanvrager"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+        min: 0
+      temporal:
+        type: "period"
+        period_type: "year"
+      service_reference:
+        service: "UWV"
+        field: "inkomen"
+        law: "wet_inkomstenbelasting"
+      legal_basis:
+        law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+        article: "10"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+        explanation: "Het inkomen bepaalt het recht op collectieve verzekering"
+
+    - name: "WETTELIJK_SOCIAAL_MINIMUM"
+      description: "Wettelijk Sociaal Minimum (jaarlijks vastgesteld)"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+        min: 0
+      temporal:
+        type: "period"
+        period_type: "year"
+      service_reference:
+        service: "SZW"
+        field: "basisbedrag"
+        law: "participatiewet/bijstand"
+      legal_basis:
+        law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+        article: "10"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+        explanation: "De inkomensgrens is 130% van het Wettelijk Sociaal Minimum"
+
+    - name: "WOONT_IN_AMSTERDAM"
+      description: "Of de aanvrager in Amsterdam woont"
+      type: "boolean"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      service_reference:
+        service: "RvIG"
+        field: "woont_in_amsterdam"
+        law: "wet_brp"
+      legal_basis:
+        law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+        article: "10"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+        explanation: "De collectieve verzekering geldt alleen voor inwoners van Amsterdam"
+
+  output:
+    - name: "is_gerechtigd"
+      description: "Voldoet aan voorwaarden voor collectieve zorgverzekering"
+      type: "boolean"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      citizen_relevance: secondary
+      legal_basis:
+        law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+        article: "10"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+        explanation: "Recht op collectieve zorgverzekering conform artikel 10"
+
+    - name: "heeft_recht_collectieve_verzekering"
+      description: "Of aanvrager recht heeft op collectieve zorgverzekering"
+      type: "boolean"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      citizen_relevance: primary
+      legal_basis:
+        law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+        article: "10"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+        explanation: "Recht op deelname aan collectieve zorgverzekering"
+
+  definitions:
+    # Artikel 10 - inkomensgrens als percentage van WSM
+    INKOMENSGRENS_PERCENTAGE: 1.30      # 130% van Wettelijk Sociaal Minimum
+
+requirements:
+  - all:
+      # Woont in Amsterdam
+      - subject: "$WOONT_IN_AMSTERDAM"
+        operation: EQUALS
+        value: true
+        legal_basis:
+          law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+          article: "10"
+          url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+          explanation: "De collectieve verzekering geldt alleen voor inwoners van Amsterdam"
+
+      # Inkomen onder 130% WSM
+      - operation: LESS_OR_EQUAL
+        values:
+          - "$INKOMEN"
+          - operation: MULTIPLY
+            values:
+              - "$WETTELIJK_SOCIAAL_MINIMUM"
+              - "$INKOMENSGRENS_PERCENTAGE"
+        legal_basis:
+          law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+          article: "10"
+          url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+          explanation: "De inkomensgrens is 130% van het Wettelijk Sociaal Minimum (armoedebeleid-grens)"
+
+actions:
+  - output: "is_gerechtigd"
+    value: true
+    legal_basis:
+      law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+      article: "10"
+      url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+      explanation: "Recht op collectieve zorgverzekering wordt toegekend als aan alle voorwaarden is voldaan"
+
+  - output: "heeft_recht_collectieve_verzekering"
+    value: true
+    legal_basis:
+      law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+      article: "10"
+      url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+      explanation: "Bij voldoen aan voorwaarden heeft aanvrager recht op deelname aan de collectieve zorgverzekering"

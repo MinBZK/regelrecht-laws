@@ -1,0 +1,338 @@
+schema_version: "0.1.5"
+uuid: b2c3d4e5-6f7a-4b8c-9d0e-1f2a3b4c5d6e
+name: Woonkostentoeslag Zelfstandigen Bijzondere Bijstand Amsterdam 2026
+law: beleidsregels_bijzondere_bijstand_amsterdam/woonkostentoeslag_zelfstandigen
+law_type: "BELEIDSREGEL"
+legal_character: "BESCHIKKING"
+decision_type: "BELEIDSREGEL"
+discoverable: "CITIZEN"
+valid_from: 2026-01-01
+service: "GEMEENTE_AMSTERDAM"
+description: >
+  Woonkostentoeslag voor zelfstandige ondernemers. De aanspraak wordt beoordeeld
+  volgens de regels van het Besluit bijstandverlening zelfstandigen 2004 (Bbz).
+  De toeslag wordt meestal eerst als lening verstrekt en later (na inkomensvaststelling)
+  omgezet in gift. Artikel 9.1 lid 2 (verhuisplicht/maximale duur) en artikel 9.3 lid 3
+  (lening bij overwaarde) zijn niet van toepassing. Gebaseerd op artikel 9.4 van de
+  Beleidsregels Bijzondere Bijstand Gemeente Amsterdam.
+legal_basis:
+  law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+  article: "9"
+  paragraph: "4"
+  url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+  explanation: "Artikel 9.4 regelt de woonkostentoeslag voor zelfstandige ondernemers volgens Bbz-systematiek"
+
+references:
+  - law: "Besluit bijstandverlening zelfstandigen 2004"
+    article: "10"
+    url: "https://wetten.overheid.nl/BWBR0015711/2026-01-01#Hoofdstuk2_Paragraaf1_Artikel10"
+  - law: "Besluit bijstandverlening zelfstandigen 2004"
+    article: "11"
+    url: "https://wetten.overheid.nl/BWBR0015711/2026-01-01#Hoofdstuk2_Paragraaf1_Artikel11"
+  - law: "Besluit bijstandverlening zelfstandigen 2004"
+    article: "12"
+    url: "https://wetten.overheid.nl/BWBR0015711/2026-01-01#Hoofdstuk2_Paragraaf1_Artikel12"
+  - law: "Besluit bijstandverlening zelfstandigen 2004"
+    article: "19"
+    url: "https://wetten.overheid.nl/BWBR0015711/2026-01-01#Hoofdstuk2_Paragraaf2_Artikel19"
+  - law: "Participatiewet"
+    article: "35"
+    url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01#Hoofdstuk4_Paragraaf4.1_Artikel35"
+  - law: "Wet op de huurtoeslag"
+    article: "13"
+    url: "https://wetten.overheid.nl/BWBR0008659/2026-01-01#Paragraaf4_Artikel13"
+
+properties:
+  parameters:
+    - name: "BSN"
+      description: "BSN van de aanvrager"
+      type: "string"
+      required: true
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "35"
+        url: "https://wetten.overheid.nl/BWBR0015703/2026-01-01#Hoofdstuk4_Paragraaf4.1_Artikel35"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=35&z=2026-01-01&g=2026-01-01"
+        explanation: "BSN is nodig voor identificatie van de aanvrager"
+
+  sources:
+    - name: "IS_ZELFSTANDIGE"
+      description: "Of aanvrager of partner zelfstandig ondernemer is"
+      type: "boolean"
+      source_reference:
+        source_type: "claim"
+        wallet_attribute: "is_zelfstandige"
+      legal_basis:
+        law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+        article: "9"
+        paragraph: "4"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+        explanation: "Artikel 9.4 lid 1a: wanneer aanvrager en/of partner zelfstandige is, geldt Bbz-systematiek"
+
+    - name: "KALE_HUUR"
+      description: "Kale huurprijs per maand"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+        min: 0
+      temporal:
+        type: "period"
+        period_type: "month"
+      source_reference:
+        source_type: "claim"
+        wallet_attribute: "kale_huur"
+      legal_basis:
+        law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+        article: "9"
+        paragraph: "4"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+        explanation: "Artikel 9.4 lid 1b: zelfde bedragen als artikel 9.2 worden gehanteerd"
+
+    - name: "HYPOTHEEKRENTE"
+      description: "Maandelijkse hypotheekrente"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+        min: 0
+      temporal:
+        type: "period"
+        period_type: "month"
+      source_reference:
+        source_type: "claim"
+        wallet_attribute: "hypotheekrente"
+      legal_basis:
+        law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+        article: "9"
+        paragraph: "4"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+        explanation: "Artikel 9.4 lid 1b: zelfde bedragen als artikel 9.3 worden gehanteerd"
+
+    - name: "ERFPACHTCANON"
+      description: "Maandelijkse erfpachtcanon"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+        min: 0
+      temporal:
+        type: "period"
+        period_type: "month"
+      source_reference:
+        source_type: "claim"
+        wallet_attribute: "erfpachtcanon"
+      legal_basis:
+        law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+        article: "9"
+        paragraph: "4"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+        explanation: "Erfpachtcanon telt mee bij eigen woningen conform artikel 9.4 lid 1b"
+
+    - name: "IS_HUURWONING"
+      description: "Of de woning een huurwoning is"
+      type: "boolean"
+      source_reference:
+        source_type: "claim"
+        wallet_attribute: "is_huurwoning"
+      legal_basis:
+        law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+        article: "9"
+        paragraph: "4"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+        explanation: "De berekening verschilt tussen huur- en koopwoningen"
+
+  input:
+    - name: "HEEFT_HUURTOESLAG"
+      description: "Of aanvrager huurtoeslag ontvangt"
+      type: "boolean"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      service_reference:
+        service: "TOESLAGEN"
+        field: "is_gerechtigd"
+        law: "wet_op_de_huurtoeslag"
+      legal_basis:
+        law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+        article: "9"
+        paragraph: "2"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+        explanation: "Huurtoeslag is voorliggende voorziening bij huur <= maximale huurgrens"
+
+  output:
+    - name: "is_gerechtigd"
+      description: "Voldoet aan voorwaarden voor woonkostentoeslag zelfstandigen"
+      type: "boolean"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      citizen_relevance: secondary
+      legal_basis:
+        law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+        article: "9"
+        paragraph: "4"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+        explanation: "Recht op woonkostentoeslag conform artikel 9.4 (Bbz-systematiek)"
+
+    - name: "woonkostentoeslag_bruto"
+      description: "Bruto woonkostentoeslag voor Bbz-beoordeling (zonder draagkrachtaftrek)"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+        min: 0
+      temporal:
+        type: "period"
+        period_type: "month"
+      citizen_relevance: primary
+      legal_basis:
+        law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+        article: "9"
+        paragraph: "4"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+        explanation: "Bruto toeslag conform artikel 9.4. Draagkracht wordt berekend volgens Bbz, niet artikel 5"
+
+    - name: "is_lening"
+      description: "Of de toeslag als lening wordt verstrekt (conform Bbz art. 19)"
+      type: "boolean"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      citizen_relevance: secondary
+      legal_basis:
+        law: "Besluit bijstandverlening zelfstandigen 2004"
+        bwb_id: "BWBR0015711"
+        article: "19"
+        url: "https://wetten.overheid.nl/BWBR0015711/2026-01-01#Hoofdstuk2_Paragraaf2_Artikel19"
+        explanation: "Conform Bbz art. 19: toeslag wordt meestal eerst als lening verstrekt, later omgezet in gift"
+
+  definitions:
+    # Artikel 9.4 lid 1b - maximale huurgrens (WHT art. 13 lid 1a, bedrag 2026)
+    MAXIMALE_HUURGRENS: 90007            # 900,07 euro - maximale huurgrens WHT 2026 voor 21+
+    # Artikel 9.4 lid 1b / 9.3 lid 1 - drempelbedrag eigen woning (2026)
+    WOONKOSTEN_DREMPEL: 40000            # 400 euro in eurocent
+    # Artikel 9.4 lid 1b / 9.3 lid 2 - eigenaarslasten (2026)
+    EIGENAARSLASTEN: 11000               # 110 euro in eurocent
+
+requirements:
+  - all:
+      # Moet zelfstandige zijn
+      - subject: "$IS_ZELFSTANDIGE"
+        operation: EQUALS
+        value: true
+        legal_basis:
+          law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+          article: "9"
+          paragraph: "4"
+          url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+          explanation: "Artikel 9.4 lid 1a: alleen voor zelfstandigen of partners van zelfstandigen"
+
+      # Woonkosten boven grens (verschilt per woningtype)
+      - operation: IF
+        conditions:
+          - test:
+              subject: "$IS_HUURWONING"
+              operation: EQUALS
+              value: true
+            then:
+              operation: GREATER_THAN
+              values:
+                - "$KALE_HUUR"
+                - "$MAXIMALE_HUURGRENS"
+          - else:
+              operation: GREATER_THAN
+              values:
+                - operation: ADD
+                  values:
+                    - "$HYPOTHEEKRENTE"
+                    - "$ERFPACHTCANON"
+                    - "$EIGENAARSLASTEN"
+                - "$WOONKOSTEN_DREMPEL"
+        legal_basis:
+          law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+          article: "9"
+          paragraph: "4"
+          url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+          explanation: "Artikel 9.4 lid 1b: zelfde drempelbedragen als artikel 9.2 en 9.3"
+
+      # Bij huurwoning met huur <= maximale huurgrens: huurtoeslag is voorliggende voorziening
+      - operation: IF
+        conditions:
+          - test:
+              operation: AND
+              values:
+                - subject: "$IS_HUURWONING"
+                  operation: EQUALS
+                  value: true
+                - operation: LESS_OR_EQUAL
+                  values:
+                    - "$KALE_HUUR"
+                    - "$MAXIMALE_HUURGRENS"
+            then:
+              subject: "$HEEFT_HUURTOESLAG"
+              operation: EQUALS
+              value: false
+          - else: true
+        legal_basis:
+          law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+          article: "9"
+          paragraph: "2"
+          url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+          explanation: "Bij kale huur <= maximale huurgrens geldt huurtoeslag als voorliggende voorziening"
+
+      # GEEN maximale duur check - artikel 9.1 lid 2 is niet van toepassing voor zelfstandigen
+      # Zie artikel 9.4 lid 3
+
+actions:
+  - output: "is_gerechtigd"
+    value: true
+    legal_basis:
+      law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+      article: "9"
+      paragraph: "4"
+      url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+      explanation: "Recht op woonkostentoeslag voor zelfstandigen wordt beoordeeld volgens Bbz-systematiek"
+
+  - output: "woonkostentoeslag_bruto"
+    operation: MAX
+    legal_basis:
+      law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+      article: "9"
+      paragraph: "4"
+      url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+      explanation: "Bruto toeslag conform artikel 9.4 lid 1b. Draagkrachtberekening volgt Bbz-regels, niet artikel 5"
+    values:
+      - 0
+      - operation: IF
+        conditions:
+          - test:
+              subject: "$IS_HUURWONING"
+              operation: EQUALS
+              value: true
+            then:
+              # Huurwoning: kale huur - maximale huurgrens (ZONDER draagkracht - Bbz rekent dit)
+              operation: SUBTRACT
+              values:
+                - "$KALE_HUUR"
+                - "$MAXIMALE_HUURGRENS"
+          - else:
+              # Eigen woning: (hypotheek + erfpacht + eigenaarslasten) - 400 (ZONDER draagkracht)
+              operation: SUBTRACT
+              values:
+                - operation: ADD
+                  values:
+                    - "$HYPOTHEEKRENTE"
+                    - "$ERFPACHTCANON"
+                    - "$EIGENAARSLASTEN"
+                - "$WOONKOSTEN_DREMPEL"
+
+  - output: "is_lening"
+    value: true
+    legal_basis:
+      law: "Besluit bijstandverlening zelfstandigen 2004"
+      bwb_id: "BWBR0015711"
+      article: "19"
+      url: "https://wetten.overheid.nl/BWBR0015711/2026-01-01#Hoofdstuk2_Paragraaf2_Artikel19"
+      explanation: "Conform Bbz art. 19: uitkering wordt meestal eerst als lening verstrekt. Na definitieve inkomensvaststelling wordt bepaald welk deel wordt terugbetaald en welk deel omgezet in gift"

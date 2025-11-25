@@ -1,0 +1,482 @@
+schema_version: "0.1.5"
+uuid: d9e3b02e-6f8c-4d4b-ae79-2c5f9b3d8a41
+name: Woonkostentoeslag Bijzondere Bijstand Amsterdam
+law: beleidsregels_bijzondere_bijstand_amsterdam/woonkostentoeslag
+law_type: "BELEIDSREGEL"
+legal_character: "BESCHIKKING"
+decision_type: "BELEIDSREGEL"
+discoverable: "CITIZEN"
+valid_from: 2024-01-01
+service: "GEMEENTE_AMSTERDAM"
+description: >
+  Woonkostentoeslag voor huurders en eigenwoningbezitters met woonkosten boven 400 euro
+  per maand die geen recht hebben op huurtoeslag. Maximaal 12 maanden met verplichting
+  goedkopere woning te zoeken. Gebaseerd op artikel 9 van de Beleidsregels Bijzondere
+  Bijstand Gemeente Amsterdam.
+legal_basis:
+  law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+  article: "9"
+  url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+  explanation: "Artikel 9 regelt de woonkostentoeslag voor personen met hoge woonlasten"
+
+references:
+  - law: "Participatiewet"
+    article: "35"
+    url: "https://wetten.overheid.nl/BWBR0015703/2024-01-01#Hoofdstuk4_Paragraaf4.1_Artikel35"
+  - law: "Wet op de huurtoeslag"
+    article: "5"
+    url: "https://wetten.overheid.nl/BWBR0008659/2024-01-01#Paragraaf2_Artikel5"
+
+properties:
+  parameters:
+    - name: "BSN"
+      description: "BSN van de aanvrager"
+      type: "string"
+      required: true
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "35"
+        url: "https://wetten.overheid.nl/BWBR0015703/2024-01-01#Hoofdstuk4_Paragraaf4.1_Artikel35"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=35&z=2024-01-01&g=2024-01-01"
+        explanation: "BSN is nodig voor identificatie van de aanvrager"
+
+  sources:
+    - name: "KALE_HUUR"
+      description: "Kale huurprijs per maand"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+        min: 0
+      temporal:
+        type: "period"
+        period_type: "month"
+      source_reference:
+        source_type: "claim"
+        wallet_attribute: "kale_huur"
+      legal_basis:
+        law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+        article: "9"
+        paragraph: "2"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+        explanation: "Artikel 9 lid 2 bepaalt dat voor huurwoningen de kale huur meetelt"
+
+    - name: "SERVICEKOSTEN"
+      description: "Servicekosten conform Wet huurtoeslag artikel 5 lid 3"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+        min: 0
+      temporal:
+        type: "period"
+        period_type: "month"
+      source_reference:
+        source_type: "claim"
+        wallet_attribute: "servicekosten"
+      legal_basis:
+        law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+        article: "9"
+        paragraph: "2"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+        explanation: "Servicekosten conform artikel 5 lid 3 Wet huurtoeslag tellen mee"
+
+    - name: "HYPOTHEEKRENTE"
+      description: "Maandelijkse hypotheekrente"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+        min: 0
+      temporal:
+        type: "period"
+        period_type: "month"
+      source_reference:
+        source_type: "claim"
+        wallet_attribute: "hypotheekrente"
+      legal_basis:
+        law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+        article: "9"
+        paragraph: "3"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+        explanation: "Artikel 9 lid 3 bepaalt dat hypotheekrente meetelt voor eigen woningen"
+
+    - name: "ERFPACHTCANON"
+      description: "Maandelijkse erfpachtcanon"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+        min: 0
+      temporal:
+        type: "period"
+        period_type: "month"
+      source_reference:
+        source_type: "claim"
+        wallet_attribute: "erfpachtcanon"
+      legal_basis:
+        law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+        article: "9"
+        paragraph: "3"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+        explanation: "Erfpachtcanon telt mee bij eigen woningen conform artikel 9 lid 3"
+
+    - name: "IS_HUURWONING"
+      description: "Of de woning een huurwoning is"
+      type: "boolean"
+      source_reference:
+        source_type: "claim"
+        wallet_attribute: "is_huurwoning"
+      legal_basis:
+        law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+        article: "9"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+        explanation: "De berekening verschilt tussen huur- en koopwoningen"
+
+    - name: "MAANDEN_ONTVANGEN"
+      description: "Aantal maanden al woonkostentoeslag ontvangen"
+      type: "number"
+      source_reference:
+        source_type: "claim"
+        wallet_attribute: "maanden_woonkostentoeslag"
+      legal_basis:
+        law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+        article: "9"
+        paragraph: "1"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+        explanation: "De toeslag wordt maximaal 12 maanden verstrekt"
+
+  input:
+    - name: "HEEFT_HUURTOESLAG"
+      description: "Of aanvrager huurtoeslag ontvangt"
+      type: "boolean"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      service_reference:
+        service: "TOESLAGEN"
+        field: "is_gerechtigd"
+        law: "wet_op_de_huurtoeslag"
+      legal_basis:
+        law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+        article: "9"
+        paragraph: "2"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+        explanation: "Huurtoeslag is een voorliggende voorziening conform artikel 9 lid 2"
+
+    - name: "INKOMEN"
+      description: "Netto inkomen van de aanvrager"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+        min: 0
+      temporal:
+        type: "period"
+        period_type: "month"
+      service_reference:
+        service: "UWV"
+        field: "inkomen"
+        law: "wet_inkomstenbelasting"
+      legal_basis:
+        law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+        article: "5"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+        explanation: "Het inkomen bepaalt de draagkracht conform artikel 5"
+
+    - name: "HEEFT_PARTNER"
+      description: "Of aanvrager een partner heeft"
+      type: "boolean"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      service_reference:
+        service: "RvIG"
+        field: "heeft_partner"
+        law: "wet_brp"
+      legal_basis:
+        law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+        article: "5"
+        paragraph: "1"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+        explanation: "De draagkrachtvrijlating verschilt voor alleenstaanden en echtparen"
+
+    - name: "BIJSTANDSNORM"
+      description: "Bijstandsnorm voor de aanvrager"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+        min: 0
+      temporal:
+        type: "period"
+        period_type: "month"
+      service_reference:
+        service: "SZW"
+        field: "basisbedrag"
+        law: "participatiewet/bijstand"
+      legal_basis:
+        law: "Participatiewet"
+        bwb_id: "BWBR0015703"
+        article: "20"
+        url: "https://wetten.overheid.nl/BWBR0015703/2024-01-01#Hoofdstuk3_Paragraaf3.2_Artikel20"
+        juriconnect: "jci1.3:c:BWBR0015703&artikel=20&z=2024-01-01&g=2024-01-01"
+        explanation: "De bijstandsnorm bepaalt de draagkrachtvrijlating"
+
+    - name: "WOZ_WAARDE"
+      description: "WOZ-waarde van de woning"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+        min: 0
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      service_reference:
+        service: "KADASTER"
+        field: "woz_waarde"
+        law: "wet_bag"
+      legal_basis:
+        law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+        article: "9"
+        paragraph: "3"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+        explanation: "De WOZ-waarde bepaalt de overwaarde voor eigen woningen"
+
+    - name: "HYPOTHEEKSCHULD"
+      description: "Resterende hypotheekschuld"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+        min: 0
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      service_reference:
+        service: "KADASTER"
+        field: "hypotheekschuld"
+        law: "wet_bag"
+      legal_basis:
+        law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+        article: "9"
+        paragraph: "3"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+        explanation: "De hypotheekschuld bepaalt samen met WOZ de overwaarde"
+
+  output:
+    - name: "is_gerechtigd"
+      description: "Voldoet aan voorwaarden voor woonkostentoeslag"
+      type: "boolean"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      citizen_relevance: secondary
+      legal_basis:
+        law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+        article: "9"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+        explanation: "Recht op woonkostentoeslag conform artikel 9"
+
+    - name: "woonkostentoeslag"
+      description: "Hoogte van de woonkostentoeslag per maand"
+      type: "amount"
+      type_spec:
+        unit: "eurocent"
+        precision: 0
+        min: 0
+      temporal:
+        type: "period"
+        period_type: "month"
+      citizen_relevance: primary
+      legal_basis:
+        law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+        article: "9"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+        explanation: "De hoogte is woonkosten minus drempel minus draagkracht"
+
+    - name: "is_lening"
+      description: "Of de toeslag als lening wordt verstrekt (bij overwaarde > 235.000)"
+      type: "boolean"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      citizen_relevance: secondary
+      legal_basis:
+        law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+        article: "9"
+        paragraph: "3"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+        explanation: "Bij overwaarde boven 235.000 euro wordt de toeslag als lening verstrekt"
+
+  definitions:
+    # Artikel 9 lid 1 - drempelbedrag (2024)
+    WOONKOSTEN_DREMPEL: 40000           # 400 euro in eurocent
+    # Artikel 9 lid 3 - eigenaarslasten
+    EIGENAARSLASTEN: 11000              # 110 euro in eurocent
+    # Artikel 9 lid 3 - overwaardegrens voor lening
+    OVERWAARDE_GRENS: 23500000000       # 235.000 euro in eurocent
+    # Artikel 9 lid 1 - maximale duur
+    MAX_DUUR_MAANDEN: 12
+    # Artikel 5 - draagkrachtvrijlating
+    VRIJLATING_ALLEENSTAANDE: 10000     # 100 euro
+    VRIJLATING_ECHTPAAR: 30000          # 300 euro
+    # Draagkrachtpercentage voor woonkostentoeslag
+    DRAAGKRACHT_PERCENTAGE: 1.00        # 100%
+
+requirements:
+  - all:
+      # Woonkosten boven drempel
+      - operation: GREATER_THAN
+        values:
+          - operation: IF
+            conditions:
+              - test:
+                  subject: "$IS_HUURWONING"
+                  operation: EQUALS
+                  value: true
+                then:
+                  operation: ADD
+                  values:
+                    - "$KALE_HUUR"
+                    - "$SERVICEKOSTEN"
+              - else:
+                  operation: ADD
+                  values:
+                    - "$HYPOTHEEKRENTE"
+                    - "$ERFPACHTCANON"
+                    - "$EIGENAARSLASTEN"
+          - "$WOONKOSTEN_DREMPEL"
+        legal_basis:
+          law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+          article: "9"
+          paragraph: "1"
+          url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+          explanation: "Woonkosten tot 400 euro zijn algemene bestaanskosten"
+
+      # Maximale duur niet overschreden
+      - subject: "$MAANDEN_ONTVANGEN"
+        operation: LESS_THAN
+        value: "$MAX_DUUR_MAANDEN"
+        legal_basis:
+          law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+          article: "9"
+          paragraph: "1"
+          url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+          explanation: "De toeslag wordt maximaal 12 maanden verstrekt"
+
+      # Bij huurwoning: geen huurtoeslag (voorliggende voorziening)
+      - operation: IF
+        conditions:
+          - test:
+              subject: "$IS_HUURWONING"
+              operation: EQUALS
+              value: true
+            then:
+              subject: "$HEEFT_HUURTOESLAG"
+              operation: EQUALS
+              value: false
+          - else: true
+        legal_basis:
+          law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+          article: "9"
+          paragraph: "2"
+          url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+          explanation: "Bij mogelijkheid tot huurtoeslag is deze voorliggende voorziening"
+
+actions:
+  - output: "is_gerechtigd"
+    value: true
+    legal_basis:
+      law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+      article: "9"
+      url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+      explanation: "Recht op woonkostentoeslag wordt toegekend als aan alle voorwaarden is voldaan"
+
+  - output: "woonkostentoeslag"
+    operation: MAX
+    legal_basis:
+      law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+      article: "9"
+      url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+      explanation: "Toeslag is woonkosten minus drempel minus draagkracht"
+    values:
+      - 0
+      - operation: SUBTRACT
+        values:
+          # Woonkosten boven drempel
+          - operation: SUBTRACT
+            values:
+              - operation: IF
+                conditions:
+                  - test:
+                      subject: "$IS_HUURWONING"
+                      operation: EQUALS
+                      value: true
+                    then:
+                      # Huurwoning: kale huur + servicekosten
+                      operation: ADD
+                      values:
+                        - "$KALE_HUUR"
+                        - "$SERVICEKOSTEN"
+                  - else:
+                      # Eigen woning: hypotheekrente + erfpacht + eigenaarslasten
+                      operation: ADD
+                      values:
+                        - "$HYPOTHEEKRENTE"
+                        - "$ERFPACHTCANON"
+                        - "$EIGENAARSLASTEN"
+              - "$WOONKOSTEN_DREMPEL"
+          # Draagkracht aftrek
+          - operation: MULTIPLY
+            legal_basis:
+              law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+              article: "5"
+              url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+              explanation: "Bij woonkostentoeslag is draagkracht 100% van inkomen boven vrijlating"
+            values:
+              - operation: MAX
+                values:
+                  - 0
+                  - operation: SUBTRACT
+                    values:
+                      - "$INKOMEN"
+                      - operation: ADD
+                        values:
+                          - "$BIJSTANDSNORM"
+                          - operation: IF
+                            conditions:
+                              - test:
+                                  subject: "$HEEFT_PARTNER"
+                                  operation: EQUALS
+                                  value: true
+                                then: "$VRIJLATING_ECHTPAAR"
+                              - else: "$VRIJLATING_ALLEENSTAANDE"
+              - "$DRAAGKRACHT_PERCENTAGE"
+
+  - output: "is_lening"
+    operation: IF
+    legal_basis:
+      law: "Beleidsregels Bijzondere Bijstand Gemeente Amsterdam"
+      article: "9"
+      paragraph: "3"
+      url: "https://lokaleregelgeving.overheid.nl/CVDR679865"
+      explanation: "Bij overwaarde boven 235.000 euro wordt de toeslag als lening verstrekt"
+    conditions:
+      - test:
+          operation: AND
+          values:
+            - subject: "$IS_HUURWONING"
+              operation: EQUALS
+              value: false
+            - operation: GREATER_THAN
+              values:
+                - operation: SUBTRACT
+                  values:
+                    - "$WOZ_WAARDE"
+                    - "$HYPOTHEEKSCHULD"
+                - "$OVERWAARDE_GRENS"
+        then: true
+      - else: false
