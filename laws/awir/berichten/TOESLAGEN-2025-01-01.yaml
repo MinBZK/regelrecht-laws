@@ -47,10 +47,10 @@ properties:
             case_id: "$ZAAK.id"
             law: "$ZAAK.law"
             message_type: "VOORSCHOT_BESCHIKKING"
-            onderwerp: "Uw voorschotbeschikking"
+            onderwerp: "$ZAAK.voorschot_onderwerp"
             inhoud: "$VOORSCHOT_TEMPLATE"
             rechtsmiddel_info: "$RECHTSMIDDEL_INFO"
-            created_at: "$ZAAK.voorschot_beschikking_datum"
+            datum: "$ZAAK.voorschot_beschikking_datum"
 
     # Trigger bij afwijzing (AWIR Art. 16 lid 4)
     - name: "ZAAK"
@@ -65,10 +65,10 @@ properties:
             case_id: "$ZAAK.id"
             law: "$ZAAK.law"
             message_type: "AFWIJZING"
-            onderwerp: "Beslissing op uw aanvraag"
+            onderwerp: "$ZAAK.afwijzing_onderwerp"
             inhoud: "$AFWIJZING_TEMPLATE"
             rechtsmiddel_info: "$RECHTSMIDDEL_INFO"
-            created_at: "$ZAAK.afwijzing_datum"
+            datum: "$ZAAK.afwijzing_datum"
 
     # Trigger bij definitieve beschikking (AWIR Art. 19)
     - name: "ZAAK"
@@ -83,10 +83,10 @@ properties:
             case_id: "$ZAAK.id"
             law: "$ZAAK.law"
             message_type: "DEFINITIEVE_BESCHIKKING"
-            onderwerp: "Uw definitieve beschikking"
+            onderwerp: "$ZAAK.definitief_onderwerp"
             inhoud: "$DEFINITIEF_TEMPLATE"
             rechtsmiddel_info: "$RECHTSMIDDEL_INFO"
-            created_at: "$ZAAK.definitieve_beschikking_datum"
+            datum: "$ZAAK.definitieve_beschikking_datum"
 
   definitions:
     RECHTSMIDDEL_INFO:
