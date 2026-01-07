@@ -1,0 +1,336 @@
+$id: https://raw.githubusercontent.com/MinBZK/poc-machine-law/refs/heads/main/schema/v0.1.6/schema.json
+uuid: 3e7f9b2a-5d8c-4a1e-9f6b-8c2d4e7a3b1f
+name: Terrasvergunning APV Rotterdam 2024
+law: algemene_plaatselijke_verordening/terrassen
+law_type: "FORMELE_WET"
+legal_character: "BESCHIKKING"
+decision_type: "TOEKENNING"
+discoverable: "BUSINESS"
+valid_from: 2024-01-01
+service: "GEMEENTE_ROTTERDAM"
+legal_basis:
+  law: "Algemene plaatselijke verordening Rotterdam 2012"
+  article: "2:30b"
+  url: "https://lokaleregelgeving.overheid.nl/CVDR373493/11"
+  explanation: "Artikel 2:30b bepaalt de voorwaarden voor het exploiteren van een terras bij een horecabedrijf"
+description: >
+  Terrasvergunning voor horecabedrijven in Rotterdam volgens de APV Rotterdam 2012.
+  Een terras op of aan de openbare weg vereist een vergunning van de burgemeester.
+  Deze YAML bepaalt of een ondernemer voldoet aan de voorwaarden voor een terrasvergunning,
+  complementair aan de exploitatievergunning.
+
+references:
+  - law: "Algemene plaatselijke verordening Rotterdam 2012"
+    article: "2:10"
+    url: "https://lokaleregelgeving.overheid.nl/CVDR373493/11"
+  - law: "Algemene plaatselijke verordening Rotterdam 2012"
+    article: "2:28"
+    url: "https://lokaleregelgeving.overheid.nl/CVDR373493/11"
+
+properties:
+  parameters:
+    - name: "KVK_NUMMER"
+      description: "KVK-nummer van de onderneming"
+      type: "string"
+      required: true
+      legal_basis:
+        law: "Algemene plaatselijke verordening Rotterdam 2012"
+        article: "2:28"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR373493/11"
+        explanation: "De onderneming moet geregistreerd zijn in het Handelsregister"
+
+    - name: "OBSTAKELVRIJE_RUIMTE"
+      description: "Obstakelvrije ruimte naast het terras in meters"
+      type: "number"
+      type_spec:
+        precision: 2
+        min: 0
+      required: true
+      legal_basis:
+        law: "Algemene plaatselijke verordening Rotterdam 2012"
+        article: "2:30b"
+        paragraph: "3"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR373493/11"
+        explanation: "Er moet minimaal 1,8 meter obstakelvrije ruimte blijven voor voetgangers"
+
+  sources:
+    - name: "HEEFT_EXPLOITATIEVERGUNNING"
+      description: "Of de onderneming een geldige exploitatievergunning heeft"
+      type: "boolean"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      source_reference:
+        table: "vergunningen"
+        field: "heeft_exploitatievergunning"
+        select_on:
+          - name: "kvk_nummer"
+            description: "KVK-nummer van de onderneming"
+            type: "string"
+            value: "$KVK_NUMMER"
+      legal_basis:
+        law: "Algemene plaatselijke verordening Rotterdam 2012"
+        article: "2:28"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR373493/11"
+        explanation: "Een terras vereist eerst een exploitatievergunning voor het horecabedrijf"
+
+    - name: "HEEFT_ALCOHOLVERGUNNING"
+      description: "Of de onderneming een alcoholvergunning heeft (indien alcohol wordt geschonken op terras)"
+      type: "boolean"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      source_reference:
+        table: "vergunningen"
+        field: "heeft_alcoholvergunning"
+        select_on:
+          - name: "kvk_nummer"
+            description: "KVK-nummer van de onderneming"
+            type: "string"
+            value: "$KVK_NUMMER"
+      legal_basis:
+        law: "Alcoholwet"
+        bwb_id: "BWBR0002458"
+        article: "3"
+        url: "https://wetten.overheid.nl/BWBR0002458/2025-02-12#Paragraaf2_Artikel3"
+        explanation: "Voor het schenken van alcohol op het terras is een alcoholvergunning vereist"
+
+    - name: "SCHENKT_ALCOHOL"
+      description: "Of de onderneming alcohol schenkt op het terras"
+      type: "boolean"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      source_reference:
+        table: "vestigingen"
+        field: "schenkt_alcohol"
+        select_on:
+          - name: "kvk_nummer"
+            description: "KVK-nummer van de onderneming"
+            type: "string"
+            value: "$KVK_NUMMER"
+      legal_basis:
+        law: "Alcoholwet"
+        bwb_id: "BWBR0002458"
+        article: "3"
+        url: "https://wetten.overheid.nl/BWBR0002458/2025-02-12#Paragraaf2_Artikel3"
+        explanation: "Voor het schenken van alcohol is een alcoholvergunning vereist"
+
+    - name: "ADRES"
+      description: "Adres waar het terras wordt geëxploiteerd"
+      type: "string"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      source_reference:
+        table: "vestigingen"
+        field: "adres"
+        select_on:
+          - name: "kvk_nummer"
+            description: "KVK-nummer van de onderneming"
+            type: "string"
+            value: "$KVK_NUMMER"
+      legal_basis:
+        law: "Algemene plaatselijke verordening Rotterdam 2012"
+        article: "2:30b"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR373493/11"
+        explanation: "Het terras moet gekoppeld zijn aan een specifieke locatie"
+
+    - name: "TERRAS_OPPERVLAKTE"
+      description: "Oppervlakte van het terras in vierkante meters"
+      type: "number"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      source_reference:
+        table: "vestigingen"
+        field: "terras_oppervlakte_m2"
+        select_on:
+          - name: "kvk_nummer"
+            description: "KVK-nummer van de onderneming"
+            type: "string"
+            value: "$KVK_NUMMER"
+      legal_basis:
+        law: "Algemene plaatselijke verordening Rotterdam 2012"
+        article: "2:30b"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR373493/11"
+        explanation: "De oppervlakte van het terras moet worden opgegeven voor de vergunning"
+
+  input:
+    - name: "BAG_GEBRUIKSDOEL"
+      description: "Gebruiksdoel van het pand volgens BAG"
+      type: "string"
+      service_reference:
+        service: "KADASTER"
+        law: "wet_bag"
+        field: "gebruiksdoel"
+        parameters:
+          - name: "ADRES"
+            reference: "$ADRES"
+      legal_basis:
+        law: "Algemene plaatselijke verordening Rotterdam 2012"
+        article: "2:28"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR373493/11"
+        explanation: "Het pand moet een horecafunctie hebben"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+
+  output:
+    - name: "heeft_recht_op_terrasvergunning"
+      description: "Voldoet aan voorwaarden voor terrasvergunning"
+      type: "boolean"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      business_relevance: primary
+      legal_basis:
+        law: "Algemene plaatselijke verordening Rotterdam 2012"
+        article: "2:30b"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR373493/11"
+        explanation: "Het recht op een terrasvergunning wordt bepaald volgens artikel 2:30b APV Rotterdam 2012"
+
+    - name: "weigeringsgrond"
+      description: "Eventuele reden voor weigering van de terrasvergunning"
+      type: "string"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      business_relevance: primary
+      legal_basis:
+        law: "Algemene plaatselijke verordening Rotterdam 2012"
+        article: "2:30b"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR373493/11"
+        explanation: "De burgemeester kan de vergunning weigeren indien niet wordt voldaan aan de voorwaarden"
+
+  definitions:
+    MINIMALE_OBSTAKELVRIJE_RUIMTE:
+      value: 1.8
+      legal_basis:
+        law: "Algemene plaatselijke verordening Rotterdam 2012"
+        article: "2:30b"
+        paragraph: "3"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR373493/11"
+        explanation: "Tijdelijke regeling terrassen 2023 stelde minimaal 1,8 meter obstakelvrije ruimte verplicht"
+
+    TOEGESTANE_GEBRUIKSDOELEN:
+      - "bijeenkomstfunctie"
+      - "celfunctie"
+      - "winkelfunctie"
+      - "overige gebruiksfunctie"
+
+requirements:
+  - all:
+      # Exploitatievergunning vereist
+      - subject: "$HEEFT_EXPLOITATIEVERGUNNING"
+        operation: EQUALS
+        value: true
+        legal_basis:
+          law: "Algemene plaatselijke verordening Rotterdam 2012"
+          article: "2:28"
+          url: "https://lokaleregelgeving.overheid.nl/CVDR373493/11"
+          explanation: "Een terras vereist eerst een exploitatievergunning voor het horecabedrijf"
+
+      # Gebruiksdoel moet horecagerelateerd zijn
+      - subject: "$BAG_GEBRUIKSDOEL"
+        operation: IN
+        value: "$TOEGESTANE_GEBRUIKSDOELEN"
+        legal_basis:
+          law: "Wet basisregistratie adressen en gebouwen"
+          bwb_id: "BWBR0023466"
+          article: "1"
+          url: "https://wetten.overheid.nl/BWBR0023466/2018-07-28#Hoofdstuk1_Artikel1"
+          explanation: "Het pand moet een horecafunctie hebben volgens BAG"
+
+      # Obstakelvrije ruimte minimaal 1,8 meter
+      - operation: GREATER_OR_EQUAL
+        values:
+          - "$OBSTAKELVRIJE_RUIMTE"
+          - "$MINIMALE_OBSTAKELVRIJE_RUIMTE"
+        legal_basis:
+          law: "Algemene plaatselijke verordening Rotterdam 2012"
+          article: "2:30b"
+          paragraph: "3"
+          url: "https://lokaleregelgeving.overheid.nl/CVDR373493/11"
+          explanation: "Er moet minimaal 1,8 meter obstakelvrije ruimte blijven voor voetgangers en hulpdiensten"
+
+      # Alcoholvergunning indien alcohol geschonken wordt
+      # Logica: OF geen alcohol geschonken (SCHENKT_ALCOHOL = false), OF alcoholvergunning aanwezig
+      - or:
+          - subject: "$SCHENKT_ALCOHOL"
+            operation: EQUALS
+            value: false
+          - subject: "$HEEFT_ALCOHOLVERGUNNING"
+            operation: EQUALS
+            value: true
+        legal_basis:
+          law: "Alcoholwet"
+          bwb_id: "BWBR0002458"
+          article: "3"
+          url: "https://wetten.overheid.nl/BWBR0002458/2025-02-12#Paragraaf2_Artikel3"
+          explanation: "Voor het schenken van alcohol op het terras is een alcoholvergunning vereist"
+
+actions:
+  - output: "heeft_recht_op_terrasvergunning"
+    operation: AND
+    values:
+      - subject: "$HEEFT_EXPLOITATIEVERGUNNING"
+        operation: EQUALS
+        value: true
+      - subject: "$BAG_GEBRUIKSDOEL"
+        operation: IN
+        value: "$TOEGESTANE_GEBRUIKSDOELEN"
+      - operation: GREATER_OR_EQUAL
+        values:
+          - "$OBSTAKELVRIJE_RUIMTE"
+          - "$MINIMALE_OBSTAKELVRIJE_RUIMTE"
+      # Alcoholvergunning alleen vereist als alcohol wordt geschonken
+      - operation: OR
+        values:
+          - subject: "$SCHENKT_ALCOHOL"
+            operation: EQUALS
+            value: false
+          - subject: "$HEEFT_ALCOHOLVERGUNNING"
+            operation: EQUALS
+            value: true
+    legal_basis:
+      law: "Algemene plaatselijke verordening Rotterdam 2012"
+      article: "2:30b"
+      url: "https://lokaleregelgeving.overheid.nl/CVDR373493/11"
+      explanation: "Alle voorwaarden moeten worden vervuld voor een terrasvergunning"
+
+  - output: "weigeringsgrond"
+    operation: IF
+    conditions:
+      - test:
+          subject: "$HEEFT_EXPLOITATIEVERGUNNING"
+          operation: EQUALS
+          value: false
+        then: "Geen geldige exploitatievergunning"
+      - test:
+          subject: "$BAG_GEBRUIKSDOEL"
+          operation: NOT_IN
+          value: "$TOEGESTANE_GEBRUIKSDOELEN"
+        then: "Pand heeft geen horecagerelateerd gebruiksdoel"
+      - test:
+          operation: LESS_THAN
+          values:
+            - "$OBSTAKELVRIJE_RUIMTE"
+            - "$MINIMALE_OBSTAKELVRIJE_RUIMTE"
+        then: "Obstakelvrije ruimte is minder dan 1,8 meter"
+      - test:
+          operation: AND
+          values:
+            - subject: "$SCHENKT_ALCOHOL"
+              operation: EQUALS
+              value: true
+            - subject: "$HEEFT_ALCOHOLVERGUNNING"
+              operation: EQUALS
+              value: false
+        then: "Geen alcoholvergunning terwijl alcohol wordt geschonken"
+      - else: ""
+    legal_basis:
+      law: "Algemene plaatselijke verordening Rotterdam 2012"
+      article: "2:30b"
+      url: "https://lokaleregelgeving.overheid.nl/CVDR373493/11"
+      explanation: "De burgemeester weigert de vergunning indien niet aan de voorwaarden wordt voldaan"
