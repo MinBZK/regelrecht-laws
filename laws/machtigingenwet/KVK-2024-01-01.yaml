@@ -1,0 +1,239 @@
+$id: https://raw.githubusercontent.com/MinBZK/poc-machine-law/refs/heads/main/schema/v0.1.6/schema.json
+uuid: 3f8a2b1c-9d4e-4f5a-b8c7-6e1d2f3a4b5c
+name: Bepalen vertegenwoordigingsbevoegdheid namens rechtspersonen
+law: machtigingenwet
+law_type: "FORMELE_WET"
+legal_character: "BESCHIKKING"
+decision_type: "ANDERE_HANDELING"
+valid_from: 2024-01-01
+service: "KVK"
+discoverable_by: "HIDDEN"
+legal_basis:
+  law: "Burgerlijk Wetboek Boek 2"
+  bwb_id: "BWBR0003045"
+  article: "240"
+  paragraph: "1"
+  url: "https://wetten.overheid.nl/BWBR0003045/2024-01-01#Boek2_Titeldeel5_Afdeling4_Artikel240"
+  juriconnect: "jci1.3:c:BWBR0003045&boek=2&artikel=240&lid=1&z=2024-01-01&g=2024-01-01"
+  explanation: >
+    Artikel 2:240 lid 1 BW: "Het bestuur vertegenwoordigt de vennootschap, voor zover
+    uit de wet niet anders voortvloeit." Lid 2: "De bevoegdheid tot vertegenwoordiging
+    komt mede aan iedere bestuurder toe." Dit bepaalt dat bestuurders de BV kunnen
+    vertegenwoordigen in het verkeer met derden, inclusief bestuursorganen.
+description: >
+  Bepaalt of een natuurlijke persoon bevoegd is om een rechtspersoon te vertegenwoordigen
+  op basis van artikel 2:240 BW (vertegenwoordigingsbevoegdheid bestuur BV) en de
+  inschrijving in het Handelsregister (Handelsregisterwet 2007 art. 18). Bestuurders
+  zijn van rechtswege bevoegd de vennootschap te vertegenwoordigen. De statuten kunnen
+  ook aan andere personen bevoegdheid tot vertegenwoordiging toekennen (art. 2:240 lid 4 BW).
+
+references:
+  - law: "Burgerlijk Wetboek Boek 2"
+    article: "240"
+    url: "https://wetten.overheid.nl/BWBR0003045/2024-01-01#Boek2_Titeldeel5_Afdeling4_Artikel240"
+  - law: "Handelsregisterwet 2007"
+    article: "18"
+    url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk3_Artikel18"
+
+properties:
+  parameters:
+    - name: "BSN"
+      description: "BSN van de persoon wiens vertegenwoordigingsbevoegdheden worden opgezocht"
+      type: "string"
+      required: true
+      legal_basis:
+        law: "Handelsregisterwet 2007"
+        bwb_id: "BWBR0021777"
+        article: "12"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk3_Artikel12"
+        juriconnect: "jci1.3:c:BWBR0021777&artikel=12&lid=1&z=2024-01-01&g=2024-01-01"
+        explanation: "BSN identificeert functionarissen in het Handelsregister"
+
+  sources:
+    - name: "FUNCTIONARISSEN"
+      description: "Functies van de persoon bij rechtspersonen in het Handelsregister"
+      type: "array"
+      legal_basis:
+        law: "Handelsregisterwet 2007"
+        bwb_id: "BWBR0021777"
+        article: "18"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk3_Artikel18"
+        juriconnect: "jci1.3:c:BWBR0021777&artikel=18&lid=1&z=2024-01-01&g=2024-01-01"
+        explanation: >
+          Art. 18 Hrw verplicht inschrijving van eigenaren, bestuurders en anderen
+          met vertegenwoordigingsbevoegdheid. Deze inschrijving is de basis voor
+          het bepalen van vertegenwoordigingsbevoegdheid.
+      temporal:
+        type: "period"
+        period_type: "continuous"
+      source_reference:
+        table: "functionarissen"
+        fields: ["kvk_nummer", "functie", "bevoegdheid"]
+        select_on:
+          - name: "bsn"
+            description: "BSN nummer van de persoon"
+            type: "string"
+            value: "$BSN"
+
+    - name: "INSCHRIJVINGEN"
+      description: "Gegevens van de rechtspersoon uit het Handelsregister"
+      type: "array"
+      legal_basis:
+        law: "Handelsregisterwet 2007"
+        bwb_id: "BWBR0021777"
+        article: "9"
+        url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk3_Artikel9"
+        juriconnect: "jci1.3:c:BWBR0021777&artikel=9&z=2024-01-01&g=2024-01-01"
+        explanation: "Art. 9 bepaalt welke gegevens van de onderneming worden ingeschreven"
+      temporal:
+        type: "period"
+        period_type: "continuous"
+      source_reference:
+        table: "inschrijvingen"
+        fields: ["kvk_nummer", "handelsnaam", "rechtsvorm", "status"]
+        select_on:
+          - name: "kvk_nummer"
+            description: "KVK nummer van het bedrijf"
+            type: "string"
+            value: "$FUNCTIONARISSEN.kvk_nummer"
+
+  output:
+    - name: "heeft_vertegenwoordigingsbevoegdheid"
+      description: "Of de persoon bevoegd is rechtspersonen te vertegenwoordigen"
+      type: "boolean"
+      legal_basis:
+        law: "Burgerlijk Wetboek Boek 2"
+        bwb_id: "BWBR0003045"
+        article: "240"
+        paragraph: "2"
+        url: "https://wetten.overheid.nl/BWBR0003045/2024-01-01#Boek2_Titeldeel5_Afdeling4_Artikel240"
+        juriconnect: "jci1.3:c:BWBR0003045&boek=2&artikel=240&lid=2&z=2024-01-01&g=2024-01-01"
+        explanation: >
+          Art. 2:240 lid 2 BW: "De bevoegdheid tot vertegenwoordiging komt mede
+          aan iedere bestuurder toe." Wie als bestuurder is ingeschreven in het
+          Handelsregister heeft vertegenwoordigingsbevoegdheid.
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+
+    - name: "kvk_nummers"
+      description: "KVK nummers van rechtspersonen die de persoon mag vertegenwoordigen"
+      type: "array"
+      legal_basis:
+        law: "Handelsregisterwet 2007"
+        bwb_id: "BWBR0021777"
+        article: "18"
+        url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk3_Artikel18"
+        juriconnect: "jci1.3:c:BWBR0021777&artikel=18&z=2024-01-01&g=2024-01-01"
+        explanation: "KVK nummers uit functionaris-registraties in Handelsregister"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+
+    - name: "handelsnamen"
+      description: "Handelsnamen van rechtspersonen die de persoon mag vertegenwoordigen"
+      type: "array"
+      legal_basis:
+        law: "Handelsregisterwet 2007"
+        bwb_id: "BWBR0021777"
+        article: "9"
+        url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk3_Artikel9"
+        juriconnect: "jci1.3:c:BWBR0021777&artikel=9&z=2024-01-01&g=2024-01-01"
+        explanation: "Handelsnamen uit inschrijvingen in Handelsregister"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+
+    - name: "functies"
+      description: "Functies die de persoon bekleedt bij de rechtspersonen"
+      type: "array"
+      legal_basis:
+        law: "Handelsregisterwet 2007"
+        bwb_id: "BWBR0021777"
+        article: "18"
+        url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk3_Artikel18"
+        juriconnect: "jci1.3:c:BWBR0021777&artikel=18&z=2024-01-01&g=2024-01-01"
+        explanation: "Functies uit functionaris-registraties"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+
+  definitions:
+    # Art. 2:240 lid 2 BW: bestuurders hebben van rechtswege vertegenwoordigingsbevoegdheid
+    BESTUURDER_FUNCTIES:
+      - "BESTUURDER"
+      - "DIRECTEUR"
+      - "ALGEMEEN_DIRECTEUR"
+
+    # Eigenaren van eenmanszaken/VOF's vertegenwoordigen van rechtswege
+    EIGENAAR_FUNCTIES:
+      - "EIGENAAR"
+      - "VENNOOT"
+      - "BEHEREND_VENNOOT"
+      - "MAAT"
+
+    # Art. 2:240 lid 4 BW: statuten kunnen ook anderen bevoegdheid toekennen
+    GEMACHTIGDE_FUNCTIES:
+      - "GEMACHTIGDE"
+      - "PROCURATIEHOUDER"
+      - "GEVOLMACHTIGDE"
+
+requirements:
+  - operation: EXISTS
+    subject: "$FUNCTIONARISSEN"
+    legal_basis:
+      law: "Handelsregisterwet 2007"
+      bwb_id: "BWBR0021777"
+      article: "18"
+      url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk3_Artikel18"
+      juriconnect: "jci1.3:c:BWBR0021777&artikel=18&z=2024-01-01&g=2024-01-01"
+      explanation: "Persoon moet als functionaris zijn ingeschreven in het Handelsregister"
+
+actions:
+  # Vertegenwoordigingsbevoegdheid volgt uit inschrijving als bestuurder/eigenaar
+  # Art. 2:240 lid 2 BW voor bestuurders, soortgelijke regels voor eigenaren
+  - output: "heeft_vertegenwoordigingsbevoegdheid"
+    operation: EXISTS
+    subject: "$FUNCTIONARISSEN"
+    legal_basis:
+      law: "Burgerlijk Wetboek Boek 2"
+      bwb_id: "BWBR0003045"
+      article: "240"
+      paragraph: "2"
+      url: "https://wetten.overheid.nl/BWBR0003045/2024-01-01#Boek2_Titeldeel5_Afdeling4_Artikel240"
+      juriconnect: "jci1.3:c:BWBR0003045&boek=2&artikel=240&lid=2&z=2024-01-01&g=2024-01-01"
+      explanation: >
+        Art. 2:240 lid 2 BW bepaalt dat iedere bestuurder vertegenwoordigingsbevoegd is.
+        Inschrijving als functionaris in het Handelsregister bewijst deze bevoegdheid.
+
+  - output: "kvk_nummers"
+    subject: "$FUNCTIONARISSEN.kvk_nummer"
+    legal_basis:
+      law: "Handelsregisterwet 2007"
+      bwb_id: "BWBR0021777"
+      article: "18"
+      url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk3_Artikel18"
+      juriconnect: "jci1.3:c:BWBR0021777&artikel=18&z=2024-01-01&g=2024-01-01"
+      explanation: "KVK nummers afgeleid uit functionaris-registraties"
+
+  - output: "handelsnamen"
+    subject: "$INSCHRIJVINGEN.handelsnaam"
+    legal_basis:
+      law: "Handelsregisterwet 2007"
+      bwb_id: "BWBR0021777"
+      article: "9"
+      url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk3_Artikel9"
+      juriconnect: "jci1.3:c:BWBR0021777&artikel=9&z=2024-01-01&g=2024-01-01"
+      explanation: "Handelsnamen uit ondernemingsinschrijvingen"
+
+  - output: "functies"
+    subject: "$FUNCTIONARISSEN.functie"
+    legal_basis:
+      law: "Handelsregisterwet 2007"
+      bwb_id: "BWBR0021777"
+      article: "18"
+      url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk3_Artikel18"
+      juriconnect: "jci1.3:c:BWBR0021777&artikel=18&z=2024-01-01&g=2024-01-01"
+      explanation: "Functies uit functionaris-registraties"
