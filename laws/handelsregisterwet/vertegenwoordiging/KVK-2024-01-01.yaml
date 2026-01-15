@@ -1,0 +1,256 @@
+$id: https://raw.githubusercontent.com/MinBZK/poc-machine-law/refs/heads/main/schema/v0.1.6/schema.json
+uuid: 7a8b9c0d-1e2f-3a4b-5c6d-7e8f9a0b1c2d
+name: KVK Vertegenwoordiging
+law: handelsregisterwet/vertegenwoordiging
+law_type: "FORMELE_WET"
+legal_character: "BESCHIKKING"
+decision_type: "VASTSTELLING"
+valid_from: 2024-01-01
+service: "KVK"
+legal_basis:
+  law: "Handelsregisterwet 2007"
+  bwb_id: "BWBR0021777"
+  article: "10"
+  url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk2_Artikel10"
+  juriconnect: "jci1.3:c:BWBR0021777&artikel=10&z=2024-01-01&g=2024-01-01"
+  explanation: "Artikel 10 Handelsregisterwet bepaalt wie bevoegd is om namens een onderneming te handelen"
+description: >
+  Regels voor het bepalen of een persoon bevoegd is om namens een organisatie te handelen
+  op basis van inschrijvingen in het Handelsregister.
+
+discovery:
+  purpose: "authorization"
+  target_type: "ORGANIZATION"
+  display_name: "KVK Vertegenwoordiging"
+  actor_param: "BSN_PERSOON"
+  target_param: "RSIN"
+  authorization_field: "mag_vertegenwoordigen"
+
+references:
+  - law: "Handelsregisterwet 2007"
+    article: "10"
+    url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk2_Artikel10"
+  - law: "Handelsregisterwet 2007"
+    article: "14"
+    url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk3_Artikel14"
+
+properties:
+  parameters:
+    - name: "BSN_PERSOON"
+      description: "BSN van de persoon die wil handelen namens de organisatie"
+      type: "string"
+      required: true
+      legal_basis:
+        law: "Handelsregisterwet 2007"
+        bwb_id: "BWBR0021777"
+        article: "12"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk3_Artikel12"
+        juriconnect: "jci1.3:c:BWBR0021777&artikel=12&lid=1&z=2024-01-01&g=2024-01-01"
+        explanation: "Artikel 12 lid 1 Handelsregisterwet verplicht opgave van BSN voor natuurlijke personen"
+
+    - name: "RSIN"
+      description: "RSIN van de organisatie"
+      type: "string"
+      required: true
+      legal_basis:
+        law: "Handelsregisterwet 2007"
+        bwb_id: "BWBR0021777"
+        article: "9"
+        url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk2_Artikel9"
+        juriconnect: "jci1.3:c:BWBR0021777&artikel=9&z=2024-01-01&g=2024-01-01"
+        explanation: "Artikel 9 bepaalt de identificatie van rechtspersonen via RSIN"
+
+  sources:
+    - name: "FUNCTIONARIS"
+      description: "Gegevens van de functionaris bij de organisatie"
+      type: "object"
+      legal_basis:
+        law: "Handelsregisterwet 2007"
+        bwb_id: "BWBR0021777"
+        article: "14"
+        url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk3_Artikel14"
+        juriconnect: "jci1.3:c:BWBR0021777&artikel=14&z=2024-01-01&g=2024-01-01"
+        explanation: "Artikel 14 bepaalt welke functionarissen moeten worden ingeschreven"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      source_reference:
+        table: "functionarissen"
+        fields: ["bsn", "rsin", "functie", "bevoegdheid", "status", "ingangsdatum", "einddatum"]
+        select_on:
+          - name: "bsn"
+            description: "BSN van de persoon"
+            type: "string"
+            value: "$BSN_PERSOON"
+          - name: "rsin"
+            description: "RSIN van de organisatie"
+            type: "string"
+            value: "$RSIN"
+
+  output:
+    - name: "mag_vertegenwoordigen"
+      description: "Of de persoon bevoegd is om namens de organisatie te handelen"
+      type: "boolean"
+      citizen_relevance: primary
+      legal_basis:
+        law: "Handelsregisterwet 2007"
+        bwb_id: "BWBR0021777"
+        article: "10"
+        url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk2_Artikel10"
+        juriconnect: "jci1.3:c:BWBR0021777&artikel=10&z=2024-01-01&g=2024-01-01"
+        explanation: "Artikel 10 bepaalt wie bevoegd is om namens een onderneming te handelen"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+
+    - name: "bevoegdheid"
+      description: "Type bevoegdheid (ZELFSTANDIG, GEZAMENLIJK, BEPERKT, GEEN)"
+      type: "string"
+      citizen_relevance: secondary
+      legal_basis:
+        law: "Handelsregisterwet 2007"
+        bwb_id: "BWBR0021777"
+        article: "14"
+        url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk3_Artikel14"
+        juriconnect: "jci1.3:c:BWBR0021777&artikel=14&z=2024-01-01&g=2024-01-01"
+        explanation: "Artikel 14 bepaalt welke bevoegdheden functionarissen kunnen hebben"
+
+    - name: "functie"
+      description: "Functie van de persoon binnen de organisatie"
+      type: "string"
+      citizen_relevance: secondary
+      legal_basis:
+        law: "Handelsregisterwet 2007"
+        bwb_id: "BWBR0021777"
+        article: "14"
+        url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk3_Artikel14"
+        juriconnect: "jci1.3:c:BWBR0021777&artikel=14&z=2024-01-01&g=2024-01-01"
+        explanation: "Artikel 14 bepaalt welke functies moeten worden ingeschreven"
+
+  definitions:
+    # Functies die vertegenwoordigingsbevoegdheid kunnen hebben
+    VERTEGENWOORDIGENDE_FUNCTIES:
+      - "BESTUURDER"
+      - "DIRECTEUR"
+      - "VENNOOT"
+      - "BEHEREND_VENNOOT"
+      - "ZAAKVOERDER"
+      - "EIGENAAR"
+      - "PROCURATIEHOUDER"
+
+    # Functies zonder vertegenwoordigingsbevoegdheid
+    NIET_VERTEGENWOORDIGENDE_FUNCTIES:
+      - "COMMISSARIS"
+      - "AANDEELHOUDER"
+      - "STILLE_VENNOOT"
+
+    # Bevoegdheden die vertegenwoordiging toestaan
+    ACTIEVE_BEVOEGDHEDEN:
+      - "ZELFSTANDIG"
+      - "GEZAMENLIJK"
+      - "BEPERKT"
+
+    # Actieve status
+    ACTIEVE_STATUS:
+      - "ACTIEF"
+
+actions:
+  # Bepaal of persoon mag vertegenwoordigen
+  - output: "mag_vertegenwoordigen"
+    operation: AND
+    values:
+      # Functionaris moet bestaan
+      - operation: DEFINED
+        subject: "$FUNCTIONARIS"
+        legal_basis:
+          law: "Handelsregisterwet 2007"
+          bwb_id: "BWBR0021777"
+          article: "14"
+          url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk3_Artikel14"
+          juriconnect: "jci1.3:c:BWBR0021777&artikel=14&z=2024-01-01&g=2024-01-01"
+          explanation: "Persoon moet als functionaris geregistreerd staan"
+
+      # Status moet actief zijn
+      - operation: IN
+        subject: "$FUNCTIONARIS.status"
+        values: "$ACTIEVE_STATUS"
+        legal_basis:
+          law: "Handelsregisterwet 2007"
+          bwb_id: "BWBR0021777"
+          article: "18"
+          url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk3_Artikel18"
+          juriconnect: "jci1.3:c:BWBR0021777&artikel=18&z=2024-01-01&g=2024-01-01"
+          explanation: "Alleen actieve functionarissen kunnen vertegenwoordigen"
+
+      # Functie moet vertegenwoordigingsbevoegdheid kunnen hebben
+      - operation: IN
+        subject: "$FUNCTIONARIS.functie"
+        values: "$VERTEGENWOORDIGENDE_FUNCTIES"
+        legal_basis:
+          law: "Handelsregisterwet 2007"
+          bwb_id: "BWBR0021777"
+          article: "10"
+          url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk2_Artikel10"
+          juriconnect: "jci1.3:c:BWBR0021777&artikel=10&z=2024-01-01&g=2024-01-01"
+          explanation: "Alleen bepaalde functies hebben vertegenwoordigingsbevoegdheid"
+
+      # Bevoegdheid moet actief zijn (niet GEEN)
+      - operation: IN
+        subject: "$FUNCTIONARIS.bevoegdheid"
+        values: "$ACTIEVE_BEVOEGDHEDEN"
+        legal_basis:
+          law: "Handelsregisterwet 2007"
+          bwb_id: "BWBR0021777"
+          article: "10"
+          url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk2_Artikel10"
+          juriconnect: "jci1.3:c:BWBR0021777&artikel=10&z=2024-01-01&g=2024-01-01"
+          explanation: "Functionaris moet daadwerkelijke bevoegdheid hebben"
+
+      # Einddatum moet niet in het verleden liggen (of null zijn)
+      - operation: OR
+        values:
+          - operation: NOT_DEFINED
+            subject: "$FUNCTIONARIS.einddatum"
+          - operation: EQUALS
+            subject: "$FUNCTIONARIS.einddatum"
+            value: "null"
+          - operation: GREATER_THAN_OR_EQUAL
+            subject: "$FUNCTIONARIS.einddatum"
+            value: "$calculation_date"
+        legal_basis:
+          law: "Handelsregisterwet 2007"
+          bwb_id: "BWBR0021777"
+          article: "18"
+          url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk3_Artikel18"
+          juriconnect: "jci1.3:c:BWBR0021777&artikel=18&z=2024-01-01&g=2024-01-01"
+          explanation: "Beeindigde functionarissen kunnen niet meer vertegenwoordigen"
+    legal_basis:
+      law: "Handelsregisterwet 2007"
+      bwb_id: "BWBR0021777"
+      article: "10"
+      url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk2_Artikel10"
+      juriconnect: "jci1.3:c:BWBR0021777&artikel=10&z=2024-01-01&g=2024-01-01"
+      explanation: "Artikel 10 bepaalt de bevoegdheid tot vertegenwoordiging"
+
+  # Geef bevoegdheid terug
+  - output: "bevoegdheid"
+    value: "$FUNCTIONARIS.bevoegdheid"
+    legal_basis:
+      law: "Handelsregisterwet 2007"
+      bwb_id: "BWBR0021777"
+      article: "14"
+      url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk3_Artikel14"
+      juriconnect: "jci1.3:c:BWBR0021777&artikel=14&z=2024-01-01&g=2024-01-01"
+      explanation: "Bevoegdheid zoals geregistreerd in het handelsregister"
+
+  # Geef functie terug
+  - output: "functie"
+    value: "$FUNCTIONARIS.functie"
+    legal_basis:
+      law: "Handelsregisterwet 2007"
+      bwb_id: "BWBR0021777"
+      article: "14"
+      url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk3_Artikel14"
+      juriconnect: "jci1.3:c:BWBR0021777&artikel=14&z=2024-01-01&g=2024-01-01"
+      explanation: "Functie zoals geregistreerd in het handelsregister"
