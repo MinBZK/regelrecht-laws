@@ -7,7 +7,7 @@ legal_character: "BESCHIKKING"
 decision_type: "ANDERE_HANDELING"
 valid_from: 2024-01-01
 service: "KVK"
-discoverable_by: "HIDDEN"
+discoverable: "DELEGATION_PROVIDER"
 legal_basis:
   law: "Burgerlijk Wetboek Boek 2"
   bwb_id: "BWBR0003045"
@@ -104,8 +104,10 @@ properties:
             value: "$FUNCTIONARISSEN.kvk_nummer"
 
   output:
-    - name: "heeft_vertegenwoordigingsbevoegdheid"
-      description: "Of de persoon bevoegd is rechtspersonen te vertegenwoordigen"
+    # Standaard Delegation Provider Interface outputs
+
+    - name: "heeft_delegaties"
+      description: "Of de persoon delegaties heeft (kan handelen namens andere entiteiten)"
       type: "boolean"
       legal_basis:
         law: "Burgerlijk Wetboek Boek 2"
@@ -122,8 +124,8 @@ properties:
         type: "point_in_time"
         reference: "$calculation_date"
 
-    - name: "kvk_nummers"
-      description: "KVK nummers van rechtspersonen die de persoon mag vertegenwoordigen"
+    - name: "subject_ids"
+      description: "Identifiers van entiteiten waarvoor de persoon mag handelen (KVK nummers)"
       type: "array"
       legal_basis:
         law: "Handelsregisterwet 2007"
@@ -136,8 +138,8 @@ properties:
         type: "point_in_time"
         reference: "$calculation_date"
 
-    - name: "handelsnamen"
-      description: "Handelsnamen van rechtspersonen die de persoon mag vertegenwoordigen"
+    - name: "subject_names"
+      description: "Namen van entiteiten waarvoor de persoon mag handelen"
       type: "array"
       legal_basis:
         law: "Handelsregisterwet 2007"
@@ -145,13 +147,27 @@ properties:
         article: "9"
         url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk3_Artikel9"
         juriconnect: "jci1.3:c:BWBR0021777&artikel=9&z=2024-01-01&g=2024-01-01"
-        explanation: "Handelsnamen uit inschrijvingen in Handelsregister"
+        explanation: "Handelsnamen uit inschrijvingen in Handelsregister, met fallback"
       temporal:
         type: "point_in_time"
         reference: "$calculation_date"
 
-    - name: "functies"
-      description: "Functies die de persoon bekleedt bij de rechtspersonen"
+    - name: "subject_types"
+      description: "Types van de entiteiten (BUSINESS of CITIZEN)"
+      type: "array"
+      legal_basis:
+        law: "Handelsregisterwet 2007"
+        bwb_id: "BWBR0021777"
+        article: "9"
+        url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk3_Artikel9"
+        juriconnect: "jci1.3:c:BWBR0021777&artikel=9&z=2024-01-01&g=2024-01-01"
+        explanation: "Deze wet behandelt alleen rechtspersonen, dus altijd BUSINESS"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+
+    - name: "delegation_types"
+      description: "Type delegatie per entiteit (functie in Handelsregister)"
       type: "array"
       legal_basis:
         law: "Handelsregisterwet 2007"
@@ -159,13 +175,59 @@ properties:
         article: "18"
         url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk3_Artikel18"
         juriconnect: "jci1.3:c:BWBR0021777&artikel=18&z=2024-01-01&g=2024-01-01"
-        explanation: "Functies uit functionaris-registraties"
+        explanation: "Functies uit functionaris-registraties met fallback naar ONBEKEND"
       temporal:
         type: "point_in_time"
         reference: "$calculation_date"
 
+    - name: "permissions"
+      description: "Rechten per entiteit gebaseerd op bevoegdheid"
+      type: "array"
+      legal_basis:
+        law: "Burgerlijk Wetboek Boek 2"
+        bwb_id: "BWBR0003045"
+        article: "240"
+        paragraph: "3"
+        url: "https://wetten.overheid.nl/BWBR0003045/2024-01-01#Boek2_Titeldeel5_Afdeling4_Artikel240"
+        juriconnect: "jci1.3:c:BWBR0003045&boek=2&artikel=240&lid=3&z=2024-01-01&g=2024-01-01"
+        explanation: >
+          Art. 2:240 lid 3 BW: Bij VOLLEDIG bevoegdheid krijgt de functionaris alle rechten
+          (lezen, claims indienen, besluiten ontvangen). Bij BEPERKT alleen leesrechten.
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+
+    - name: "valid_from_dates"
+      description: "Startdatum van elke delegatie"
+      type: "array"
+      legal_basis:
+        law: "Handelsregisterwet 2007"
+        bwb_id: "BWBR0021777"
+        article: "18"
+        url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk3_Artikel18"
+        juriconnect: "jci1.3:c:BWBR0021777&artikel=18&z=2024-01-01&g=2024-01-01"
+        explanation: "Inschrijvingsdatum in Handelsregister"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+
+    - name: "valid_until_dates"
+      description: "Einddatum van elke delegatie (null = onbeperkt)"
+      type: "array"
+      legal_basis:
+        law: "Handelsregisterwet 2007"
+        bwb_id: "BWBR0021777"
+        article: "18"
+        url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk3_Artikel18"
+        juriconnect: "jci1.3:c:BWBR0021777&artikel=18&z=2024-01-01&g=2024-01-01"
+        explanation: "Einddatum van functionarisregistratie, null indien nog actief"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+
+    # Internal outputs for computation (not part of standard interface)
     - name: "bevoegdheden"
-      description: "Type bevoegdheid per functie (VOLLEDIG of BEPERKT)"
+      description: "Type bevoegdheid per functie (VOLLEDIG of BEPERKT) - intern gebruik"
       type: "array"
       legal_basis:
         law: "Burgerlijk Wetboek Boek 2"
@@ -178,23 +240,6 @@ properties:
           Art. 2:240 lid 3 BW bepaalt dat beperkingen in de statuten kunnen worden
           opgenomen. VOLLEDIG betekent onbeperkte vertegenwoordigingsbevoegdheid,
           BEPERKT betekent dat statutaire beperkingen van toepassing zijn.
-      temporal:
-        type: "point_in_time"
-        reference: "$calculation_date"
-
-    - name: "rechten_per_bedrijf"
-      description: "Rechten per bedrijf gebaseerd op bevoegdheid (VOLLEDIG of BEPERKT)"
-      type: "array"
-      legal_basis:
-        law: "Burgerlijk Wetboek Boek 2"
-        bwb_id: "BWBR0003045"
-        article: "240"
-        paragraph: "3"
-        url: "https://wetten.overheid.nl/BWBR0003045/2024-01-01#Boek2_Titeldeel5_Afdeling4_Artikel240"
-        juriconnect: "jci1.3:c:BWBR0003045&boek=2&artikel=240&lid=3&z=2024-01-01&g=2024-01-01"
-        explanation: >
-          Art. 2:240 lid 3 BW: Bij VOLLEDIG bevoegdheid krijgt de functionaris alle rechten
-          (lezen, claims indienen, besluiten ontvangen). Bij BEPERKT alleen leesrechten.
       temporal:
         type: "point_in_time"
         reference: "$calculation_date"
@@ -242,9 +287,10 @@ requirements:
       explanation: "Persoon moet als functionaris zijn ingeschreven in het Handelsregister"
 
 actions:
-  # Vertegenwoordigingsbevoegdheid volgt uit inschrijving als bestuurder/eigenaar
-  # Art. 2:240 lid 2 BW voor bestuurders, soortgelijke regels voor eigenaren
-  - output: "heeft_vertegenwoordigingsbevoegdheid"
+  # Standaard Delegation Provider Interface actions
+
+  # heeft_delegaties: boolean indicating if person has any delegations
+  - output: "heeft_delegaties"
     operation: EXISTS
     subject: "$FUNCTIONARISSEN"
     legal_basis:
@@ -258,7 +304,8 @@ actions:
         Art. 2:240 lid 2 BW bepaalt dat iedere bestuurder vertegenwoordigingsbevoegd is.
         Inschrijving als functionaris in het Handelsregister bewijst deze bevoegdheid.
 
-  - output: "kvk_nummers"
+  # subject_ids: KVK numbers
+  - output: "subject_ids"
     subject: "$FUNCTIONARISSEN.kvk_nummer"
     legal_basis:
       law: "Handelsregisterwet 2007"
@@ -268,26 +315,58 @@ actions:
       juriconnect: "jci1.3:c:BWBR0021777&artikel=18&z=2024-01-01&g=2024-01-01"
       explanation: "KVK nummers afgeleid uit functionaris-registraties"
 
-  - output: "handelsnamen"
-    subject: "$INSCHRIJVINGEN.handelsnaam"
+  # subject_names: handelsnaam with fallback to "Bedrijf {kvk_nummer}"
+  # Iterate over INSCHRIJVINGEN (parallel array to FUNCTIONARISSEN) to get handelsnamen
+  - output: "subject_names"
+    operation: FOREACH
+    subject: "$INSCHRIJVINGEN"
+    value:
+      operation: COALESCE
+      values:
+        - "$current.handelsnaam"
+        - operation: CONCAT
+          values:
+            - "Bedrijf "
+            - "$current.kvk_nummer"
     legal_basis:
       law: "Handelsregisterwet 2007"
       bwb_id: "BWBR0021777"
       article: "9"
       url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk3_Artikel9"
       juriconnect: "jci1.3:c:BWBR0021777&artikel=9&z=2024-01-01&g=2024-01-01"
-      explanation: "Handelsnamen uit ondernemingsinschrijvingen"
+      explanation: "Handelsnaam uit inschrijving, met fallback naar 'Bedrijf {KVK}' indien niet beschikbaar"
 
-  - output: "functies"
-    subject: "$FUNCTIONARISSEN.functie"
+  # subject_types: constant "BUSINESS" for each delegation
+  - output: "subject_types"
+    operation: FOREACH
+    subject: "$FUNCTIONARISSEN"
+    value: "BUSINESS"
+    legal_basis:
+      law: "Handelsregisterwet 2007"
+      bwb_id: "BWBR0021777"
+      article: "9"
+      url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk3_Artikel9"
+      juriconnect: "jci1.3:c:BWBR0021777&artikel=9&z=2024-01-01&g=2024-01-01"
+      explanation: "Deze wet behandelt alleen rechtspersonen (BUSINESS), geen natuurlijke personen"
+
+  # delegation_types: function with fallback to "ONBEKEND"
+  - output: "delegation_types"
+    operation: FOREACH
+    subject: "$FUNCTIONARISSEN"
+    value:
+      operation: COALESCE
+      values:
+        - "$current.functie"
+        - "ONBEKEND"
     legal_basis:
       law: "Handelsregisterwet 2007"
       bwb_id: "BWBR0021777"
       article: "18"
       url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk3_Artikel18"
       juriconnect: "jci1.3:c:BWBR0021777&artikel=18&z=2024-01-01&g=2024-01-01"
-      explanation: "Functies uit functionaris-registraties"
+      explanation: "Functie uit functionaris-registratie, met fallback naar ONBEKEND"
 
+  # bevoegdheden: internal computation
   - output: "bevoegdheden"
     subject: "$FUNCTIONARISSEN.bevoegdheid"
     legal_basis:
@@ -301,9 +380,8 @@ actions:
         Art. 2:240 lid 3 BW: de bevoegdheid van het bestuur kan in de statuten
         worden beperkt. Het Handelsregister registreert dit als VOLLEDIG of BEPERKT.
 
-  # Bepaal rechten per bedrijf op basis van bevoegdheid
-  # Art. 2:240 lid 3 BW: VOLLEDIG = alle rechten, BEPERKT = alleen leesrechten
-  - output: "rechten_per_bedrijf"
+  # permissions: rights per business based on authority
+  - output: "permissions"
     operation: FOREACH
     subject: "$bevoegdheden"
     value:
@@ -312,7 +390,7 @@ actions:
         - test:
             operation: EQUALS
             values:
-              - "$current_0"
+              - "$current"
               - "VOLLEDIG"
           then: "$VOLLEDIGE_BEVOEGDHEID_RECHTEN"
         - else: "$BEPERKTE_BEVOEGDHEID_RECHTEN"
@@ -326,3 +404,33 @@ actions:
       explanation: >
         Bepaalt per bedrijf de rechten op basis van de geregistreerde bevoegdheid.
         VOLLEDIG = alle rechten, BEPERKT = alleen leesrechten.
+
+  # valid_from_dates: registration date or default
+  - output: "valid_from_dates"
+    operation: FOREACH
+    subject: "$FUNCTIONARISSEN"
+    value:
+      operation: COALESCE
+      values:
+        - "$current.datum_inschrijving"
+        - "2020-01-01"
+    legal_basis:
+      law: "Handelsregisterwet 2007"
+      bwb_id: "BWBR0021777"
+      article: "18"
+      url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk3_Artikel18"
+      juriconnect: "jci1.3:c:BWBR0021777&artikel=18&z=2024-01-01&g=2024-01-01"
+      explanation: "Inschrijvingsdatum uit Handelsregister, met default fallback"
+
+  # valid_until_dates: end date (null if still active)
+  - output: "valid_until_dates"
+    operation: FOREACH
+    subject: "$FUNCTIONARISSEN"
+    value: "$current.datum_uitschrijving"
+    legal_basis:
+      law: "Handelsregisterwet 2007"
+      bwb_id: "BWBR0021777"
+      article: "18"
+      url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk3_Artikel18"
+      juriconnect: "jci1.3:c:BWBR0021777&artikel=18&z=2024-01-01&g=2024-01-01"
+      explanation: "Uitschrijvingsdatum uit Handelsregister, null indien nog actief"

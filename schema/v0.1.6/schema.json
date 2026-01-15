@@ -51,7 +51,9 @@
       "type": "string",
       "enum": [
         "CITIZEN",
-        "BUSINESS"
+        "BUSINESS",
+        "DELEGATION_PROVIDER",
+        "HIDDEN"
       ]
     },
     "valid_from": {
@@ -465,7 +467,8 @@
             "CONCAT",
             "IF",
             "FOREACH",
-            "SUBTRACT_DATE"
+            "SUBTRACT_DATE",
+            "COALESCE"
           ]
         },
         "values": {
@@ -544,7 +547,8 @@
             "CONCAT",
             "IF",
             "FOREACH",
-            "SUBTRACT_DATE"
+            "SUBTRACT_DATE",
+            "COALESCE"
           ]
         },
         "values": {
