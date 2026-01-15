@@ -7,7 +7,7 @@ legal_character: "BESCHIKKING"
 decision_type: "ANDERE_HANDELING"
 valid_from: 2024-01-01
 service: "RvIG"
-discoverable: "HIDDEN"
+discoverable: "DELEGATION_PROVIDER"
 legal_basis:
   law: "Burgerlijk Wetboek Boek 1"
   bwb_id: "BWBR0002656"
@@ -155,6 +155,96 @@ properties:
         type: "point_in_time"
         reference: "$calculation_date"
 
+    # Standard delegation interface outputs
+    - name: "heeft_delegaties"
+      description: "Of er delegaties bestaan (altijd true voor SELF)"
+      type: "boolean"
+      legal_basis:
+        law: "Burgerlijk Wetboek Boek 1"
+        bwb_id: "BWBR0002656"
+        article: "234"
+        url: "https://wetten.overheid.nl/BWBR0002656/2024-01-01#Boek1_Titeldeel13_Artikel234"
+        juriconnect: "jci1.3:c:BWBR0002656&boek=1&artikel=234&z=2024-01-01&g=2024-01-01"
+        explanation: "Iedereen kan handelen namens zichzelf"
+
+    - name: "subject_ids"
+      description: "BSN van de persoon zelf"
+      type: "array"
+      legal_basis:
+        law: "Burgerlijk Wetboek Boek 1"
+        bwb_id: "BWBR0002656"
+        article: "234"
+        url: "https://wetten.overheid.nl/BWBR0002656/2024-01-01#Boek1_Titeldeel13_Artikel234"
+        juriconnect: "jci1.3:c:BWBR0002656&boek=1&artikel=234&z=2024-01-01&g=2024-01-01"
+        explanation: "Persoon handelt namens zichzelf"
+
+    - name: "subject_names"
+      description: "Weergavenaam voor SELF delegatie"
+      type: "array"
+      legal_basis:
+        law: "Burgerlijk Wetboek Boek 1"
+        bwb_id: "BWBR0002656"
+        article: "234"
+        url: "https://wetten.overheid.nl/BWBR0002656/2024-01-01#Boek1_Titeldeel13_Artikel234"
+        juriconnect: "jci1.3:c:BWBR0002656&boek=1&artikel=234&z=2024-01-01&g=2024-01-01"
+        explanation: "Persoon handelt namens zichzelf"
+
+    - name: "subject_types"
+      description: "Type delegatie (SELF voor eigen zaken)"
+      type: "array"
+      legal_basis:
+        law: "Burgerlijk Wetboek Boek 1"
+        bwb_id: "BWBR0002656"
+        article: "234"
+        url: "https://wetten.overheid.nl/BWBR0002656/2024-01-01#Boek1_Titeldeel13_Artikel234"
+        juriconnect: "jci1.3:c:BWBR0002656&boek=1&artikel=234&z=2024-01-01&g=2024-01-01"
+        explanation: "Persoon handelt namens zichzelf"
+
+    - name: "delegation_types"
+      description: "Type machtiging (EIGEN_ZAKEN voor SELF)"
+      type: "array"
+      legal_basis:
+        law: "Burgerlijk Wetboek Boek 1"
+        bwb_id: "BWBR0002656"
+        article: "234"
+        url: "https://wetten.overheid.nl/BWBR0002656/2024-01-01#Boek1_Titeldeel13_Artikel234"
+        juriconnect: "jci1.3:c:BWBR0002656&boek=1&artikel=234&z=2024-01-01&g=2024-01-01"
+        explanation: "Persoon handelt voor eigen zaken"
+
+    - name: "permissions"
+      description: "Rechten per delegatie (afhankelijk van minderjarigheid)"
+      type: "array"
+      legal_basis:
+        law: "Burgerlijk Wetboek Boek 1"
+        bwb_id: "BWBR0002656"
+        article: "234"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0002656/2024-01-01#Boek1_Titeldeel13_Artikel234"
+        juriconnect: "jci1.3:c:BWBR0002656&boek=1&artikel=234&lid=1&z=2024-01-01&g=2024-01-01"
+        explanation: "Minderjarigen hebben beperkte rechten"
+
+    - name: "valid_from_dates"
+      description: "Ingangsdatum delegaties (null voor SELF)"
+      type: "array"
+      legal_basis:
+        law: "Burgerlijk Wetboek Boek 1"
+        bwb_id: "BWBR0002656"
+        article: "234"
+        url: "https://wetten.overheid.nl/BWBR0002656/2024-01-01#Boek1_Titeldeel13_Artikel234"
+        juriconnect: "jci1.3:c:BWBR0002656&boek=1&artikel=234&z=2024-01-01&g=2024-01-01"
+        explanation: "SELF delegatie heeft geen ingangsdatum"
+
+    - name: "valid_until_dates"
+      description: "Einddatum delegaties (null voor SELF)"
+      type: "array"
+      legal_basis:
+        law: "Burgerlijk Wetboek Boek 1"
+        bwb_id: "BWBR0002656"
+        article: "234"
+        url: "https://wetten.overheid.nl/BWBR0002656/2024-01-01#Boek1_Titeldeel13_Artikel234"
+        juriconnect: "jci1.3:c:BWBR0002656&boek=1&artikel=234&z=2024-01-01&g=2024-01-01"
+        explanation: "SELF delegatie heeft geen einddatum"
+
   definitions:
     # Art. 1:233 BW: minderjarigheid eindigt bij 18 jaar
     MEERDERJARIGHEID_LEEFTIJD: 18
@@ -264,3 +354,92 @@ actions:
         Art. 1:234 lid 1 BW: minderjarigen hebben beperkte handelingsbekwaamheid
         zonder toestemming wettelijk vertegenwoordiger. Bij handlichting hebben
         zij voor bepaalde gebieden wel volledige rechten (Art. 1:235 BW).
+
+  # Stap 6-13: Standaard delegatie interface voor SELF delegatie
+  - output: "heeft_delegaties"
+    value: true
+    legal_basis:
+      law: "Burgerlijk Wetboek Boek 1"
+      bwb_id: "BWBR0002656"
+      article: "234"
+      url: "https://wetten.overheid.nl/BWBR0002656/2024-01-01#Boek1_Titeldeel13_Artikel234"
+      juriconnect: "jci1.3:c:BWBR0002656&boek=1&artikel=234&z=2024-01-01&g=2024-01-01"
+      explanation: "Iedereen heeft een SELF delegatie"
+
+  - output: "subject_ids"
+    value:
+      - "$BSN"
+    legal_basis:
+      law: "Burgerlijk Wetboek Boek 1"
+      bwb_id: "BWBR0002656"
+      article: "234"
+      url: "https://wetten.overheid.nl/BWBR0002656/2024-01-01#Boek1_Titeldeel13_Artikel234"
+      juriconnect: "jci1.3:c:BWBR0002656&boek=1&artikel=234&z=2024-01-01&g=2024-01-01"
+      explanation: "BSN van de persoon zelf"
+
+  - output: "subject_names"
+    value:
+      - "Mezelf"
+    legal_basis:
+      law: "Burgerlijk Wetboek Boek 1"
+      bwb_id: "BWBR0002656"
+      article: "234"
+      url: "https://wetten.overheid.nl/BWBR0002656/2024-01-01#Boek1_Titeldeel13_Artikel234"
+      juriconnect: "jci1.3:c:BWBR0002656&boek=1&artikel=234&z=2024-01-01&g=2024-01-01"
+      explanation: "Weergavenaam voor SELF delegatie"
+
+  - output: "subject_types"
+    value:
+      - "SELF"
+    legal_basis:
+      law: "Burgerlijk Wetboek Boek 1"
+      bwb_id: "BWBR0002656"
+      article: "234"
+      url: "https://wetten.overheid.nl/BWBR0002656/2024-01-01#Boek1_Titeldeel13_Artikel234"
+      juriconnect: "jci1.3:c:BWBR0002656&boek=1&artikel=234&z=2024-01-01&g=2024-01-01"
+      explanation: "SELF type voor eigen zaken"
+
+  - output: "delegation_types"
+    value:
+      - "EIGEN_ZAKEN"
+    legal_basis:
+      law: "Burgerlijk Wetboek Boek 1"
+      bwb_id: "BWBR0002656"
+      article: "234"
+      url: "https://wetten.overheid.nl/BWBR0002656/2024-01-01#Boek1_Titeldeel13_Artikel234"
+      juriconnect: "jci1.3:c:BWBR0002656&boek=1&artikel=234&z=2024-01-01&g=2024-01-01"
+      explanation: "EIGEN_ZAKEN type voor SELF delegatie"
+
+  - output: "permissions"
+    value:
+      - "$base_permissions"
+    legal_basis:
+      law: "Burgerlijk Wetboek Boek 1"
+      bwb_id: "BWBR0002656"
+      article: "234"
+      paragraph: "1"
+      url: "https://wetten.overheid.nl/BWBR0002656/2024-01-01#Boek1_Titeldeel13_Artikel234"
+      juriconnect: "jci1.3:c:BWBR0002656&boek=1&artikel=234&lid=1&z=2024-01-01&g=2024-01-01"
+      explanation: "Rechten afhankelijk van minderjarigheid"
+
+  - output: "valid_from_dates"
+    value:
+      - null
+    legal_basis:
+      law: "Burgerlijk Wetboek Boek 1"
+      bwb_id: "BWBR0002656"
+      article: "234"
+      url: "https://wetten.overheid.nl/BWBR0002656/2024-01-01#Boek1_Titeldeel13_Artikel234"
+      juriconnect: "jci1.3:c:BWBR0002656&boek=1&artikel=234&z=2024-01-01&g=2024-01-01"
+      explanation: "SELF delegatie heeft geen ingangsdatum"
+
+  - output: "valid_until_dates"
+    value:
+      - null
+    legal_basis:
+      law: "Burgerlijk Wetboek Boek 1"
+      bwb_id: "BWBR0002656"
+      article: "234"
+      url: "https://wetten.overheid.nl/BWBR0002656/2024-01-01#Boek1_Titeldeel13_Artikel234"
+      juriconnect: "jci1.3:c:BWBR0002656&boek=1&artikel=234&z=2024-01-01&g=2024-01-01"
+      explanation: "SELF delegatie heeft geen einddatum"
