@@ -26,6 +26,7 @@ description: >
   inschrijving in het Handelsregister (Handelsregisterwet 2007 art. 18). Bestuurders
   zijn van rechtswege bevoegd de vennootschap te vertegenwoordigen. De statuten kunnen
   ook aan andere personen bevoegdheid tot vertegenwoordiging toekennen (art. 2:240 lid 4 BW).
+  De bevoegdheid kan beperkt zijn conform art. 2:240 lid 3 BW.
 
 references:
   - law: "Burgerlijk Wetboek Boek 2"
@@ -34,6 +35,9 @@ references:
   - law: "Handelsregisterwet 2007"
     article: "18"
     url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk3_Artikel18"
+  - law: "Algemene wet bestuursrecht"
+    article: "2:1"
+    url: "https://wetten.overheid.nl/BWBR0005537/2024-01-01#Hoofdstuk2_Afdeling2.1_Artikel2:1"
 
 properties:
   parameters:
@@ -160,6 +164,24 @@ properties:
         type: "point_in_time"
         reference: "$calculation_date"
 
+    - name: "bevoegdheden"
+      description: "Type bevoegdheid per functie (VOLLEDIG of BEPERKT)"
+      type: "array"
+      legal_basis:
+        law: "Burgerlijk Wetboek Boek 2"
+        bwb_id: "BWBR0003045"
+        article: "240"
+        paragraph: "3"
+        url: "https://wetten.overheid.nl/BWBR0003045/2024-01-01#Boek2_Titeldeel5_Afdeling4_Artikel240"
+        juriconnect: "jci1.3:c:BWBR0003045&boek=2&artikel=240&lid=3&z=2024-01-01&g=2024-01-01"
+        explanation: >
+          Art. 2:240 lid 3 BW bepaalt dat beperkingen in de statuten kunnen worden
+          opgenomen. VOLLEDIG betekent onbeperkte vertegenwoordigingsbevoegdheid,
+          BEPERKT betekent dat statutaire beperkingen van toepassing zijn.
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+
   definitions:
     # Art. 2:240 lid 2 BW: bestuurders hebben van rechtswege vertegenwoordigingsbevoegdheid
     BESTUURDER_FUNCTIES:
@@ -179,6 +201,17 @@ properties:
       - "GEMACHTIGDE"
       - "PROCURATIEHOUDER"
       - "GEVOLMACHTIGDE"
+
+    # Art. 2:1 Awb: vertegenwoordiging in bestuurszaken omvat deze rechten
+    # Bij volledige bevoegdheid (geen statutaire beperkingen):
+    VOLLEDIGE_BEVOEGDHEID_RECHTEN:
+      - "LEZEN"
+      - "CLAIMS_INDIENEN"
+      - "BESLUITEN_ONTVANGEN"
+
+    # Bij beperkte bevoegdheid (statutaire beperkingen van toepassing):
+    BEPERKTE_BEVOEGDHEID_RECHTEN:
+      - "LEZEN"
 
 requirements:
   - operation: EXISTS
@@ -237,3 +270,16 @@ actions:
       url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk3_Artikel18"
       juriconnect: "jci1.3:c:BWBR0021777&artikel=18&z=2024-01-01&g=2024-01-01"
       explanation: "Functies uit functionaris-registraties"
+
+  - output: "bevoegdheden"
+    subject: "$FUNCTIONARISSEN.bevoegdheid"
+    legal_basis:
+      law: "Burgerlijk Wetboek Boek 2"
+      bwb_id: "BWBR0003045"
+      article: "240"
+      paragraph: "3"
+      url: "https://wetten.overheid.nl/BWBR0003045/2024-01-01#Boek2_Titeldeel5_Afdeling4_Artikel240"
+      juriconnect: "jci1.3:c:BWBR0003045&boek=2&artikel=240&lid=3&z=2024-01-01&g=2024-01-01"
+      explanation: >
+        Art. 2:240 lid 3 BW: de bevoegdheid van het bestuur kan in de statuten
+        worden beperkt. Het Handelsregister registreert dit als VOLLEDIG of BEPERKT.
