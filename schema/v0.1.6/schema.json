@@ -483,6 +483,10 @@
         "value": {
           "$ref": "#/definitions/operationValue"
         },
+        "where": {
+          "description": "Optional filter condition for FOREACH operations - items are skipped if this evaluates to false",
+          "$ref": "#/definitions/operation"
+        },
         "legal_basis": {
           "$ref": "#/definitions/legalBasis"
         }
@@ -556,6 +560,13 @@
           "items": {
             "$ref": "#/definitions/operationValue"
           }
+        },
+        "subject": {
+          "$ref": "#/definitions/variableReference"
+        },
+        "where": {
+          "description": "Optional filter condition for FOREACH operations - items are skipped if this evaluates to false",
+          "$ref": "#/definitions/operation"
         },
         "conditions": {
           "type": "array",
