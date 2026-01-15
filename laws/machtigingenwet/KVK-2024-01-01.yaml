@@ -182,6 +182,23 @@ properties:
         type: "point_in_time"
         reference: "$calculation_date"
 
+    - name: "rechten_per_bedrijf"
+      description: "Rechten per bedrijf gebaseerd op bevoegdheid (VOLLEDIG of BEPERKT)"
+      type: "array"
+      legal_basis:
+        law: "Burgerlijk Wetboek Boek 2"
+        bwb_id: "BWBR0003045"
+        article: "240"
+        paragraph: "3"
+        url: "https://wetten.overheid.nl/BWBR0003045/2024-01-01#Boek2_Titeldeel5_Afdeling4_Artikel240"
+        juriconnect: "jci1.3:c:BWBR0003045&boek=2&artikel=240&lid=3&z=2024-01-01&g=2024-01-01"
+        explanation: >
+          Art. 2:240 lid 3 BW: Bij VOLLEDIG bevoegdheid krijgt de functionaris alle rechten
+          (lezen, claims indienen, besluiten ontvangen). Bij BEPERKT alleen leesrechten.
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+
   definitions:
     # Art. 2:240 lid 2 BW: bestuurders hebben van rechtswege vertegenwoordigingsbevoegdheid
     BESTUURDER_FUNCTIES:
@@ -283,3 +300,29 @@ actions:
       explanation: >
         Art. 2:240 lid 3 BW: de bevoegdheid van het bestuur kan in de statuten
         worden beperkt. Het Handelsregister registreert dit als VOLLEDIG of BEPERKT.
+
+  # Bepaal rechten per bedrijf op basis van bevoegdheid
+  # Art. 2:240 lid 3 BW: VOLLEDIG = alle rechten, BEPERKT = alleen leesrechten
+  - output: "rechten_per_bedrijf"
+    operation: FOREACH
+    subject: "$bevoegdheden"
+    value:
+      operation: IF
+      conditions:
+        - test:
+            operation: EQUALS
+            values:
+              - "$current_0"
+              - "VOLLEDIG"
+          then: "$VOLLEDIGE_BEVOEGDHEID_RECHTEN"
+        - else: "$BEPERKTE_BEVOEGDHEID_RECHTEN"
+    legal_basis:
+      law: "Burgerlijk Wetboek Boek 2"
+      bwb_id: "BWBR0003045"
+      article: "240"
+      paragraph: "3"
+      url: "https://wetten.overheid.nl/BWBR0003045/2024-01-01#Boek2_Titeldeel5_Afdeling4_Artikel240"
+      juriconnect: "jci1.3:c:BWBR0003045&boek=2&artikel=240&lid=3&z=2024-01-01&g=2024-01-01"
+      explanation: >
+        Bepaalt per bedrijf de rechten op basis van de geregistreerde bevoegdheid.
+        VOLLEDIG = alle rechten, BEPERKT = alleen leesrechten.
