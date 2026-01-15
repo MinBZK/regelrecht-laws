@@ -315,26 +315,16 @@ actions:
       juriconnect: "jci1.3:c:BWBR0021777&artikel=18&z=2024-01-01&g=2024-01-01"
       explanation: "KVK nummers afgeleid uit functionaris-registraties"
 
-  # subject_names: handelsnaam with fallback to "Bedrijf {kvk_nummer}"
-  # Iterate over INSCHRIJVINGEN (parallel array to FUNCTIONARISSEN) to get handelsnamen
+  # subject_names: handelsnaam uit Handelsregister
   - output: "subject_names"
-    operation: FOREACH
-    subject: "$INSCHRIJVINGEN"
-    value:
-      operation: COALESCE
-      values:
-        - "$current.handelsnaam"
-        - operation: CONCAT
-          values:
-            - "Bedrijf "
-            - "$current.kvk_nummer"
+    subject: "$INSCHRIJVINGEN.handelsnaam"
     legal_basis:
       law: "Handelsregisterwet 2007"
       bwb_id: "BWBR0021777"
       article: "9"
       url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk3_Artikel9"
       juriconnect: "jci1.3:c:BWBR0021777&artikel=9&z=2024-01-01&g=2024-01-01"
-      explanation: "Handelsnaam uit inschrijving, met fallback naar 'Bedrijf {KVK}' indien niet beschikbaar"
+      explanation: "Handelsnaam uit inschrijving in Handelsregister"
 
   # subject_types: constant "BUSINESS" for each delegation
   - output: "subject_types"
@@ -349,22 +339,16 @@ actions:
       juriconnect: "jci1.3:c:BWBR0021777&artikel=9&z=2024-01-01&g=2024-01-01"
       explanation: "Deze wet behandelt alleen rechtspersonen (BUSINESS), geen natuurlijke personen"
 
-  # delegation_types: function with fallback to "ONBEKEND"
+  # delegation_types: functie uit Handelsregister
   - output: "delegation_types"
-    operation: FOREACH
-    subject: "$FUNCTIONARISSEN"
-    value:
-      operation: COALESCE
-      values:
-        - "$current.functie"
-        - "ONBEKEND"
+    subject: "$FUNCTIONARISSEN.functie"
     legal_basis:
       law: "Handelsregisterwet 2007"
       bwb_id: "BWBR0021777"
       article: "18"
       url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk3_Artikel18"
       juriconnect: "jci1.3:c:BWBR0021777&artikel=18&z=2024-01-01&g=2024-01-01"
-      explanation: "Functie uit functionaris-registratie, met fallback naar ONBEKEND"
+      explanation: "Functie uit functionaris-registratie in Handelsregister"
 
   # bevoegdheden: internal computation
   - output: "bevoegdheden"
@@ -405,28 +389,20 @@ actions:
         Bepaalt per bedrijf de rechten op basis van de geregistreerde bevoegdheid.
         VOLLEDIG = alle rechten, BEPERKT = alleen leesrechten.
 
-  # valid_from_dates: registration date or default
+  # valid_from_dates: inschrijvingsdatum uit Handelsregister
   - output: "valid_from_dates"
-    operation: FOREACH
-    subject: "$FUNCTIONARISSEN"
-    value:
-      operation: COALESCE
-      values:
-        - "$current.datum_inschrijving"
-        - "2020-01-01"
+    subject: "$FUNCTIONARISSEN.datum_inschrijving"
     legal_basis:
       law: "Handelsregisterwet 2007"
       bwb_id: "BWBR0021777"
       article: "18"
       url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk3_Artikel18"
       juriconnect: "jci1.3:c:BWBR0021777&artikel=18&z=2024-01-01&g=2024-01-01"
-      explanation: "Inschrijvingsdatum uit Handelsregister, met default fallback"
+      explanation: "Inschrijvingsdatum uit Handelsregister"
 
-  # valid_until_dates: end date (null if still active)
+  # valid_until_dates: uitschrijvingsdatum (null indien nog actief)
   - output: "valid_until_dates"
-    operation: FOREACH
-    subject: "$FUNCTIONARISSEN"
-    value: "$current.datum_uitschrijving"
+    subject: "$FUNCTIONARISSEN.datum_uitschrijving"
     legal_basis:
       law: "Handelsregisterwet 2007"
       bwb_id: "BWBR0021777"
