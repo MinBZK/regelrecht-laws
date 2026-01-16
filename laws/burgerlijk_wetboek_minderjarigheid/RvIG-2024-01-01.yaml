@@ -69,7 +69,7 @@ properties:
         reference: "$calculation_date"
       source_reference:
         table: "personen"
-        
+
         fields: ["geboortedatum", "heeft_handlichting", "handlichting_gebieden"]
         select_on:
           - name: "bsn"
