@@ -51,7 +51,9 @@
       "type": "string",
       "enum": [
         "CITIZEN",
-        "BUSINESS"
+        "BUSINESS",
+        "DELEGATION_PROVIDER",
+        "HIDDEN"
       ]
     },
     "valid_from": {
@@ -465,7 +467,8 @@
             "CONCAT",
             "IF",
             "FOREACH",
-            "SUBTRACT_DATE"
+            "SUBTRACT_DATE",
+            "COALESCE"
           ]
         },
         "values": {
@@ -479,6 +482,10 @@
         },
         "value": {
           "$ref": "#/definitions/operationValue"
+        },
+        "where": {
+          "description": "Optional filter condition for FOREACH operations - items are skipped if this evaluates to false",
+          "$ref": "#/definitions/operation"
         },
         "legal_basis": {
           "$ref": "#/definitions/legalBasis"
@@ -544,7 +551,8 @@
             "CONCAT",
             "IF",
             "FOREACH",
-            "SUBTRACT_DATE"
+            "SUBTRACT_DATE",
+            "COALESCE"
           ]
         },
         "values": {
@@ -552,6 +560,13 @@
           "items": {
             "$ref": "#/definitions/operationValue"
           }
+        },
+        "subject": {
+          "$ref": "#/definitions/variableReference"
+        },
+        "where": {
+          "description": "Optional filter condition for FOREACH operations - items are skipped if this evaluates to false",
+          "$ref": "#/definitions/operation"
         },
         "conditions": {
           "type": "array",
