@@ -39,7 +39,7 @@ Feature: Berekening Huurtoeslag
     When de wet_op_de_huurtoeslag wordt uitgevoerd door TOESLAGEN met wijzigingen
     Then ontbreken er geen verplichte gegevens
     And heeft de persoon recht op huurtoeslag
-    And is de huurtoeslag "89.60" euro
+    And is de huurtoeslag "406.95" euro
 
   Scenario: Te hoog inkomen voor huurtoeslag
     Given een persoon met BSN "333333333"
