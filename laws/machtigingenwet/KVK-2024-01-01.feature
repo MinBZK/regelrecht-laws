@@ -83,3 +83,108 @@ Feature: Machtigingenwet - Delegation provider for KVK
     Then heeft de output "heeft_delegaties" waarde "true"
     And bevat de output "subject_ids" waarde "88888888"
     And bevat de output "delegation_types" waarde "GEMACHTIGDE"
+
+  # ===== NV (Naamloze Vennootschap) =====
+  # Art. 2:130 BW - representation authority for NV
+
+  Scenario: Bestuurder van NV heeft delegatie
+    Given de volgende KVK functionarissen gegevens
+      | bsn       | kvk_nummer | handelsnaam      | rechtsvorm | status | functie    | bevoegdheid |
+      | 999993653 | 90000001   | Grote Holding NV | NV         | ACTIEF | BESTUURDER | VOLLEDIG    |
+    When de machtigingenwet wordt uitgevoerd door KVK
+    Then heeft de output "heeft_delegaties" waarde "true"
+    And bevat de output "subject_ids" waarde "90000001"
+    And bevat de output "delegation_types" waarde "BESTUURDER"
+
+  Scenario: Directeur van NV heeft delegatie
+    Given de volgende KVK functionarissen gegevens
+      | bsn       | kvk_nummer | handelsnaam       | rechtsvorm | status | functie   | bevoegdheid |
+      | 999993653 | 90000002   | Beursgenoteerd NV | NV         | ACTIEF | DIRECTEUR | VOLLEDIG    |
+    When de machtigingenwet wordt uitgevoerd door KVK
+    Then heeft de output "heeft_delegaties" waarde "true"
+    And bevat de output "delegation_types" waarde "DIRECTEUR"
+
+  # ===== Stichting (Foundation) =====
+  # Art. 2:291-292 BW - representation by foundation board
+
+  Scenario: Bestuurder van Stichting heeft delegatie
+    Given de volgende KVK functionarissen gegevens
+      | bsn       | kvk_nummer | handelsnaam            | rechtsvorm | status | functie    | bevoegdheid |
+      | 999993653 | 90000003   | Stichting Goede Doelen | STICHTING  | ACTIEF | BESTUURDER | VOLLEDIG    |
+    When de machtigingenwet wordt uitgevoerd door KVK
+    Then heeft de output "heeft_delegaties" waarde "true"
+    And bevat de output "subject_ids" waarde "90000003"
+    And bevat de output "subject_names" waarde "Stichting Goede Doelen"
+    And bevat de output "delegation_types" waarde "BESTUURDER"
+
+  Scenario: Stichting met beperkte bevoegdheid
+    Given de volgende KVK functionarissen gegevens
+      | bsn       | kvk_nummer | handelsnaam         | rechtsvorm | status | functie    | bevoegdheid |
+      | 999993653 | 90000004   | Stichting Onderwijs | STICHTING  | ACTIEF | BESTUURDER | BEPERKT     |
+    When de machtigingenwet wordt uitgevoerd door KVK
+    Then heeft de output "heeft_delegaties" waarde "true"
+    And bevat de output "permissions" waarde "['LEZEN']"
+
+  # ===== Vereniging (Association) =====
+  # Art. 2:45 BW - representation by association board
+
+  Scenario: Bestuurder van Vereniging heeft delegatie
+    Given de volgende KVK functionarissen gegevens
+      | bsn       | kvk_nummer | handelsnaam             | rechtsvorm | status | functie    | bevoegdheid |
+      | 999993653 | 90000005   | Sportvereniging De Hoop | VERENIGING | ACTIEF | BESTUURDER | VOLLEDIG    |
+    When de machtigingenwet wordt uitgevoerd door KVK
+    Then heeft de output "heeft_delegaties" waarde "true"
+    And bevat de output "subject_ids" waarde "90000005"
+    And bevat de output "delegation_types" waarde "BESTUURDER"
+
+  Scenario: Voorzitter van Vereniging heeft delegatie
+    Given de volgende KVK functionarissen gegevens
+      | bsn       | kvk_nummer | handelsnaam      | rechtsvorm | status | functie    | bevoegdheid |
+      | 999993653 | 90000006   | Muziekvereniging | VERENIGING | ACTIEF | VOORZITTER | VOLLEDIG    |
+    When de machtigingenwet wordt uitgevoerd door KVK
+    Then heeft de output "heeft_delegaties" waarde "true"
+    And bevat de output "delegation_types" waarde "VOORZITTER"
+
+  # ===== Coöperatie (Cooperative) =====
+  # Art. 2:53a BW - representation by cooperative board
+
+  Scenario: Bestuurder van Coöperatie heeft delegatie
+    Given de volgende KVK functionarissen gegevens
+      | bsn       | kvk_nummer | handelsnaam           | rechtsvorm | status | functie    | bevoegdheid |
+      | 999993653 | 90000007   | Coöperatie Boeren U.A.| COOPERATIE | ACTIEF | BESTUURDER | VOLLEDIG    |
+    When de machtigingenwet wordt uitgevoerd door KVK
+    Then heeft de output "heeft_delegaties" waarde "true"
+    And bevat de output "subject_ids" waarde "90000007"
+    And bevat de output "delegation_types" waarde "BESTUURDER"
+
+  # ===== Maatschap (Professional Partnership) =====
+  # Art. 7A:1655 BW - representation by partners
+
+  Scenario: Maat in Maatschap heeft delegatie
+    Given de volgende KVK functionarissen gegevens
+      | bsn       | kvk_nummer | handelsnaam              | rechtsvorm | status | functie | bevoegdheid |
+      | 999993653 | 90000008   | Advocatenmaatschap Recht | MAATSCHAP  | ACTIEF | MAAT    | VOLLEDIG    |
+    When de machtigingenwet wordt uitgevoerd door KVK
+    Then heeft de output "heeft_delegaties" waarde "true"
+    And bevat de output "subject_ids" waarde "90000008"
+    And bevat de output "delegation_types" waarde "MAAT"
+
+  # ===== Commanditaire Vennootschap (CV) =====
+  # Art. 19 Wetboek van Koophandel - only beherend vennoot represents
+
+  Scenario: Beherend vennoot van CV heeft delegatie
+    Given de volgende KVK functionarissen gegevens
+      | bsn       | kvk_nummer | handelsnaam  | rechtsvorm              | status | functie          | bevoegdheid |
+      | 999993653 | 90000009   | Investeer CV | COMMANDITAIRE_VENNOOTSCHAP | ACTIEF | BEHEREND_VENNOOT | VOLLEDIG    |
+    When de machtigingenwet wordt uitgevoerd door KVK
+    Then heeft de output "heeft_delegaties" waarde "true"
+    And bevat de output "subject_ids" waarde "90000009"
+    And bevat de output "delegation_types" waarde "BEHEREND_VENNOOT"
+
+  Scenario: Commanditair vennoot van CV heeft GEEN delegatie
+    # Stille vennoot mag niet naar buiten treden (art. 20 WvK)
+    Given de volgende KVK functionarissen gegevens
+      | bsn       | kvk_nummer | handelsnaam | rechtsvorm                 | status | functie              | bevoegdheid |
+      | 999993653 | 90000010   | Kapitaal CV | COMMANDITAIRE_VENNOOTSCHAP | ACTIEF | COMMANDITAIR_VENNOOT | GEEN        |
+    When de machtigingenwet wordt uitgevoerd door KVK
+    Then heeft de output "heeft_delegaties" waarde "false"
