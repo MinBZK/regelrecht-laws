@@ -32,6 +32,35 @@ references:
   - law: "Burgerlijk Wetboek Boek 2"
     article: "240"
     url: "https://wetten.overheid.nl/BWBR0003045/2024-01-01#Boek2_Titeldeel5_Afdeling4_Artikel240"
+    explanation: "Vertegenwoordiging BV door bestuur"
+  - law: "Burgerlijk Wetboek Boek 2"
+    article: "130"
+    url: "https://wetten.overheid.nl/BWBR0003045/2024-01-01#Boek2_Titeldeel4_Afdeling4_Artikel130"
+    explanation: "Vertegenwoordiging NV door bestuur"
+  - law: "Burgerlijk Wetboek Boek 2"
+    article: "291"
+    url: "https://wetten.overheid.nl/BWBR0003045/2024-01-01#Boek2_Titeldeel6_Artikel291"
+    explanation: "Vertegenwoordiging Stichting door bestuur"
+  - law: "Burgerlijk Wetboek Boek 2"
+    article: "45"
+    url: "https://wetten.overheid.nl/BWBR0003045/2024-01-01#Boek2_Titeldeel2_Artikel45"
+    explanation: "Vertegenwoordiging Vereniging door bestuur"
+  - law: "Burgerlijk Wetboek Boek 2"
+    article: "53a"
+    url: "https://wetten.overheid.nl/BWBR0003045/2024-01-01#Boek2_Titeldeel3_Artikel53a"
+    explanation: "Vertegenwoordiging Coöperatie door bestuur"
+  - law: "Burgerlijk Wetboek Boek 7A"
+    article: "1655"
+    url: "https://wetten.overheid.nl/BWBR0005290/2024-01-01#Boek7A_Titeldeel9_Artikel1655"
+    explanation: "Maatschap - vertegenwoordiging door maten"
+  - law: "Wetboek van Koophandel"
+    article: "19"
+    url: "https://wetten.overheid.nl/BWBR0001830/2024-01-01#Boek1_Titeldeel3_Artikel19"
+    explanation: "CV - alleen beherend vennoot vertegenwoordigt"
+  - law: "Wetboek van Koophandel"
+    article: "20"
+    url: "https://wetten.overheid.nl/BWBR0001830/2024-01-01#Boek1_Titeldeel3_Artikel20"
+    explanation: "CV - commanditair vennoot heeft geen vertegenwoordigingsbevoegdheid"
   - law: "Handelsregisterwet 2007"
     article: "18"
     url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Hoofdstuk3_Artikel18"
@@ -244,7 +273,9 @@ properties:
 
     # Combinatie van alle functies die vertegenwoordigingsbevoegdheid geven
     # Art. 2:240 BW bepaalt dat bestuurders, eigenaren en gemachtigden bevoegd zijn
+    # Art. 2:45 BW: voorzitter kan vereniging vertegenwoordigen
     # Commissarissen, toezichthouders etc. zijn NIET bevoegd tot vertegenwoordiging
+    # COMMANDITAIR_VENNOOT is NIET bevoegd (stille vennoot, art. 20 WvK)
     BEVOEGDE_FUNCTIES:
       - "BESTUURDER"
       - "DIRECTEUR"
@@ -253,6 +284,7 @@ properties:
       - "VENNOOT"
       - "BEHEREND_VENNOOT"
       - "MAAT"
+      - "VOORZITTER"
       - "GEMACHTIGDE"
       - "PROCURATIEHOUDER"
       - "GEVOLMACHTIGDE"
