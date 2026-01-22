@@ -33,8 +33,8 @@ references:
 properties:
   parameters:
     - name: "ADRES"
-      description: "Adresgegevens (postcode en huisnummer)"
-      type: "object"
+      description: "Adresgegevens (volledig adres als string)"
+      type: "string"
       required: true
       legal_basis:
         law: "Wet basisregistratie adressen en gebouwen"
@@ -42,7 +42,7 @@ properties:
         article: "1"
         url: "https://wetten.overheid.nl/BWBR0023466/2018-07-28#Paragraaf1_Artikel1"
         juriconnect: "jci1.3:c:BWBR0023466&artikel=1&z=2018-07-28&g=2018-07-28"
-        explanation: "Artikel 1 bepaalt dat nummeraanduidingen (postcode + huisnummer) deel uitmaken van de BAG"
+        explanation: "Artikel 1 bepaalt dat nummeraanduidingen deel uitmaken van de BAG"
 
   sources:
     - name: "VERBLIJFSOBJECT"
@@ -55,14 +55,10 @@ properties:
         table: "bag_verblijfsobjecten"
         fields: ["gebruiksdoel", "oppervlakte", "status", "bouwjaar"]
         select_on:
-          - name: "postcode"
-            description: "Postcode van het adres"
+          - name: "adres"
+            description: "Volledig adres"
             type: "string"
-            value: "$ADRES.postcode"
-          - name: "huisnummer"
-            description: "Huisnummer van het adres"
-            type: "string"
-            value: "$ADRES.huisnummer"
+            value: "$ADRES"
       legal_basis:
         law: "Wet basisregistratie adressen en gebouwen"
         bwb_id: "BWBR0023466"

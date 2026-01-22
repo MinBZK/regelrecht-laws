@@ -31,8 +31,8 @@ references:
 
 properties:
   parameters:
-    - name: "BSN_WERKGEVER"
-      description: "BSN van de werkgever"
+    - name: "LOONHEFFINGENNUMMER"
+      description: "Loonheffingennummer van de werkgever (identificatie bij Belastingdienst)"
       type: "string"
       required: true
       legal_basis:
@@ -42,7 +42,7 @@ properties:
         paragraph: "1"
         url: "https://wetten.overheid.nl/BWBR0018450/2024-01-01#Hoofdstuk5_Paragraaf5.2_Artikel42"
         juriconnect: "jci1.3:c:BWBR0018450&hoofdstuk=5&paragraaf=5.2&artikel=42&lid=1&z=2024-01-01&g=2024-01-01"
-        explanation: "Artikel 42 bepaalt de bijdrageplicht voor verzekerden met loon uit dienstbetrekking"
+        explanation: "Werkgevers worden geïdentificeerd via hun loonheffingennummer voor de afdracht van de werkgeversbijdrage"
 
     - name: "BRUTO_LOON"
       description: "Bruto loon van de werknemer in euro's"
@@ -78,7 +78,7 @@ properties:
       temporal:
         type: "period"
         period_type: "year"
-      business_relevance: secondary
+      citizen_relevance: secondary
 
     - name: "zvw_werkgeversbijdrage"
       description: "Verschuldigde werkgeversbijdrage Zvw in eurocenten"
@@ -98,7 +98,7 @@ properties:
       temporal:
         type: "period"
         period_type: "year"
-      business_relevance: primary
+      citizen_relevance: primary
 
   definitions:
     ZVW_PERCENTAGE:

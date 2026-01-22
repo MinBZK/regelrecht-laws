@@ -104,7 +104,6 @@ properties:
       description: "Datum van aanvang van de onderneming"
       type: "date"
       citizen_relevance: secondary
-      business_relevance: primary
       legal_basis:
         law: "Handelsregisterwet 2007"
         bwb_id: "BWBR0021777"

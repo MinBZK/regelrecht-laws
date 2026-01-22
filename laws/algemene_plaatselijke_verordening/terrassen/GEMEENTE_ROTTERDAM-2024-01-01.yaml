@@ -40,7 +40,7 @@ properties:
         explanation: "De onderneming moet geregistreerd zijn in het Handelsregister"
 
     - name: "OBSTAKELVRIJE_RUIMTE"
-      description: "Obstakelvrije ruimte naast het terras in meters"
+      description: "Obstakelvrije ruimte naast het terras in meters (opgegeven door aanvrager, geverifieerd door gemeente bij inspectie)"
       type: "number"
       type_spec:
         precision: 2
@@ -51,7 +51,7 @@ properties:
         article: "2:30b"
         paragraph: "3"
         url: "https://lokaleregelgeving.overheid.nl/CVDR373493/11"
-        explanation: "Er moet minimaal 1,8 meter obstakelvrije ruimte blijven voor voetgangers"
+        explanation: "Er moet minimaal 1,8 meter obstakelvrije ruimte blijven voor voetgangers. De aanvrager geeft dit op bij de aanvraag; de gemeente verifieert dit bij inspectie ter plaatse"
 
   sources:
     - name: "HEEFT_EXPLOITATIEVERGUNNING"
@@ -183,7 +183,7 @@ properties:
       temporal:
         type: "point_in_time"
         reference: "$calculation_date"
-      business_relevance: primary
+      citizen_relevance: primary
       legal_basis:
         law: "Algemene plaatselijke verordening Rotterdam 2012"
         article: "2:30b"
@@ -196,7 +196,7 @@ properties:
       temporal:
         type: "point_in_time"
         reference: "$calculation_date"
-      business_relevance: primary
+      citizen_relevance: primary
       legal_basis:
         law: "Algemene plaatselijke verordening Rotterdam 2012"
         article: "2:30b"
@@ -234,7 +234,7 @@ requirements:
       # Gebruiksdoel moet horecagerelateerd zijn
       - subject: "$BAG_GEBRUIKSDOEL"
         operation: IN
-        value: "$TOEGESTANE_GEBRUIKSDOELEN"
+        values: "$TOEGESTANE_GEBRUIKSDOELEN"
         legal_basis:
           law: "Wet basisregistratie adressen en gebouwen"
           bwb_id: "BWBR0023466"
@@ -279,7 +279,7 @@ actions:
         value: true
       - subject: "$BAG_GEBRUIKSDOEL"
         operation: IN
-        value: "$TOEGESTANE_GEBRUIKSDOELEN"
+        values: "$TOEGESTANE_GEBRUIKSDOELEN"
       - operation: GREATER_OR_EQUAL
         values:
           - "$OBSTAKELVRIJE_RUIMTE"
@@ -310,7 +310,7 @@ actions:
       - test:
           subject: "$BAG_GEBRUIKSDOEL"
           operation: NOT_IN
-          value: "$TOEGESTANE_GEBRUIKSDOELEN"
+          values: "$TOEGESTANE_GEBRUIKSDOELEN"
         then: "Pand heeft geen horecagerelateerd gebruiksdoel"
       - test:
           operation: LESS_THAN

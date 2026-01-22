@@ -127,8 +127,7 @@ properties:
       temporal:
         type: "point_in_time"
         reference: "$calculation_date"
-      citizen_relevance: secondary
-      business_relevance: primary
+      citizen_relevance: primary
       legal_basis:
         law: "Algemene plaatselijke verordening Rotterdam 2012"
         article: "4:2"
@@ -142,7 +141,6 @@ properties:
         type: "point_in_time"
         reference: "$calculation_date"
       citizen_relevance: secondary
-      business_relevance: primary
       legal_basis:
         law: "Algemene plaatselijke verordening Rotterdam 2012"
         article: "4:2"
@@ -156,7 +154,6 @@ properties:
         type: "point_in_time"
         reference: "$calculation_date"
       citizen_relevance: secondary
-      business_relevance: primary
       legal_basis:
         law: "Algemene plaatselijke verordening Rotterdam 2012"
         article: "4:2"
@@ -170,7 +167,6 @@ properties:
         type: "point_in_time"
         reference: "$calculation_date"
       citizen_relevance: secondary
-      business_relevance: secondary
       legal_basis:
         law: "Algemene plaatselijke verordening Rotterdam 2012"
         article: "4:2"
@@ -184,7 +180,6 @@ properties:
         type: "point_in_time"
         reference: "$calculation_date"
       citizen_relevance: secondary
-      business_relevance: secondary
       legal_basis:
         law: "Algemene plaatselijke verordening Rotterdam 2012"
         article: "4:2"
@@ -198,7 +193,6 @@ properties:
         type: "point_in_time"
         reference: "$calculation_date"
       citizen_relevance: secondary
-      business_relevance: secondary
       legal_basis:
         law: "Algemene plaatselijke verordening Rotterdam 2012"
         article: "4:2"
@@ -207,7 +201,7 @@ properties:
 
   definitions:
     MAX_ONTHEFFINGEN_PER_JAAR: 12
-    MIN_AANVRAAGTERMIJN_UREN: 48
+    MIN_AANVRAAGTERMIJN_DAGEN: 2
 
 variables: []
 
@@ -231,7 +225,7 @@ requirements:
           url: "https://lokaleregelgeving.overheid.nl/CVDR373493"
           explanation: "Er mogen geen bekende geluidsklachten zijn over het bedrijf"
 
-      - operation: LESS
+      - operation: LESS_THAN
         subject: "$AANTAL_VERLEENDE_ONTHEFFINGEN_DIT_JAAR"
         value: "$MAX_ONTHEFFINGEN_PER_JAAR"
         legal_basis:
@@ -242,16 +236,17 @@ requirements:
 
       - operation: GREATER_OR_EQUAL
         subject:
-          operation: DATE_DIFF
-          subject: "$ACTIVITEITSDATUM"
-          value: "$calculation_date"
-          unit: "hours"
-        value: "$MIN_AANVRAAGTERMIJN_UREN"
+          operation: SUBTRACT_DATE
+          values:
+            - "$ACTIVITEITSDATUM"
+            - "$calculation_date"
+          unit: "days"
+        value: "$MIN_AANVRAAGTERMIJN_DAGEN"
         legal_basis:
           law: "Algemene plaatselijke verordening Rotterdam 2012"
           article: "4:2"
           url: "https://lokaleregelgeving.overheid.nl/CVDR373493"
-          explanation: "De aanvraag moet minimaal 48 uur van tevoren worden ingediend"
+          explanation: "De aanvraag moet minimaal 2 dagen (48 uur) van tevoren worden ingediend"
 
 actions:
   - output: "aantal_verleende_ontheffingen_dit_jaar"
@@ -265,8 +260,9 @@ actions:
   - output: "resterende_ontheffingen_dit_jaar"
     value:
       operation: SUBTRACT
-      subject: "$MAX_ONTHEFFINGEN_PER_JAAR"
-      value: "$AANTAL_VERLEENDE_ONTHEFFINGEN_DIT_JAAR"
+      values:
+        - "$MAX_ONTHEFFINGEN_PER_JAAR"
+        - "$AANTAL_VERLEENDE_ONTHEFFINGEN_DIT_JAAR"
     legal_basis:
       law: "Algemene plaatselijke verordening Rotterdam 2012"
       article: "4:2"
@@ -277,16 +273,17 @@ actions:
     value:
       operation: GREATER_OR_EQUAL
       subject:
-        operation: DATE_DIFF
-        subject: "$ACTIVITEITSDATUM"
-        value: "$calculation_date"
-        unit: "hours"
-      value: "$MIN_AANVRAAGTERMIJN_UREN"
+        operation: SUBTRACT_DATE
+        values:
+          - "$ACTIVITEITSDATUM"
+          - "$calculation_date"
+        unit: "days"
+      value: "$MIN_AANVRAAGTERMIJN_DAGEN"
     legal_basis:
       law: "Algemene plaatselijke verordening Rotterdam 2012"
       article: "4:2"
       url: "https://lokaleregelgeving.overheid.nl/CVDR373493"
-      explanation: "Controle of de aanvraag minimaal 48 uur van tevoren is ingediend (activiteitsdatum moet minimaal 48 uur na nu zijn)"
+      explanation: "Controle of de aanvraag minimaal 2 dagen (48 uur) van tevoren is ingediend"
 
   - output: "geen_geluidsklachten"
     value:

@@ -97,7 +97,6 @@ properties:
         type: "point_in_time"
         reference: "$calculation_date"
       citizen_relevance: primary
-      business_relevance: primary
       legal_basis:
         law: "Besluit activiteiten leefomgeving"
         bwb_id: "BWBR0041330"
@@ -114,7 +113,6 @@ properties:
         type: "point_in_time"
         reference: "$calculation_date"
       citizen_relevance: secondary
-      business_relevance: secondary
       legal_basis:
         law: "Besluit activiteiten leefomgeving"
         bwb_id: "BWBR0041330"
