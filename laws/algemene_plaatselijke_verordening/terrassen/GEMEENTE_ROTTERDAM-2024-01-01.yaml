@@ -53,6 +53,19 @@ properties:
         url: "https://lokaleregelgeving.overheid.nl/CVDR373493/11"
         explanation: "Er moet minimaal 1,8 meter obstakelvrije ruimte blijven voor voetgangers. De aanvrager geeft dit op bij de aanvraag; de gemeente verifieert dit bij inspectie ter plaatse"
 
+    - name: "TERRAS_OPPERVLAKTE"
+      description: "Gewenste oppervlakte van het terras in vierkante meters (opgegeven door aanvrager)"
+      type: "number"
+      type_spec:
+        precision: 2
+        min: 0
+      required: true
+      legal_basis:
+        law: "Algemene plaatselijke verordening Rotterdam 2012"
+        article: "2:30b"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR373493/11"
+        explanation: "De oppervlakte van het terras moet worden opgegeven voor de vergunning"
+
   sources:
     - name: "HEEFT_EXPLOITATIEVERGUNNING"
       description: "Of de onderneming een geldige exploitatievergunning heeft"
@@ -135,26 +148,6 @@ properties:
         article: "2:30b"
         url: "https://lokaleregelgeving.overheid.nl/CVDR373493/11"
         explanation: "Het terras moet gekoppeld zijn aan een specifieke locatie"
-
-    - name: "TERRAS_OPPERVLAKTE"
-      description: "Oppervlakte van het terras in vierkante meters"
-      type: "number"
-      temporal:
-        type: "point_in_time"
-        reference: "$calculation_date"
-      source_reference:
-        table: "vestigingen"
-        field: "terras_oppervlakte_m2"
-        select_on:
-          - name: "kvk_nummer"
-            description: "KVK-nummer van de onderneming"
-            type: "string"
-            value: "$KVK_NUMMER"
-      legal_basis:
-        law: "Algemene plaatselijke verordening Rotterdam 2012"
-        article: "2:30b"
-        url: "https://lokaleregelgeving.overheid.nl/CVDR373493/11"
-        explanation: "De oppervlakte van het terras moet worden opgegeven voor de vergunning"
 
   input:
     - name: "BAG_GEBRUIKSDOEL"
