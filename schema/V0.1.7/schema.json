@@ -150,7 +150,8 @@
               "amount",
               "object",
               "array",
-              "date"
+              "date",
+              "enum"
             ]
           },
           "type_spec": {

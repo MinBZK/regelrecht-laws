@@ -103,6 +103,32 @@ properties:
         url: "https://lokaleregelgeving.overheid.nl/CVDR373493"
         explanation: "Er mogen geen bekende geluidsklachten zijn over het bedrijf om in aanmerking te komen voor een geluidsontheffing"
 
+    - name: "EERDER_VERLEENDE_ONTHEFFINGEN"
+      description: "Lijst van eerder verleende geluidsontheffingen met datum en reden"
+      type: "array"
+      type_spec:
+        fields:
+          - name: "datum"
+            type: "date"
+          - name: "reden"
+            type: "string"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      source_reference:
+        source_type: "GEMEENTE_ROTTERDAM"
+        table: "ontheffingen_geluid_historie"
+        select_on:
+          - name: "kvk_nummer"
+            description: "KVK nummer van het horecabedrijf"
+            type: "string"
+            value: "$KVK_NUMMER"
+      legal_basis:
+        law: "Algemene plaatselijke verordening Rotterdam 2012"
+        article: "4:2"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR373493"
+        explanation: "Overzicht van eerder verleende ontheffingen voor dit bedrijf"
+
   input:
     - name: "KVK_STATUS"
       description: "Status van de onderneming in het Handelsregister"
@@ -198,6 +224,25 @@ properties:
         article: "4:2"
         url: "https://lokaleregelgeving.overheid.nl/CVDR373493"
         explanation: "Het bedrijf moet actief zijn in het Handelsregister"
+
+    - name: "eerder_verleende_ontheffingen"
+      description: "Overzicht van eerder verleende geluidsontheffingen"
+      type: "array"
+      type_spec:
+        fields:
+          - name: "datum"
+            type: "date"
+          - name: "reden"
+            type: "string"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      citizen_relevance: secondary
+      legal_basis:
+        law: "Algemene plaatselijke verordening Rotterdam 2012"
+        article: "4:2"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR373493"
+        explanation: "Transparantie: overzicht van eerder verleende ontheffingen"
 
   definitions:
     MAX_ONTHEFFINGEN_PER_JAAR: 12
@@ -306,6 +351,14 @@ actions:
       article: "4:2"
       url: "https://lokaleregelgeving.overheid.nl/CVDR373493"
       explanation: "Controle of het bedrijf actief is in het Handelsregister"
+
+  - output: "eerder_verleende_ontheffingen"
+    value: "$EERDER_VERLEENDE_ONTHEFFINGEN"
+    legal_basis:
+      law: "Algemene plaatselijke verordening Rotterdam 2012"
+      article: "4:2"
+      url: "https://lokaleregelgeving.overheid.nl/CVDR373493"
+      explanation: "Overzicht van eerder verleende ontheffingen voor dit bedrijf"
 
   - output: "komt_in_aanmerking_voor_geluidsontheffing"
     value: true
