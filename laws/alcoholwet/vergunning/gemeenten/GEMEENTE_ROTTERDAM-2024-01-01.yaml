@@ -143,27 +143,6 @@ properties:
         url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk1_Artikel1"
         explanation: "Artikel 1 definieert horecabedrijf en slijtersbedrijf als verschillende typen bedrijven"
 
-    # Bibob-toets (gemeentelijke verantwoordelijkheid)
-    - name: "BIBOB_MATE_VAN_GEVAAR"
-      description: "Mate van gevaar volgens Bibob-advies (geen, mindere mate, ernstig gevaar)"
-      type: "string"
-      temporal:
-        type: "point_in_time"
-        reference: "$calculation_date"
-      source_reference:
-        table: "bibob_adviezen"
-        field: "mate_van_gevaar"
-        select_on:
-          - name: "kvk_nummer"
-            description: "KVK-nummer van de onderneming"
-            type: "string"
-            value: "$KVK_NUMMER"
-      legal_basis:
-        law: "Wet bevordering integriteitsbeoordelingen door het openbaar bestuur"
-        bwb_id: "BWBR0013798"
-        article: "3"
-        url: "https://wetten.overheid.nl/BWBR0013798/2024-01-01#Paragraaf2_Artikel3"
-        explanation: "De Wet Bibob is van toepassing op Alcoholwetvergunningen; bij ernstig gevaar moet de vergunning worden geweigerd"
 
     # Actieve vergunning status
     - name: "HEEFT_ACTIEVE_ALCOHOLWETVERGUNNING"
@@ -255,6 +234,27 @@ properties:
         paragraph: "1"
         url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk3_Artikel27"
         explanation: "Weigeringsgrond uit nationale wet"
+
+    # Bibob-toets (via Landelijk Bureau Bibob)
+    - name: "BIBOB_MATE_VAN_GEVAAR"
+      description: "Mate van gevaar volgens Bibob-advies (geen_gevaar, mindere_mate, ernstig_gevaar)"
+      type: "string"
+      service_reference:
+        service: "LBB"
+        law: "wet_bibob"
+        field: "mate_van_gevaar"
+        parameters:
+          - name: "KVK_NUMMER"
+            reference: "$KVK_NUMMER"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      legal_basis:
+        law: "Wet bevordering integriteitsbeoordelingen door het openbaar bestuur"
+        bwb_id: "BWBR0013798"
+        article: "3"
+        url: "https://wetten.overheid.nl/BWBR0013798/2024-01-01#Paragraaf2_Artikel3"
+        explanation: "De Wet Bibob is van toepassing op Alcoholwetvergunningen; bij ernstig gevaar moet de vergunning worden geweigerd"
 
   output:
     - name: "heeft_recht_op_vergunning"
