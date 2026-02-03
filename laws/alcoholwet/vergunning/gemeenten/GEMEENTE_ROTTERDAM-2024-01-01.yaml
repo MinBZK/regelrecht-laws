@@ -1,0 +1,557 @@
+$id: https://raw.githubusercontent.com/MinBZK/poc-machine-law/refs/heads/main/schema/v0.1.7/schema.json
+uuid: 7c2e8f4a-3b9d-4e1f-a5c2-9d8b7e6f4a3c
+name: Alcoholwetvergunning Horeca Rotterdam
+law: alcoholwet/vergunning
+law_type: "FORMELE_WET"
+legal_character: "BESCHIKKING"
+decision_type: "TOEKENNING"
+discoverable: "BUSINESS"
+valid_from: 2024-01-01
+service: "GEMEENTE_ROTTERDAM"
+legal_basis:
+  law: "Alcoholwet"
+  bwb_id: "BWBR0002458"
+  article: "3"
+  url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk2_Artikel3"
+  explanation: "Artikel 3 van de Alcoholwet verbiedt het uitoefenen van het horecabedrijf of slijtersbedrijf zonder vergunning van de burgemeester"
+description: >
+  Regels voor het verkrijgen van een vergunning op grond van de Alcoholwet voor horecabedrijven in Rotterdam.
+  De Alcoholwetvergunning is vereist voor het bedrijfsmatig verstrekken van alcoholhoudende dranken voor
+  gebruik ter plaatse (horecabedrijf). De vergunning stelt eisen aan leidinggevenden (minimaal 21 jaar,
+  niet van slecht levensgedrag, niet onder curatele, ingeschreven in Register sociale hygiëne) en aan
+  de inrichting (minimaal 35 m² vloeroppervlakte horecalokaliteit).
+
+references:
+  - law: "Alcoholwet"
+    article: "1"
+    url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk1_Artikel1"
+  - law: "Alcoholwet"
+    article: "8"
+    url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk2_Artikel8"
+  - law: "Alcoholwet"
+    article: "10"
+    url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk2_Artikel10"
+  - law: "Alcoholwet"
+    article: "24"
+    url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk3_Artikel24"
+  - law: "Alcoholwet"
+    article: "27"
+    url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk3_Artikel27"
+  - law: "Alcoholwet"
+    article: "31"
+    url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk3_Artikel31"
+
+properties:
+  parameters:
+    - name: "KVK_NUMMER"
+      description: "KVK-nummer van de onderneming die de Alcoholwetvergunning aanvraagt"
+      type: "string"
+      required: true
+      legal_basis:
+        law: "Alcoholwet"
+        bwb_id: "BWBR0002458"
+        article: "3"
+        url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk2_Artikel3"
+        explanation: "Het KVK-nummer is nodig voor identificatie van de onderneming die het horecabedrijf uitoefent"
+
+  sources:
+    # BSN van exploitant ophalen via KVK
+    - name: "BSN_EXPLOITANT"
+      description: "BSN van de exploitant (natuurlijke persoon voor wiens rekening het bedrijf wordt uitgeoefend)"
+      type: "string"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      source_reference:
+        table: "inschrijvingen"
+        field: "bsn_eigenaar"
+        select_on:
+          - name: "kvk_nummer"
+            description: "KVK-nummer van de onderneming"
+            type: "string"
+            value: "$KVK_NUMMER"
+      legal_basis:
+        law: "Alcoholwet"
+        bwb_id: "BWBR0002458"
+        article: "1"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk1_Artikel1"
+        explanation: "Artikel 1 definieert leidinggevende als onder andere de natuurlijke persoon voor wiens rekening het bedrijf wordt uitgeoefend"
+
+    # Leidinggevenden met hun gegevens
+    - name: "LEIDINGGEVENDEN"
+      description: "Lijst van leidinggevenden met hun gegevens (BSN, leeftijd, levensgedrag, curatele, SVH)"
+      type: "array"
+      type_spec:
+        item_type: "object"
+        item_properties:
+          - name: "bsn"
+            type: "string"
+          - name: "leeftijd"
+            type: "number"
+          - name: "is_van_slecht_levensgedrag"
+            type: "boolean"
+          - name: "is_onder_curatele"
+            type: "boolean"
+          - name: "is_ingeschreven_svh_register"
+            type: "boolean"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      source_reference:
+        table: "leidinggevenden"
+        fields: ["bsn", "leeftijd", "is_van_slecht_levensgedrag", "is_onder_curatele", "is_ingeschreven_svh_register"]
+        select_on:
+          - name: "kvk_nummer"
+            description: "KVK-nummer van de onderneming"
+            type: "string"
+            value: "$KVK_NUMMER"
+      legal_basis:
+        law: "Alcoholwet"
+        bwb_id: "BWBR0002458"
+        article: "8"
+        url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk2_Artikel8"
+        explanation: "Artikel 8 stelt eisen aan alle leidinggevenden: minimaal 21 jaar, niet van slecht levensgedrag, niet onder curatele, ingeschreven in Register sociale hygiëne"
+
+    # Aantal leidinggevenden dat aan alle eisen voldoet
+    - name: "AANTAL_LEIDINGGEVENDEN_VOLDOET"
+      description: "Aantal leidinggevenden dat aan alle eisen van artikel 8 voldoet"
+      type: "number"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      source_reference:
+        table: "leidinggevenden"
+        field: "aantal_voldoet_alle_eisen"
+        select_on:
+          - name: "kvk_nummer"
+            description: "KVK-nummer van de onderneming"
+            type: "string"
+            value: "$KVK_NUMMER"
+      legal_basis:
+        law: "Alcoholwet"
+        bwb_id: "BWBR0002458"
+        article: "8"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk2_Artikel8"
+        explanation: "Alle leidinggevenden moeten voldoen aan de eisen van artikel 8 lid 1"
+
+    # Vloeroppervlakte horecalokaliteit
+    - name: "VLOEROPPERVLAKTE_HORECALOKALITEIT"
+      description: "Vloeroppervlakte van de horecalokaliteit in vierkante meters"
+      type: "number"
+      type_spec:
+        min: 0
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      source_reference:
+        table: "inrichtingen"
+        field: "vloeroppervlakte_horecalokaliteit"
+        select_on:
+          - name: "kvk_nummer"
+            description: "KVK-nummer van de onderneming"
+            type: "string"
+            value: "$KVK_NUMMER"
+      legal_basis:
+        law: "Alcoholwet"
+        bwb_id: "BWBR0002458"
+        article: "10"
+        paragraph: "2"
+        url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk2_Artikel10"
+        explanation: "Artikel 10 lid 2 bepaalt dat een horecalokaliteit ten minste 35 m² vloeroppervlakte moet hebben"
+
+    # Type bedrijf (horeca of slijterij)
+    - name: "TYPE_BEDRIJF"
+      description: "Type bedrijf: horecabedrijf of slijtersbedrijf"
+      type: "string"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      source_reference:
+        table: "inrichtingen"
+        field: "type_bedrijf"
+        select_on:
+          - name: "kvk_nummer"
+            description: "KVK-nummer van de onderneming"
+            type: "string"
+            value: "$KVK_NUMMER"
+      legal_basis:
+        law: "Alcoholwet"
+        bwb_id: "BWBR0002458"
+        article: "1"
+        url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk1_Artikel1"
+        explanation: "Artikel 1 definieert horecabedrijf en slijtersbedrijf als verschillende typen bedrijven met verschillende eisen"
+
+    # Eerder ingetrokken vergunning
+    - name: "EERDER_VERGUNNING_INGETROKKEN"
+      description: "Of eerder een Alcoholwetvergunning is ingetrokken voor deze exploitant"
+      type: "boolean"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      source_reference:
+        table: "vergunningen_historie"
+        field: "eerder_ingetrokken"
+        select_on:
+          - name: "bsn"
+            description: "BSN van de exploitant"
+            type: "string"
+            value: "$BSN_EXPLOITANT"
+      legal_basis:
+        law: "Alcoholwet"
+        bwb_id: "BWBR0002458"
+        article: "31"
+        url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk3_Artikel31"
+        explanation: "Een eerder ingetrokken vergunning kan een rol spelen bij de beoordeling van een nieuwe aanvraag"
+
+    # Bibob-toets
+    - name: "BIBOB_MATE_VAN_GEVAAR"
+      description: "Mate van gevaar volgens Bibob-advies (geen, mindere mate, ernstig gevaar)"
+      type: "string"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      source_reference:
+        table: "bibob_adviezen"
+        field: "mate_van_gevaar"
+        select_on:
+          - name: "kvk_nummer"
+            description: "KVK-nummer van de onderneming"
+            type: "string"
+            value: "$KVK_NUMMER"
+      legal_basis:
+        law: "Wet bevordering integriteitsbeoordelingen door het openbaar bestuur"
+        bwb_id: "BWBR0013798"
+        article: "3"
+        url: "https://wetten.overheid.nl/BWBR0013798/2024-01-01#Paragraaf2_Artikel3"
+        explanation: "De Wet Bibob is van toepassing op Alcoholwetvergunningen; bij ernstig gevaar moet de vergunning worden geweigerd"
+
+    # Actieve vergunning status
+    - name: "HEEFT_ACTIEVE_ALCOHOLWETVERGUNNING"
+      description: "Of er een actieve Alcoholwetvergunning is voor deze onderneming"
+      type: "boolean"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      source_reference:
+        table: "vergunningen"
+        field: "heeft_alcoholwetvergunning"
+        select_on:
+          - name: "kvk_nummer"
+            description: "KVK-nummer van de onderneming"
+            type: "string"
+            value: "$KVK_NUMMER"
+      legal_basis:
+        law: "Alcoholwet"
+        bwb_id: "BWBR0002458"
+        article: "3"
+        url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk2_Artikel3"
+        explanation: "Controleert of er een actieve Alcoholwetvergunning is verleend voor deze onderneming"
+
+    # Leeftijd exploitant (uit leidinggevenden gegevens - eerste leidinggevende)
+    - name: "LEEFTIJD_EXPLOITANT"
+      description: "Leeftijd van de exploitant (eerste leidinggevende)"
+      type: "number"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      source_reference:
+        table: "leidinggevenden"
+        field: "leeftijd"
+        select_on:
+          - name: "kvk_nummer"
+            description: "KVK-nummer van de onderneming"
+            type: "string"
+            value: "$KVK_NUMMER"
+      legal_basis:
+        law: "Alcoholwet"
+        bwb_id: "BWBR0002458"
+        article: "8"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk2_Artikel8"
+        explanation: "Artikel 8 lid 1 onder a bepaalt dat leidinggevenden de leeftijd van 21 jaar moeten hebben bereikt"
+
+    # Curatele-status exploitant (uit leidinggevenden gegevens - eerste leidinggevende)
+    - name: "IS_ONDER_CURATELE_EXPLOITANT"
+      description: "Of de exploitant onder curatele staat (eerste leidinggevende)"
+      type: "boolean"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      source_reference:
+        table: "leidinggevenden"
+        field: "is_onder_curatele"
+        select_on:
+          - name: "kvk_nummer"
+            description: "KVK-nummer van de onderneming"
+            type: "string"
+            value: "$KVK_NUMMER"
+      legal_basis:
+        law: "Alcoholwet"
+        bwb_id: "BWBR0002458"
+        article: "8"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk2_Artikel8"
+        explanation: "Artikel 8 lid 1 onder c bepaalt dat leidinggevenden niet onder curatele mogen staan"
+
+  input:
+    # Bedrijfsstatus via KVK
+    - name: "BEDRIJF_STATUS"
+      description: "Status van de onderneming in het handelsregister"
+      type: "string"
+      service_reference:
+        service: "KVK"
+        law: "handelsregisterwet/bedrijfsgegevens"
+        field: "status"
+        parameters:
+          - name: "KVK_NUMMER"
+            reference: "$KVK_NUMMER"
+      legal_basis:
+        law: "Handelsregisterwet 2007"
+        bwb_id: "BWBR0021777"
+        article: "2"
+        url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Artikel2"
+        explanation: "De onderneming moet actief geregistreerd zijn om een Alcoholwetvergunning te kunnen aanvragen"
+
+  output:
+    - name: "heeft_recht_op_vergunning"
+      description: "Of de aanvrager voldoet aan alle voorwaarden voor een Alcoholwetvergunning"
+      type: "boolean"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      legal_basis:
+        law: "Alcoholwet"
+        bwb_id: "BWBR0002458"
+        article: "27"
+        url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk3_Artikel27"
+        explanation: "Artikel 27 bepaalt de weigeringsgronden; als geen weigeringsgrond van toepassing is, heeft de aanvrager recht op de vergunning"
+
+    - name: "heeft_actieve_vergunning"
+      description: "Of de onderneming een actieve Alcoholwetvergunning heeft"
+      type: "boolean"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      legal_basis:
+        law: "Alcoholwet"
+        bwb_id: "BWBR0002458"
+        article: "3"
+        url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk2_Artikel3"
+        explanation: "Geeft aan of er een actieve Alcoholwetvergunning is verleend voor deze onderneming"
+
+    - name: "weigeringsgrond"
+      description: "Reden voor weigering van de vergunning op grond van artikel 27"
+      type: "string"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      legal_basis:
+        law: "Alcoholwet"
+        bwb_id: "BWBR0002458"
+        article: "27"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk3_Artikel27"
+        explanation: "Artikel 27 lid 1 bepaalt de gronden waarop de burgemeester de vergunning MOET weigeren"
+
+    - name: "leidinggevenden_die_niet_voldoen"
+      description: "Beschrijving van leidinggevenden die niet aan de eisen voldoen"
+      type: "string"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      legal_basis:
+        law: "Alcoholwet"
+        bwb_id: "BWBR0002458"
+        article: "8"
+        url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk2_Artikel8"
+        explanation: "Specificatie welke leidinggevenden niet voldoen aan de eisen van artikel 8"
+
+  definitions:
+    MINIMALE_LEEFTIJD_LEIDINGGEVENDE: 21
+    MINIMALE_VLOEROPPERVLAKTE_HORECA: 35
+    MINIMALE_VLOEROPPERVLAKTE_SLIJTERIJ: 15
+    BIBOB_ERNSTIG_GEVAAR: "ernstig_gevaar"
+    BIBOB_MINDERE_MATE: "mindere_mate"
+    BIBOB_GEEN_GEVAAR: "geen_gevaar"
+    TYPE_HORECABEDRIJF: "horecabedrijf"
+    TYPE_SLIJTERSBEDRIJF: "slijtersbedrijf"
+
+requirements:
+  # Alle weigeringsgronden artikel 27
+  - all:
+      # Onderneming moet actief zijn
+      - subject: "$BEDRIJF_STATUS"
+        operation: EQUALS
+        value: "Actief"
+        legal_basis:
+          law: "Handelsregisterwet 2007"
+          bwb_id: "BWBR0021777"
+          article: "2"
+          url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Artikel2"
+          explanation: "De onderneming moet actief geregistreerd zijn"
+
+      # Exploitant moet minimaal 21 jaar zijn (artikel 8 lid 1 onder a)
+      - operation: GREATER_OR_EQUAL
+        subject: "$LEEFTIJD_EXPLOITANT"
+        value: "$MINIMALE_LEEFTIJD_LEIDINGGEVENDE"
+        legal_basis:
+          law: "Alcoholwet"
+          bwb_id: "BWBR0002458"
+          article: "8"
+          paragraph: "1"
+          url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk2_Artikel8"
+          explanation: "Artikel 8 lid 1 onder a: leidinggevenden moeten de leeftijd van eenentwintig jaar hebben bereikt"
+
+      # Exploitant mag niet onder curatele staan (artikel 8 lid 1 onder c)
+      - subject: "$IS_ONDER_CURATELE_EXPLOITANT"
+        operation: EQUALS
+        value: false
+        legal_basis:
+          law: "Alcoholwet"
+          bwb_id: "BWBR0002458"
+          article: "8"
+          paragraph: "1"
+          url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk2_Artikel8"
+          explanation: "Artikel 8 lid 1 onder c: leidinggevenden mogen niet onder curatele staan"
+
+      # Inrichtingseisen: horecalokaliteit minimaal 35 m² (artikel 10 lid 2)
+      - or:
+          - subject: "$TYPE_BEDRIJF"
+            operation: NOT_EQUALS
+            value: "$TYPE_HORECABEDRIJF"
+          - operation: GREATER_OR_EQUAL
+            subject: "$VLOEROPPERVLAKTE_HORECALOKALITEIT"
+            value: "$MINIMALE_VLOEROPPERVLAKTE_HORECA"
+        legal_basis:
+          law: "Alcoholwet"
+          bwb_id: "BWBR0002458"
+          article: "10"
+          paragraph: "2"
+          url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk2_Artikel10"
+          explanation: "Artikel 10 lid 2: een horecalokaliteit moet ten minste 35 m² vloeroppervlakte hebben"
+
+      # Bibob: geen ernstig gevaar
+      - or:
+          - subject: "$BIBOB_MATE_VAN_GEVAAR"
+            operation: IS_NULL
+          - subject: "$BIBOB_MATE_VAN_GEVAAR"
+            operation: NOT_EQUALS
+            value: "$BIBOB_ERNSTIG_GEVAAR"
+        legal_basis:
+          law: "Wet bevordering integriteitsbeoordelingen door het openbaar bestuur"
+          bwb_id: "BWBR0013798"
+          article: "3"
+          url: "https://wetten.overheid.nl/BWBR0013798/2024-01-01#Paragraaf2_Artikel3"
+          explanation: "Bij ernstig gevaar volgens Bibob-advies moet de vergunning worden geweigerd"
+
+actions:
+  - output: "heeft_recht_op_vergunning"
+    value: true
+    legal_basis:
+      law: "Alcoholwet"
+      bwb_id: "BWBR0002458"
+      article: "27"
+      url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk3_Artikel27"
+      explanation: "Geen weigeringsgrond van artikel 27 is van toepassing, dus de vergunning wordt verleend"
+
+  - output: "heeft_actieve_vergunning"
+    value: "$HEEFT_ACTIEVE_ALCOHOLWETVERGUNNING"
+    legal_basis:
+      law: "Alcoholwet"
+      bwb_id: "BWBR0002458"
+      article: "3"
+      url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk2_Artikel3"
+      explanation: "Geeft de status van de actieve Alcoholwetvergunning door vanuit het vergunningenregister"
+
+  - output: "weigeringsgrond"
+    operation: IF
+    conditions:
+      - test:
+          subject: "$BEDRIJF_STATUS"
+          operation: NOT_EQUALS
+          value: "Actief"
+        then: "Onderneming is niet actief in het handelsregister"
+        legal_basis:
+          law: "Handelsregisterwet 2007"
+          bwb_id: "BWBR0021777"
+          article: "2"
+          url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Artikel2"
+          explanation: "Onderneming moet actief zijn"
+      - test:
+          operation: LESS_THAN
+          subject: "$LEEFTIJD_EXPLOITANT"
+          value: "$MINIMALE_LEEFTIJD_LEIDINGGEVENDE"
+        then: "Exploitant heeft de leeftijd van 21 jaar niet bereikt (artikel 8 lid 1 onder a)"
+        legal_basis:
+          law: "Alcoholwet"
+          bwb_id: "BWBR0002458"
+          article: "8"
+          paragraph: "1"
+          url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk2_Artikel8"
+          explanation: "Leidinggevenden moeten minimaal 21 jaar zijn"
+      - test:
+          subject: "$IS_ONDER_CURATELE_EXPLOITANT"
+          operation: EQUALS
+          value: true
+        then: "Exploitant staat onder curatele (artikel 8 lid 1 onder c)"
+        legal_basis:
+          law: "Alcoholwet"
+          bwb_id: "BWBR0002458"
+          article: "8"
+          paragraph: "1"
+          url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk2_Artikel8"
+          explanation: "Leidinggevenden mogen niet onder curatele staan"
+      - test:
+          operation: AND
+          values:
+            - subject: "$TYPE_BEDRIJF"
+              operation: EQUALS
+              value: "$TYPE_HORECABEDRIJF"
+            - operation: LESS_THAN
+              subject: "$VLOEROPPERVLAKTE_HORECALOKALITEIT"
+              value: "$MINIMALE_VLOEROPPERVLAKTE_HORECA"
+        then: "Horecalokaliteit heeft minder dan 35 m² vloeroppervlakte (artikel 10 lid 2)"
+        legal_basis:
+          law: "Alcoholwet"
+          bwb_id: "BWBR0002458"
+          article: "10"
+          paragraph: "2"
+          url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk2_Artikel10"
+          explanation: "Een horecalokaliteit moet minimaal 35 m² zijn"
+      - test:
+          subject: "$BIBOB_MATE_VAN_GEVAAR"
+          operation: EQUALS
+          value: "$BIBOB_ERNSTIG_GEVAAR"
+        then: "Ernstig gevaar volgens Bibob-advies"
+        legal_basis:
+          law: "Wet bevordering integriteitsbeoordelingen door het openbaar bestuur"
+          bwb_id: "BWBR0013798"
+          article: "3"
+          url: "https://wetten.overheid.nl/BWBR0013798/2024-01-01#Paragraaf2_Artikel3"
+          explanation: "Bij ernstig gevaar wordt de vergunning geweigerd"
+      - else: ""
+    legal_basis:
+      law: "Alcoholwet"
+      bwb_id: "BWBR0002458"
+      article: "27"
+      paragraph: "1"
+      url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk3_Artikel27"
+      explanation: "Weigeringsgronden op grond van artikel 27"
+
+  - output: "leidinggevenden_die_niet_voldoen"
+    operation: IF
+    conditions:
+      - test:
+          operation: LESS_THAN
+          subject: "$AANTAL_LEIDINGGEVENDEN_VOLDOET"
+          value: 1
+        then: "Geen enkele leidinggevende voldoet aan de eisen van artikel 8 (21 jaar, geen slecht levensgedrag, niet onder curatele, ingeschreven in Register sociale hygiëne)"
+      - else: ""
+    legal_basis:
+      law: "Alcoholwet"
+      bwb_id: "BWBR0002458"
+      article: "8"
+      url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk2_Artikel8"
+      explanation: "Specificatie welke eisen niet worden nageleefd"
