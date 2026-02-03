@@ -2,7 +2,7 @@ $id: https://raw.githubusercontent.com/MinBZK/poc-machine-law/refs/heads/main/sc
 uuid: 56ec10fc-cf5b-468f-927f-4a4615f4dbfa
 name: Ontheffingspas Geluid Horeca Rotterdam
 law: algemene_plaatselijke_verordening/ontheffingspas_geluid
-law_type: "FORMELE_WET"
+law_type: "GEMEENTELIJKE_VERORDENING"
 legal_character: "BESCHIKKING"
 decision_type: "TOEKENNING"
 discoverable: "BUSINESS"

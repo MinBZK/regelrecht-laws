@@ -310,4 +310,4 @@ service: "KADASTER"
 ---
 
 *Laatst bijgewerkt: 2025-10-01*
-*Schema versie: v0.1.6*
+*Schema versie: v0.1.7*
