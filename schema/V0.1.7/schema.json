@@ -151,6 +151,7 @@
               "object",
               "array",
               "date",
+              "time",
               "enum"
             ]
           },
@@ -348,6 +349,12 @@
                       "type": "string"
                     },
                     {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
                       "$ref": "#/definitions/valueOperation"
                     }
                   ]
@@ -470,7 +477,10 @@
               "IF",
               "FOREACH",
               "SUBTRACT_DATE",
-              "COALESCE"
+              "COALESCE",
+              "LENGTH",
+              "COMBINE_DATETIME",
+              "DAY_OF_WEEK"
             ]
           },
           "values": {
@@ -480,9 +490,15 @@
             }
           },
           "subject": {
-            "$ref": "#/definitions/variableReference"
+            "$ref": "#/definitions/operationValue"
           },
           "value": {
+            "$ref": "#/definitions/operationValue"
+          },
+          "date": {
+            "$ref": "#/definitions/operationValue"
+          },
+          "time": {
             "$ref": "#/definitions/operationValue"
           },
           "where": {
@@ -554,7 +570,10 @@
               "IF",
               "FOREACH",
               "SUBTRACT_DATE",
-              "COALESCE"
+              "COALESCE",
+              "LENGTH",
+              "COMBINE_DATETIME",
+              "DAY_OF_WEEK"
             ]
           },
           "values": {
@@ -564,7 +583,13 @@
             }
           },
           "subject": {
-            "$ref": "#/definitions/variableReference"
+            "$ref": "#/definitions/operationValue"
+          },
+          "date": {
+            "$ref": "#/definitions/operationValue"
+          },
+          "time": {
+            "$ref": "#/definitions/operationValue"
           },
           "where": {
             "description": "Optional filter condition for FOREACH operations - items are skipped if this evaluates to false",

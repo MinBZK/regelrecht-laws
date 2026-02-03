@@ -53,26 +53,49 @@ properties:
         url: "https://lokaleregelgeving.overheid.nl/CVDR373493"
         explanation: "De activiteitsdatum is nodig om te controleren of de aanvraag tijdig is (minimaal 48 uur van tevoren) en om het aantal ontheffingen per jaar te tracken"
 
+    - name: "ACTIVITEITSSTARTTIJD"
+      description: "Starttijd van de activiteit (bijv. 20:00)"
+      type: "time"
+      required: true
+      legal_basis:
+        law: "Algemene plaatselijke verordening Rotterdam 2012"
+        article: "4:2"
+        url: "https://lokaleregelgeving.overheid.nl/CVDR373493"
+        explanation: "De starttijd is nodig om te controleren of de aanvraag minimaal 48 uur van tevoren is ingediend"
+
   sources:
-    - name: "AANTAL_VERLEENDE_ONTHEFFINGEN_DIT_JAAR"
-      description: "Aantal al verleende geluidsontheffingen voor dit bedrijf in het huidige kalenderjaar"
-      type: "number"
+    - name: "VERLEENDE_ONTHEFFINGEN_DIT_JAAR"
+      description: "Lijst van goedgekeurde geluidsontheffing cases voor dit bedrijf in het huidige kalenderjaar"
+      type: "array"
       type_spec:
-        precision: 0
-        min: 0
+        fields:
+          - name: "datum"
+            type: "date"
+          - name: "reden"
+            type: "string"
       temporal:
         type: "point_in_time"
         reference: "$calculation_date"
       source_reference:
-        source_type: "GEMEENTE_ROTTERDAM"
-        table: "ontheffingen_geluid"
-        field: "aantal_verleend"
+        source_type: "cases"
         select_on:
-          - name: "kvk_nummer"
+          - name: "law"
+            description: "Filter op geluidsontheffing wet"
+            type: "string"
+            value: "algemene_plaatselijke_verordening/ontheffingspas_geluid"
+          - name: "status"
+            description: "Alleen besliste zaken"
+            type: "string"
+            value: "DECIDED"
+          - name: "approved"
+            description: "Alleen goedgekeurde zaken"
+            type: "boolean"
+            value: true
+          - name: "KVK_NUMMER"
             description: "KVK nummer van het horecabedrijf"
             type: "string"
             value: "$KVK_NUMMER"
-          - name: "jaar"
+          - name: "year"
             description: "Kalenderjaar"
             type: "number"
             value: "$year"
@@ -102,32 +125,6 @@ properties:
         article: "4:2"
         url: "https://lokaleregelgeving.overheid.nl/CVDR373493"
         explanation: "Er mogen geen bekende geluidsklachten zijn over het bedrijf om in aanmerking te komen voor een geluidsontheffing"
-
-    - name: "EERDER_VERLEENDE_ONTHEFFINGEN"
-      description: "Lijst van eerder verleende geluidsontheffingen met datum en reden"
-      type: "array"
-      type_spec:
-        fields:
-          - name: "datum"
-            type: "date"
-          - name: "reden"
-            type: "string"
-      temporal:
-        type: "point_in_time"
-        reference: "$calculation_date"
-      source_reference:
-        source_type: "GEMEENTE_ROTTERDAM"
-        table: "ontheffingen_geluid_historie"
-        select_on:
-          - name: "kvk_nummer"
-            description: "KVK nummer van het horecabedrijf"
-            type: "string"
-            value: "$KVK_NUMMER"
-      legal_basis:
-        law: "Algemene plaatselijke verordening Rotterdam 2012"
-        article: "4:2"
-        url: "https://lokaleregelgeving.overheid.nl/CVDR373493"
-        explanation: "Overzicht van eerder verleende ontheffingen voor dit bedrijf"
 
   input:
     - name: "KVK_STATUS"
@@ -225,28 +222,22 @@ properties:
         url: "https://lokaleregelgeving.overheid.nl/CVDR373493"
         explanation: "Het bedrijf moet actief zijn in het Handelsregister"
 
-    - name: "eerder_verleende_ontheffingen"
-      description: "Overzicht van eerder verleende geluidsontheffingen"
-      type: "array"
-      type_spec:
-        fields:
-          - name: "datum"
-            type: "date"
-          - name: "reden"
-            type: "string"
+    - name: "maximale_eindtijd"
+      description: "Maximale eindtijd van de geluidsontheffing op basis van de dag van de week"
+      type: "string"
       temporal:
         type: "point_in_time"
         reference: "$calculation_date"
-      citizen_relevance: secondary
+      citizen_relevance: primary
       legal_basis:
         law: "Algemene plaatselijke verordening Rotterdam 2012"
         article: "4:2"
         url: "https://lokaleregelgeving.overheid.nl/CVDR373493"
-        explanation: "Transparantie: overzicht van eerder verleende ontheffingen"
+        explanation: "Zondag t/m donderdag geldig tot 00:00 (middernacht), vrijdag en zaterdag geldig tot 02:00"
 
   definitions:
     MAX_ONTHEFFINGEN_PER_JAAR: 12
-    MIN_AANVRAAGTERMIJN_DAGEN: 2
+    MIN_AANVRAAGTERMIJN_UREN: 48
 
 variables: []
 
@@ -271,7 +262,9 @@ requirements:
           explanation: "Er mogen geen bekende geluidsklachten zijn over het bedrijf"
 
       - operation: LESS_THAN
-        subject: "$AANTAL_VERLEENDE_ONTHEFFINGEN_DIT_JAAR"
+        subject:
+          operation: LENGTH
+          subject: "$VERLEENDE_ONTHEFFINGEN_DIT_JAAR"
         value: "$MAX_ONTHEFFINGEN_PER_JAAR"
         legal_basis:
           law: "Algemene plaatselijke verordening Rotterdam 2012"
@@ -283,19 +276,22 @@ requirements:
         subject:
           operation: SUBTRACT_DATE
           values:
-            - "$ACTIVITEITSDATUM"
+            - operation: COMBINE_DATETIME
+              date: "$ACTIVITEITSDATUM"
+              time: "$ACTIVITEITSSTARTTIJD"
             - "$calculation_date"
-          unit: "days"
-        value: "$MIN_AANVRAAGTERMIJN_DAGEN"
+          unit: "hours"
+        value: "$MIN_AANVRAAGTERMIJN_UREN"
         legal_basis:
           law: "Algemene plaatselijke verordening Rotterdam 2012"
           article: "4:2"
           url: "https://lokaleregelgeving.overheid.nl/CVDR373493"
-          explanation: "De aanvraag moet minimaal 2 dagen (48 uur) van tevoren worden ingediend"
+          explanation: "De aanvraag moet minimaal 48 uur voor het begin van de activiteit worden ingediend"
 
 actions:
   - output: "aantal_verleende_ontheffingen_dit_jaar"
-    value: "$AANTAL_VERLEENDE_ONTHEFFINGEN_DIT_JAAR"
+    operation: LENGTH
+    subject: "$VERLEENDE_ONTHEFFINGEN_DIT_JAAR"
     legal_basis:
       law: "Algemene plaatselijke verordening Rotterdam 2012"
       article: "4:2"
@@ -307,7 +303,8 @@ actions:
       operation: SUBTRACT
       values:
         - "$MAX_ONTHEFFINGEN_PER_JAAR"
-        - "$AANTAL_VERLEENDE_ONTHEFFINGEN_DIT_JAAR"
+        - operation: LENGTH
+          subject: "$VERLEENDE_ONTHEFFINGEN_DIT_JAAR"
     legal_basis:
       law: "Algemene plaatselijke verordening Rotterdam 2012"
       article: "4:2"
@@ -320,15 +317,17 @@ actions:
       subject:
         operation: SUBTRACT_DATE
         values:
-          - "$ACTIVITEITSDATUM"
+          - operation: COMBINE_DATETIME
+            date: "$ACTIVITEITSDATUM"
+            time: "$ACTIVITEITSSTARTTIJD"
           - "$calculation_date"
-        unit: "days"
-      value: "$MIN_AANVRAAGTERMIJN_DAGEN"
+        unit: "hours"
+      value: "$MIN_AANVRAAGTERMIJN_UREN"
     legal_basis:
       law: "Algemene plaatselijke verordening Rotterdam 2012"
       article: "4:2"
       url: "https://lokaleregelgeving.overheid.nl/CVDR373493"
-      explanation: "Controle of de aanvraag minimaal 2 dagen (48 uur) van tevoren is ingediend"
+      explanation: "Controle of de aanvraag minimaal 48 uur voor het begin van de activiteit is ingediend"
 
   - output: "geen_geluidsklachten"
     value:
@@ -352,13 +351,22 @@ actions:
       url: "https://lokaleregelgeving.overheid.nl/CVDR373493"
       explanation: "Controle of het bedrijf actief is in het Handelsregister"
 
-  - output: "eerder_verleende_ontheffingen"
-    value: "$EERDER_VERLEENDE_ONTHEFFINGEN"
+  - output: "maximale_eindtijd"
+    operation: IF
+    conditions:
+      - test:
+          operation: IN
+          subject:
+            operation: DAY_OF_WEEK
+            subject: "$ACTIVITEITSDATUM"
+          values: [4, 5]
+        then: "02:00 (volgende ochtend)"
+      - else: "00:00 (middernacht)"
     legal_basis:
       law: "Algemene plaatselijke verordening Rotterdam 2012"
       article: "4:2"
       url: "https://lokaleregelgeving.overheid.nl/CVDR373493"
-      explanation: "Overzicht van eerder verleende ontheffingen voor dit bedrijf"
+      explanation: "Vrijdag en zaterdag (dag 4 en 5) geldig tot 02:00, overige dagen tot 00:00 middernacht"
 
   - output: "komt_in_aanmerking_voor_geluidsontheffing"
     value: true
