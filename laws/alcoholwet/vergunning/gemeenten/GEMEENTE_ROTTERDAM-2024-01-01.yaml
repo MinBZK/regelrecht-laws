@@ -53,7 +53,7 @@ properties:
     - name: "BEVESTIG_ENIGE_LEIDINGGEVENDE"
       description: "Bevestiging dat de aanvrager de enige leidinggevende is"
       type: "boolean"
-      required: true
+      required: false
       legal_basis:
         law: "Alcoholwet"
         bwb_id: "BWBR0002458"
