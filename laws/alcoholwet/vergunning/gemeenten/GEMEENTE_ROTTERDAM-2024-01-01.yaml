@@ -464,13 +464,20 @@ actions:
       explanation: "Geen weigeringsgrond is van toepassing, dus de vergunning wordt verleend"
 
   - output: "heeft_actieve_vergunning"
-    value: "$HEEFT_ACTIEVE_ALCOHOLWETVERGUNNING"
+    operation: IF
+    conditions:
+      - test:
+          subject: "$HEEFT_ACTIEVE_ALCOHOLWETVERGUNNING"
+          operation: EQUALS
+          value: true
+        then: true
+      - else: false
     legal_basis:
       law: "Alcoholwet"
       bwb_id: "BWBR0002458"
       article: "3"
       url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk2_Artikel3"
-      explanation: "Geeft de status van de actieve Alcoholwetvergunning door"
+      explanation: "Geeft de status van de actieve Alcoholwetvergunning door. Retourneert false indien geen actieve vergunning bestaat"
 
   - output: "weigeringsgrond"
     operation: IF
