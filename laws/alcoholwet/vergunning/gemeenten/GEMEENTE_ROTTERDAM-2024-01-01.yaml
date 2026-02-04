@@ -338,15 +338,15 @@ properties:
     - name: "BIBOB_MATE_VAN_GEVAAR"
       description: "Mate van gevaar volgens Bibob-advies (geen_gevaar, mindere_mate, ernstig_gevaar)"
       type: "string"
-      service_reference:
-        service: "LBB"
-        law: "wet_bibob"
+      source_reference:
+        source_type: "LBB"
+        table: "bibob_adviezen"
         field: "mate_van_gevaar"
-        parameters:
-          - name: "KVK_NUMMER"
-            reference: "$KVK_NUMMER"
-          - name: "BESCHIKKING_TYPE"
-            reference: "$BIBOB_BESCHIKKING_TYPE"
+        select_on:
+          - name: "kvk_nummer"
+            description: "KvK nummer van de onderneming"
+            type: "string"
+            value: "$KVK_NUMMER"
       temporal:
         type: "point_in_time"
         reference: "$calculation_date"

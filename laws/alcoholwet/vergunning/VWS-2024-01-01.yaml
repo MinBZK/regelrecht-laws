@@ -1,6 +1,6 @@
 $id: https://raw.githubusercontent.com/MinBZK/poc-machine-law/refs/heads/main/schema/v0.1.7/schema.json
 uuid: 8a3f9b5c-4d2e-4f0a-b6c3-1e9d8f7a5b4c
-name: Alcoholwet vergunningseisen nationaal
+name: Alcoholwet
 law: alcoholwet/vergunning
 law_type: "FORMELE_WET"
 legal_character: "BESCHIKKING"
