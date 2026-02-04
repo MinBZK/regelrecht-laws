@@ -246,6 +246,8 @@ properties:
         parameters:
           - name: "KVK_NUMMER"
             reference: "$KVK_NUMMER"
+          - name: "BESCHIKKING_TYPE"
+            value: "vergunning"
       temporal:
         type: "point_in_time"
         reference: "$calculation_date"
