@@ -6,6 +6,7 @@ law_type: "FORMELE_WET"
 legal_character: "BESCHIKKING"
 decision_type: "TOEKENNING"
 discoverable: "BUSINESS"
+requires_manual_approval: true
 valid_from: 2024-01-01
 service: "GEMEENTE_ROTTERDAM"
 legal_basis:
@@ -48,6 +49,44 @@ properties:
         article: "3"
         url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk2_Artikel3"
         explanation: "Het KVK-nummer is nodig voor identificatie van de onderneming die het horecabedrijf uitoefent"
+
+    - name: "BEVESTIG_ENIGE_LEIDINGGEVENDE"
+      description: "Bevestiging dat de aanvrager de enige leidinggevende is"
+      type: "boolean"
+      required: true
+      legal_basis:
+        law: "Alcoholwet"
+        bwb_id: "BWBR0002458"
+        article: "8"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk2_Artikel8"
+        explanation: "Alle leidinggevenden moeten worden opgegeven bij de aanvraag"
+
+    - name: "EXTRA_LEIDINGGEVENDEN"
+      description: "Gegevens van eventuele extra leidinggevenden (indien niet de enige)"
+      type: "array"
+      required: false
+      type_spec:
+        fields:
+          - name: "naam"
+            type: "string"
+            description: "Volledige naam van de leidinggevende"
+          - name: "geboortedatum"
+            type: "date"
+            description: "Geboortedatum van de leidinggevende"
+          - name: "bsn"
+            type: "string"
+            description: "BSN van de leidinggevende"
+          - name: "svh_registratienummer"
+            type: "string"
+            description: "SVH-registratienummer van de leidinggevende"
+      legal_basis:
+        law: "Alcoholwet"
+        bwb_id: "BWBR0002458"
+        article: "8"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk2_Artikel8"
+        explanation: "Alle leidinggevenden moeten aan de eisen van artikel 8 voldoen"
 
   sources:
     # Leeftijd exploitant uit gemeentelijke leidinggevenden-administratie
@@ -95,6 +134,29 @@ properties:
         paragraph: "1"
         url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk2_Artikel8"
         explanation: "Artikel 8 lid 1 onder c bepaalt dat leidinggevenden niet onder curatele mogen staan"
+
+    # BSN van de leidinggevende voor SVH-verificatie
+    - name: "BSN_LEIDINGGEVENDE"
+      description: "BSN van de eerste leidinggevende voor verificatie in SVH-register"
+      type: "string"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      source_reference:
+        table: "leidinggevenden"
+        field: "bsn"
+        select_on:
+          - name: "kvk_nummer"
+            description: "KVK-nummer van de onderneming"
+            type: "string"
+            value: "$KVK_NUMMER"
+      legal_basis:
+        law: "Alcoholwet"
+        bwb_id: "BWBR0002458"
+        article: "8"
+        paragraph: "4"
+        url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk2_Artikel8"
+        explanation: "BSN is nodig voor verificatie van SVH-registratie"
 
     # Vloeroppervlakte horecalokaliteit
     - name: "VLOEROPPERVLAKTE_HORECALOKALITEIT"
@@ -185,6 +247,43 @@ properties:
         url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Artikel2"
         explanation: "De onderneming moet actief geregistreerd zijn"
 
+    # SVH-registratie verificatie via Landelijk Register Sociale Hygiëne
+    - name: "SVH_REGISTRATIE_GELDIG"
+      description: "Of de leidinggevende geregistreerd staat in het Register Sociale Hygiëne"
+      type: "boolean"
+      service_reference:
+        service: "SVH"
+        law: "alcoholwet/register_sociale_hygiene"
+        field: "is_geregistreerd"
+        parameters:
+          - name: "BSN"
+            reference: "$BSN_LEIDINGGEVENDE"
+      legal_basis:
+        law: "Alcoholwet"
+        bwb_id: "BWBR0002458"
+        article: "8"
+        paragraph: "4"
+        url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk2_Artikel8"
+        explanation: "Leidinggevenden moeten ingeschreven staan in het Register Sociale Hygiëne"
+
+    - name: "SVH_REGISTRATIENUMMER"
+      description: "Het SVH-registratienummer van de leidinggevende"
+      type: "string"
+      service_reference:
+        service: "SVH"
+        law: "alcoholwet/register_sociale_hygiene"
+        field: "registratienummer"
+        parameters:
+          - name: "BSN"
+            reference: "$BSN_LEIDINGGEVENDE"
+      legal_basis:
+        law: "Alcoholwet"
+        bwb_id: "BWBR0002458"
+        article: "8"
+        paragraph: "4"
+        url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk2_Artikel8"
+        explanation: "Het registratienummer identificeert de SVH-inschrijving"
+
     # Nationale eisen via VWS (Alcoholwet artikel 8 en 10)
     - name: "VOLDOET_AAN_NATIONALE_EISEN"
       description: "Of aan alle nationale Alcoholwet-eisen is voldaan (artikel 8 en 10)"
@@ -247,7 +346,7 @@ properties:
           - name: "KVK_NUMMER"
             reference: "$KVK_NUMMER"
           - name: "BESCHIKKING_TYPE"
-            value: "vergunning"
+            reference: "$BIBOB_BESCHIKKING_TYPE"
       temporal:
         type: "point_in_time"
         reference: "$calculation_date"
@@ -301,6 +400,7 @@ properties:
 
   definitions:
     BIBOB_ERNSTIG_GEVAAR: "ernstig_gevaar"
+    BIBOB_BESCHIKKING_TYPE: "vergunning"
 
 requirements:
   - all:
@@ -314,6 +414,18 @@ requirements:
           article: "2"
           url: "https://wetten.overheid.nl/BWBR0021777/2024-01-01#Artikel2"
           explanation: "De onderneming moet actief geregistreerd zijn"
+
+      # SVH registratie vereist (via SVH service_reference)
+      - subject: "$SVH_REGISTRATIE_GELDIG"
+        operation: EQUALS
+        value: true
+        legal_basis:
+          law: "Alcoholwet"
+          bwb_id: "BWBR0002458"
+          article: "8"
+          paragraph: "4"
+          url: "https://wetten.overheid.nl/BWBR0002458/2024-01-01#Hoofdstuk2_Artikel8"
+          explanation: "Leidinggevenden moeten ingeschreven staan in het Register Sociale Hygiëne"
 
       # Nationale eisen (via VWS service_reference)
       - subject: "$VOLDOET_AAN_NATIONALE_EISEN"

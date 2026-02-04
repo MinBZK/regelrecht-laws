@@ -57,6 +57,11 @@
           "HIDDEN"
         ]
       },
+      "requires_manual_approval": {
+        "type": "boolean",
+        "default": false,
+        "description": "Geeft aan of deze wet handmatige goedkeuring door een medewerker vereist voordat een aanvraag wordt toegekend"
+      },
       "valid_from": {
         "type": "string",
         "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
