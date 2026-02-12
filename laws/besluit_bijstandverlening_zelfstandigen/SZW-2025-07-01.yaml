@@ -1,0 +1,380 @@
+$id: https://raw.githubusercontent.com/MinBZK/poc-machine-law/refs/heads/main/schema/v0.1.6/schema.json
+uuid: 4a7b8c9d-3e2f-4f15-a6b4-1c8d9e0f2a3b
+name: Bijstand voor beginnende zelfstandigen
+law: besluit_bijstandverlening_zelfstandigen
+law_type: "FORMELE_WET"
+legal_character: "BESCHIKKING"
+decision_type: "TOEKENNING"
+valid_from: 2025-07-01
+service: "SZW"
+legal_basis:
+  law: "Besluit bijstandverlening zelfstandigen 2004"
+  bwb_id: "BWBR0015711"
+  article: "23"
+  url: "https://wetten.overheid.nl/BWBR0015711/2025-07-01#Hoofdstuk3_Artikel23"
+  juriconnect: "jci1.3:c:BWBR0015711&artikel=23&z=2025-07-01&g=2025-07-01"
+  explanation: "Artikel 23 Bbz 2004 bepaalt de duur van algemene bijstand voor beginnende zelfstandigen. Per 1 juli 2025 is de initiële termijn verkort van 36 naar 18 maanden, met mogelijkheid tot verlenging tot 36 maanden na herbeoordeling van de levensvatbaarheid."
+
+description: >
+  Implementatie van artikel 23 Besluit bijstandverlening zelfstandigen 2004 voor het bepalen
+  van de duur van algemene bijstand aan personen die vanuit werkloosheid een bedrijf of
+  zelfstandig beroep beginnen. De bijstand wordt verleend gedurende ten hoogste 18 maanden
+  na beëindiging van de werkloosheidsuitkering, met mogelijkheid tot verlenging tot 36 maanden
+  indien het bedrijf na herbeoordeling nog levensvatbaar blijkt. Verlenging wegens medische
+  of sociale redenen is ook mogelijk.
+
+references:
+  - law: "Besluit bijstandverlening zelfstandigen 2004"
+    article: "2"
+    url: "https://wetten.overheid.nl/BWBR0015711/2025-07-01#Hoofdstuk1_Artikel2"
+  - law: "Besluit bijstandverlening zelfstandigen 2004"
+    article: "23"
+    url: "https://wetten.overheid.nl/BWBR0015711/2025-07-01#Hoofdstuk3_Artikel23"
+  - law: "Staatsblad 2025, 220"
+    article: "I onderdeel B"
+    url: "https://zoek.officielebekendmakingen.nl/stb-2025-220.html"
+
+properties:
+  parameters:
+    - name: "BSN"
+      description: "BSN van de persoon"
+      type: "string"
+      required: true
+      legal_basis:
+        law: "Besluit bijstandverlening zelfstandigen 2004"
+        bwb_id: "BWBR0015711"
+        article: "2"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0015711/2025-07-01#Hoofdstuk1_Artikel2"
+        juriconnect: "jci1.3:c:BWBR0015711&artikel=2&lid=1&z=2025-07-01&g=2025-07-01"
+        explanation: "Artikel 2 lid 1 onderdeel b identificeert de persoon die uit hoofde van werkloosheid een uitkering ontvangt"
+
+    - name: "STARTDATUM_ONDERNEMING"
+      description: "Datum waarop het bedrijf of zelfstandig beroep is begonnen"
+      type: "date"
+      required: true
+      legal_basis:
+        law: "Besluit bijstandverlening zelfstandigen 2004"
+        bwb_id: "BWBR0015711"
+        article: "2"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0015711/2025-07-01#Hoofdstuk1_Artikel2"
+        juriconnect: "jci1.3:c:BWBR0015711&artikel=2&lid=1&z=2025-07-01&g=2025-07-01"
+        explanation: "Artikel 2 lid 1 onderdeel b bepaalt dat het moet gaan om een persoon die een bedrijf of zelfstandig beroep begint"
+
+    - name: "EINDDATUM_WW_UITKERING"
+      description: "Datum waarop de werkloosheidsuitkering is beëindigd"
+      type: "date"
+      required: true
+      legal_basis:
+        law: "Besluit bijstandverlening zelfstandigen 2004"
+        bwb_id: "BWBR0015711"
+        article: "23"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0015711/2025-07-01#Hoofdstuk3_Artikel23"
+        juriconnect: "jci1.3:c:BWBR0015711&artikel=23&lid=1&z=2025-07-01&g=2025-07-01"
+        explanation: "Artikel 23 lid 1 stelt dat bijstand wordt verleend na beëindiging van de uitkering uit hoofde van werkloosheid"
+
+    - name: "IS_MEDISCHE_OF_SOCIALE_REDEN"
+      description: "Kan de persoon het bedrijf niet volledig uitoefenen wegens medische of sociale redenen"
+      type: "boolean"
+      required: false
+      legal_basis:
+        law: "Besluit bijstandverlening zelfstandigen 2004"
+        bwb_id: "BWBR0015711"
+        article: "23"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0015711/2025-07-01#Hoofdstuk3_Artikel23"
+        juriconnect: "jci1.3:c:BWBR0015711&artikel=23&lid=1&z=2025-07-01&g=2025-07-01"
+        explanation: "Artikel 23 lid 1 bepaalt dat verlenging mogelijk is indien de zelfstandige het bedrijf niet volledig kan uitoefenen wegens medische of sociale redenen"
+
+    - name: "IS_HERBEOORDELING_LEVENSVATBAAR"
+      description: "Is bij herbeoordeling vastgesteld dat het bedrijf nog levensvatbaar is"
+      type: "boolean"
+      required: false
+      legal_basis:
+        law: "Besluit bijstandverlening zelfstandigen 2004"
+        bwb_id: "BWBR0015711"
+        article: "23"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0015711/2025-07-01#Hoofdstuk3_Artikel23"
+        juriconnect: "jci1.3:c:BWBR0015711&artikel=23&lid=1&z=2025-07-01&g=2025-07-01"
+        explanation: "Staatsblad 2025, 220 bepaalt dat verlenging van 18 naar 36 maanden mogelijk is na herbeoordeling van de levensvatbaarheid van het bedrijf"
+
+  input:
+    - name: "IS_ACTIEVE_ONDERNEMER"
+      description: "Is geregistreerd als actieve ondernemer bij KVK"
+      type: "boolean"
+      service_reference:
+        service: "KVK"
+        law: "handelsregisterwet"
+        field: "is_actieve_ondernemer"
+        parameters:
+          - name: "BSN"
+            reference: "$BSN"
+      legal_basis:
+        law: "Besluit bijstandverlening zelfstandigen 2004"
+        bwb_id: "BWBR0015711"
+        article: "2"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0015711/2025-07-01#Hoofdstuk1_Artikel2"
+        juriconnect: "jci1.3:c:BWBR0015711&artikel=2&lid=1&z=2025-07-01&g=2025-07-01"
+        explanation: "Artikel 2 lid 1 onderdeel b vereist dat sprake is van een bedrijf of zelfstandig beroep"
+
+  output:
+    - name: "heeft_recht_op_bijstand"
+      description: "Heeft recht op algemene bijstand als beginnende zelfstandige"
+      type: "boolean"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      legal_basis:
+        law: "Besluit bijstandverlening zelfstandigen 2004"
+        bwb_id: "BWBR0015711"
+        article: "23"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0015711/2025-07-01#Hoofdstuk3_Artikel23"
+        juriconnect: "jci1.3:c:BWBR0015711&artikel=23&lid=1&z=2025-07-01&g=2025-07-01"
+        explanation: "Artikel 23 lid 1 bepaalt dat algemene bijstand wordt verleend aan beginnende zelfstandigen"
+
+    - name: "maximale_duur_maanden"
+      description: "Maximale duur van de bijstand in maanden"
+      type: "number"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      legal_basis:
+        law: "Besluit bijstandverlening zelfstandigen 2004"
+        bwb_id: "BWBR0015711"
+        article: "23"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0015711/2025-07-01#Hoofdstuk3_Artikel23"
+        juriconnect: "jci1.3:c:BWBR0015711&artikel=23&lid=1&z=2025-07-01&g=2025-07-01"
+        explanation: "Artikel 23 lid 1 bepaalt de duur van de bijstandsverlening, gewijzigd van 36 naar 18 maanden per Staatsblad 2025, 220"
+
+    - name: "einddatum_bijstand"
+      description: "Datum waarop de bijstand eindigt"
+      type: "date"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      legal_basis:
+        law: "Besluit bijstandverlening zelfstandigen 2004"
+        bwb_id: "BWBR0015711"
+        article: "23"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0015711/2025-07-01#Hoofdstuk3_Artikel23"
+        juriconnect: "jci1.3:c:BWBR0015711&artikel=23&lid=1&z=2025-07-01&g=2025-07-01"
+        explanation: "Berekende einddatum op basis van de maximale duur bepaald in artikel 23 lid 1"
+
+    - name: "volgende_herbeoordelingsdatum"
+      description: "Datum waarop de volgende herbeoordeling van levensvatbaarheid moet plaatsvinden"
+      type: "date"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      legal_basis:
+        law: "Besluit bijstandverlening zelfstandigen 2004"
+        bwb_id: "BWBR0015711"
+        article: "23"
+        paragraph: "3"
+        url: "https://wetten.overheid.nl/BWBR0015711/2025-07-01#Hoofdstuk3_Artikel23"
+        juriconnect: "jci1.3:c:BWBR0015711&artikel=23&lid=3&z=2025-07-01&g=2025-07-01"
+        explanation: "Artikel 23 lid 3 bepaalt dat het college de levensvatbaarheid beoordeelt na zes maanden, vervolgens na zes en twaalf maanden na aanvang bijstand"
+
+    - name: "reden_geen_recht"
+      description: "Reden waarom geen recht op bijstand bestaat"
+      type: "string"
+      temporal:
+        type: "point_in_time"
+        reference: "$calculation_date"
+      legal_basis:
+        law: "Besluit bijstandverlening zelfstandigen 2004"
+        bwb_id: "BWBR0015711"
+        article: "23"
+        url: "https://wetten.overheid.nl/BWBR0015711/2025-07-01#Hoofdstuk3_Artikel23"
+        juriconnect: "jci1.3:c:BWBR0015711&artikel=23&z=2025-07-01&g=2025-07-01"
+        explanation: "Toelichting op de reden voor afwijzing op basis van artikel 23"
+
+  definitions:
+    INITIËLE_TERMIJN_MAANDEN: 18  # Artikel 23 lid 1 Bbz 2004: initiële duur 18 maanden (gewijzigd van 36 per Stb. 2025, 220)
+    MAXIMALE_TERMIJN_NA_HERBEOORDELING: 36  # Artikel 23 lid 1 Bbz 2004: max 36 maanden na herbeoordeling levensvatbaarheid (Stb. 2025, 220)
+    HERBEOORDELING_EERSTE_INTERVAL_MAANDEN: 6  # Artikel 23 lid 3 Bbz 2004: eerste beoordeling na 6 maanden
+    HERBEOORDELING_TWEEDE_INTERVAL_MAANDEN: 6  # Artikel 23 lid 3 Bbz 2004: tweede beoordeling na opnieuw 6 maanden
+    HERBEOORDELING_DERDE_INTERVAL_MAANDEN: 12  # Artikel 23 lid 3 Bbz 2004: derde beoordeling na opnieuw 12 maanden
+    HERBEOORDELING_MEDISCH_INTERVAL_MAANDEN: 12  # Artikel 23 lid 3 Bbz 2004: bij verlenging jaarlijkse herbeoordeling
+
+requirements:
+  - description: "Persoon moet actieve ondernemer zijn"
+    condition:
+      operation: EQUALS
+      subject: "$IS_ACTIEVE_ONDERNEMER"
+      value: true
+      legal_basis:
+        law: "Besluit bijstandverlening zelfstandigen 2004"
+        bwb_id: "BWBR0015711"
+        article: "2"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0015711/2025-07-01#Hoofdstuk1_Artikel2"
+        juriconnect: "jci1.3:c:BWBR0015711&artikel=2&lid=1&z=2025-07-01&g=2025-07-01"
+        explanation: "Artikel 2 lid 1 onderdeel b vereist dat persoon een bedrijf of zelfstandig beroep begint"
+    legal_basis:
+      law: "Besluit bijstandverlening zelfstandigen 2004"
+      bwb_id: "BWBR0015711"
+      article: "2"
+      paragraph: "1"
+      url: "https://wetten.overheid.nl/BWBR0015711/2025-07-01#Hoofdstuk1_Artikel2"
+      juriconnect: "jci1.3:c:BWBR0015711&artikel=2&lid=1&z=2025-07-01&g=2025-07-01"
+      explanation: "Artikel 2 lid 1 onderdeel b bepaalt de doelgroep: personen die vanuit werkloosheid een bedrijf beginnen"
+
+actions:
+  - output: "heeft_recht_op_bijstand"
+    operation: EQUALS
+    value: true
+    legal_basis:
+      law: "Besluit bijstandverlening zelfstandigen 2004"
+      bwb_id: "BWBR0015711"
+      article: "23"
+      paragraph: "1"
+      url: "https://wetten.overheid.nl/BWBR0015711/2025-07-01#Hoofdstuk3_Artikel23"
+      juriconnect: "jci1.3:c:BWBR0015711&artikel=23&lid=1&z=2025-07-01&g=2025-07-01"
+      explanation: "Artikel 23 lid 1 bepaalt dat aan de persoon bedoeld in artikel 2 lid 1 onderdeel b algemene bijstand wordt verleend"
+
+  - output: "maximale_duur_maanden"
+    operation: IF
+    conditions:
+      - condition:
+          operation: EQUALS
+          subject: "$IS_HERBEOORDELING_LEVENSVATBAAR"
+          value: true
+          legal_basis:
+            law: "Besluit bijstandverlening zelfstandigen 2004"
+            bwb_id: "BWBR0015711"
+            article: "23"
+            paragraph: "1"
+            url: "https://wetten.overheid.nl/BWBR0015711/2025-07-01#Hoofdstuk3_Artikel23"
+            juriconnect: "jci1.3:c:BWBR0015711&artikel=23&lid=1&z=2025-07-01&g=2025-07-01"
+            explanation: "Verlenging tot 36 maanden mogelijk na herbeoordeling levensvatbaarheid (Staatsblad 2025, 220)"
+        then:
+          operation: EQUALS
+          value: "$MAXIMALE_TERMIJN_NA_HERBEOORDELING"
+          legal_basis:
+            law: "Besluit bijstandverlening zelfstandigen 2004"
+            bwb_id: "BWBR0015711"
+            article: "23"
+            paragraph: "1"
+            url: "https://wetten.overheid.nl/BWBR0015711/2025-07-01#Hoofdstuk3_Artikel23"
+            juriconnect: "jci1.3:c:BWBR0015711&artikel=23&lid=1&z=2025-07-01&g=2025-07-01"
+            explanation: "Na herbeoordeling maximaal 36 maanden (Staatsblad 2025, 220)"
+      - condition:
+          operation: EQUALS
+          subject: "$IS_MEDISCHE_OF_SOCIALE_REDEN"
+          value: true
+          legal_basis:
+            law: "Besluit bijstandverlening zelfstandigen 2004"
+            bwb_id: "BWBR0015711"
+            article: "23"
+            paragraph: "1"
+            url: "https://wetten.overheid.nl/BWBR0015711/2025-07-01#Hoofdstuk3_Artikel23"
+            juriconnect: "jci1.3:c:BWBR0015711&artikel=23&lid=1&z=2025-07-01&g=2025-07-01"
+            explanation: "Verlenging mogelijk bij medische of sociale redenen waardoor bedrijf niet volledig kan worden uitgeoefend"
+        then:
+          operation: EQUALS
+          value: "$MAXIMALE_TERMIJN_NA_HERBEOORDELING"
+          legal_basis:
+            law: "Besluit bijstandverlening zelfstandigen 2004"
+            bwb_id: "BWBR0015711"
+            article: "23"
+            paragraph: "1"
+            url: "https://wetten.overheid.nl/BWBR0015711/2025-07-01#Hoofdstuk3_Artikel23"
+            juriconnect: "jci1.3:c:BWBR0015711&artikel=23&lid=1&z=2025-07-01&g=2025-07-01"
+            explanation: "Bij medische/sociale redenen kan termijn worden verlengd"
+    else:
+      operation: EQUALS
+      value: "$INITIËLE_TERMIJN_MAANDEN"
+      legal_basis:
+        law: "Besluit bijstandverlening zelfstandigen 2004"
+        bwb_id: "BWBR0015711"
+        article: "23"
+        paragraph: "1"
+        url: "https://wetten.overheid.nl/BWBR0015711/2025-07-01#Hoofdstuk3_Artikel23"
+        juriconnect: "jci1.3:c:BWBR0015711&artikel=23&lid=1&z=2025-07-01&g=2025-07-01"
+        explanation: "Initiële termijn van 18 maanden (gewijzigd per Staatsblad 2025, 220)"
+    legal_basis:
+      law: "Besluit bijstandverlening zelfstandigen 2004"
+      bwb_id: "BWBR0015711"
+      article: "23"
+      paragraph: "1"
+      url: "https://wetten.overheid.nl/BWBR0015711/2025-07-01#Hoofdstuk3_Artikel23"
+      juriconnect: "jci1.3:c:BWBR0015711&artikel=23&lid=1&z=2025-07-01&g=2025-07-01"
+      explanation: "Artikel 23 lid 1 bepaalt de duur van de bijstand, gewijzigd van 36 naar 18 maanden per Staatsblad 2025, 220, met mogelijkheid tot verlenging"
+
+  - output: "einddatum_bijstand"
+    operation: ADD_MONTHS
+    subject: "$EINDDATUM_WW_UITKERING"
+    value: "$maximale_duur_maanden"
+    legal_basis:
+      law: "Besluit bijstandverlening zelfstandigen 2004"
+      bwb_id: "BWBR0015711"
+      article: "23"
+      paragraph: "1"
+      url: "https://wetten.overheid.nl/BWBR0015711/2025-07-01#Hoofdstuk3_Artikel23"
+      juriconnect: "jci1.3:c:BWBR0015711&artikel=23&lid=1&z=2025-07-01&g=2025-07-01"
+      explanation: "Artikel 23 lid 1 bepaalt dat bijstand wordt verleend na beëindiging van de werkloosheidsuitkering gedurende de bepaalde duur"
+
+  - output: "volgende_herbeoordelingsdatum"
+    operation: ADD_MONTHS
+    subject: "$EINDDATUM_WW_UITKERING"
+    value: "$HERBEOORDELING_EERSTE_INTERVAL_MAANDEN"
+    legal_basis:
+      law: "Besluit bijstandverlening zelfstandigen 2004"
+      bwb_id: "BWBR0015711"
+      article: "23"
+      paragraph: "3"
+      url: "https://wetten.overheid.nl/BWBR0015711/2025-07-01#Hoofdstuk3_Artikel23"
+      juriconnect: "jci1.3:c:BWBR0015711&artikel=23&lid=3&z=2025-07-01&g=2025-07-01"
+      explanation: "Artikel 23 lid 3 bepaalt dat de eerste beoordeling van levensvatbaarheid plaatsvindt zes maanden na aanvang van de bijstand"
+
+  - output: "reden_geen_recht"
+    operation: IF
+    conditions:
+      - condition:
+          operation: NOT_EQUALS
+          subject: "$IS_ACTIEVE_ONDERNEMER"
+          value: true
+          legal_basis:
+            law: "Besluit bijstandverlening zelfstandigen 2004"
+            bwb_id: "BWBR0015711"
+            article: "2"
+            paragraph: "1"
+            url: "https://wetten.overheid.nl/BWBR0015711/2025-07-01#Hoofdstuk1_Artikel2"
+            juriconnect: "jci1.3:c:BWBR0015711&artikel=2&lid=1&z=2025-07-01&g=2025-07-01"
+            explanation: "Persoon is geen actieve ondernemer"
+        then:
+          operation: EQUALS
+          value: "Persoon is geen actieve ondernemer zoals bedoeld in artikel 2 lid 1 onderdeel b"
+          legal_basis:
+            law: "Besluit bijstandverlening zelfstandigen 2004"
+            bwb_id: "BWBR0015711"
+            article: "2"
+            paragraph: "1"
+            url: "https://wetten.overheid.nl/BWBR0015711/2025-07-01#Hoofdstuk1_Artikel2"
+            juriconnect: "jci1.3:c:BWBR0015711&artikel=2&lid=1&z=2025-07-01&g=2025-07-01"
+            explanation: "Geen actief ondernemerschap geconstateerd"
+    else:
+      operation: EQUALS
+      value: ""
+      legal_basis:
+        law: "Besluit bijstandverlening zelfstandigen 2004"
+        bwb_id: "BWBR0015711"
+        article: "23"
+        url: "https://wetten.overheid.nl/BWBR0015711/2025-07-01#Hoofdstuk3_Artikel23"
+        juriconnect: "jci1.3:c:BWBR0015711&artikel=23&z=2025-07-01&g=2025-07-01"
+        explanation: "Voldoet aan voorwaarden"
+    legal_basis:
+      law: "Besluit bijstandverlening zelfstandigen 2004"
+      bwb_id: "BWBR0015711"
+      article: "23"
+      url: "https://wetten.overheid.nl/BWBR0015711/2025-07-01#Hoofdstuk3_Artikel23"
+      juriconnect: "jci1.3:c:BWBR0015711&artikel=23&z=2025-07-01&g=2025-07-01"
+      explanation: "Bepaling van de reden voor afwijzing op basis van de voorwaarden in artikel 23"
